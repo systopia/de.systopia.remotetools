@@ -1,0 +1,18 @@
+{
+  "_lookup": ["name"],
+  "_translate": ["title"],
+  "name": "xcm_matching_rules",
+  "title": "XCM Matching Rules",
+  "_values": [
+    {
+      "_lookup": ["name"],
+      "_translate": ["label"],
+      "name": "CRM_Xcm_Matcher_IdTrackerRemoteIdMatcher",
+      "value": "CRM_Xcm_Matcher_IdTrackerRemoteIdMatcher",
+      "label": "Identity Tracker: Remote Contact ID",
+      "filter": "0",
+      "is_reserved": "1",
+      "is_active": "1"
+    }
+  ]
+}
