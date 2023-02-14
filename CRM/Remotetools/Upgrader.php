@@ -29,6 +29,7 @@ class CRM_Remotetools_Upgrader extends CRM_Remotetools_Upgrader_Base
         // create custom data structures
         $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
         $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
+        $customData->syncOptionGroup(E::path('resources/option_group_rules.json'));
         $customData->syncCustomGroup(E::path('resources/custom_group_remote_contact_data.json'));
 
         // also: add the 'Remote Contact' type to the identity tracker
@@ -67,12 +68,28 @@ class CRM_Remotetools_Upgrader extends CRM_Remotetools_Upgrader_Base
                 // more than one exists: that's not good!
                 CRM_Core_Session::setStatus(
                     E::ts(
-                        "Multiple identiy types 'remote_contact' contact exist in IdentityTracker's types! Please fix!"
+                        "Multiple identity types 'remote_contact' contact exist in IdentityTracker's types! Please fix!"
                     ),
                     E::ts("Warning"),
                     'warn'
                 );
                 break;
+        }
+    }
+
+    /**
+     * Extension is being disabled
+     */
+    public function disable() {
+        // Remove XCM matcher
+        $matchers = ['CRM_Xcm_Matcher_IdTrackerRemoteIdMatcher'];
+        foreach ($matchers as $matcher_name) {
+            $entry = civicrm_api3('OptionValue', 'get', [
+                'name'            => $matcher_name,
+                'option_group_id' => 'xcm_matching_rules']);
+            if (!empty($entry['id'])) {
+                civicrm_api3('OptionValue', 'delete', ['id' => $entry['id']]);
+            }
         }
     }
 
@@ -88,6 +105,20 @@ class CRM_Remotetools_Upgrader extends CRM_Remotetools_Upgrader_Base
         $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
         $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
         $customData->syncCustomGroup(E::path('resources/custom_group_remote_contact_data.json'));
+        return true;
+    }
+
+    /**
+     * Adding XCM RemoteContact ID matcher
+     *
+     * @return TRUE on success
+     * @throws Exception
+     */
+    public function upgrade_0002()
+    {
+        $this->ctx->log->info('Adding XCM RemoteContact ID matcher.');
+        $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
+        $customData->syncOptionGroup(E::path('resources/option_group_rules.json'));
         return true;
     }
 }
