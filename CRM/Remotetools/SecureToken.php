@@ -108,6 +108,7 @@ class CRM_Remotetools_SecureToken {
      *
      * @param string $usage
      *   what should this token be used for
+     *   TODO: Allow multiple contexts (array).
      *
      * @return null|integer
      *   return the entity ID if the token is valid and has not expired

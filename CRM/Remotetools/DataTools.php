@@ -47,13 +47,18 @@ class CRM_Remotetools_DataTools {
         }
 
         // run query + compile result
-        $result = civicrm_api3('OptionValue', 'get', $query);
-        foreach ($result['values'] as $entry) {
-            if ($use_name) {
-                $option_list[$entry['name']] = $localise ? E::ts($entry['label']) : $entry['label'];
-            } else {
-                $option_list[$entry['value']] = $localise ? E::ts($entry['label']) : $entry['label'];
+        try {
+            $result = civicrm_api3('OptionValue', 'get', $query);
+            foreach ($result['values'] as $entry) {
+                if ($use_name) {
+                    $option_list[$entry['name']] = $localise ? E::ts($entry['label']) : $entry['label'];
+                } else {
+                    $option_list[$entry['value']] = $localise ? E::ts($entry['label']) : $entry['label'];
+                }
             }
+        }
+        catch (Exception $exception) {
+            // TODO: Log error, but do not fail.
         }
 
         return $option_list;
