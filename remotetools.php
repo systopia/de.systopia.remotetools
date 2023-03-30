@@ -18,6 +18,7 @@ require_once 'remotetools.civix.php';
 
 use CRM_Remotetools_ExtensionUtil as E;
 use Civi\RemoteContact\RemoteContactGetRequest as RemoteContactGetRequest;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\Resource\GlobResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

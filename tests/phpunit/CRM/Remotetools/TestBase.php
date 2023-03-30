@@ -46,7 +46,7 @@ abstract class CRM_Remotetools_TestBase extends \PHPUnit\Framework\TestCase impl
             ->apply();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->transaction = new CRM_Core_Transaction();
@@ -57,7 +57,7 @@ abstract class CRM_Remotetools_TestBase extends \PHPUnit\Framework\TestCase impl
         //Civi::settings()->set('remote_event_get_performance_enhancement', true);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->transaction->rollback();
         $this->transaction = null;
