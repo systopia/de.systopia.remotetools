@@ -73,7 +73,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   public function delete(RemoteDeleteAction $action): array {
-    Assert::notEq($action->getOffset(), 0, 'Offset is not allowed in delete action');
+    Assert::eq($action->getOffset(), 0, 'Offset is not allowed in delete action');
 
     /*
      * @todo: Ensure where only contains remote fields.
