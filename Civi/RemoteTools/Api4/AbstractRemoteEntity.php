@@ -34,6 +34,9 @@ use Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction;
 
 class AbstractRemoteEntity extends AbstractEntity {
 
+  /**
+   * @return \Civi\RemoteTools\Api4\Action\RemoteCheckAccessAction
+   */
   public static function checkAccess() {
     return new RemoteCheckAccessAction(static::getEntityName(), __FUNCTION__);
   }
@@ -46,12 +49,17 @@ class AbstractRemoteEntity extends AbstractEntity {
     return new RemoteGetAction(static::getEntityName(), __FUNCTION__);
   }
 
+  /**
+   * @return \Civi\RemoteTools\Api4\Action\RemoteGetActions
+   */
   public static function getActions($checkPermissions = TRUE) {
     return new RemoteGetActions(static::getEntityName(), __FUNCTION__);
   }
 
   /**
    * @inheritDoc
+   *
+   * @return \Civi\RemoteTools\Api4\Action\RemoteGetFieldsAction
    */
   public static function getFields() {
     return new RemoteGetFieldsAction(static::getEntityName(), __FUNCTION__);
