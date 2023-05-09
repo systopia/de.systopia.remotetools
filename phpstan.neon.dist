@@ -1,0 +1,51 @@
+parameters:
+	paths:
+		# The commented paths might be considered maybe with an intial baseline.
+		#- api
+		#- Civi
+		#- CRM
+		#- tests
+		- Civi/RemoteTools
+		- services
+		- tests/phpunit/Civi
+	excludePaths:
+		analyse:
+			- CRM/*/DAO/*
+			- CRM/*/Upgrader/Base.php
+			- tests/phpunit/bootstrap.php
+	scanFiles:
+		- remotetools.civix.php
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
+	scanDirectories:
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
+	bootstrapFiles:
+		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
+		- vendor/autoload.php
+		- phpstanBootstrap.php
+	stubFiles:
+		- stubs/AbstractAction.stub
+		- stubs/CiviEventDispatcherInterface.stub
+		- vendor/symfony/event-dispatcher-contracts/Event.php
+	level: 9
+	checkTooWideReturnTypesInProtectedAndPublicMethods: true
+	checkUninitializedProperties: true
+	checkMissingCallableSignature: true
+	treatPhpDocTypesAsCertain: false
+	exceptions:
+		check:
+			missingCheckedExceptionInThrows: true
+			tooWideThrowType: true
+		checkedExceptionClasses:
+			- \Webmozart\Assert\InvalidArgumentException
+		implicitThrows: false
+	ignoreErrors:
+		# Note paths are prefixed with ""*/" to wirk with inspections in PHPStorm because of:
+		# https://youtrack.jetbrains.com/issue/WI-63891/PHPStan-ignoreErrors-configuration-isnt-working-with-inspections
+
+		- '#^Method Civi\\RemoteTools\\Api4\\Action\\[^\s]+Action::getHandlerResult\(\) has Civi\\RemoteTools\\Exception\\ActionHandlerNotFoundException in PHPDoc @throws tag but it.s not thrown.$#'
+		- '#^Method Civi\\RemoteTools\\Api4\\Api4::createAction\(\) should return Civi\\Api4\\Generic\\AbstractAction but returns array|Civi\Api4\Generic\AbstractAction.$#'
+		- '#^Method Civi\\RemoteTools\\Api4\\Query\\[^\\]+::toArray\(\) return type has no value type specified in iterable type array.$#'
+		- '#^Method Civi\\RemoteTools\\Api4\\Query\\Comparison::toArray\(\) never returns array\{string, array<int, array>\} so it can be removed from the return type.$#'
+		- '#^Method Civi\\RemoteTools\\Api4\\Query\\CompositeCondition::toArray\(\) never returns array\{0: string, .+\} so it can be removed from the return type.$#'
+
+	tmpDir: .phpstan
