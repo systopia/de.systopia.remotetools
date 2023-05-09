@@ -31,16 +31,6 @@ class CRM_Remotetools_MultivalueCustomFieldsTest extends CRM_Remotetools_RemoteC
         callAPISuccess as protected traitCallAPISuccess;
     }
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * Some very basic RemoteEvent.get tests
      */
