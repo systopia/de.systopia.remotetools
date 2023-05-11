@@ -39,23 +39,25 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
     $this->remoteEntityName = $remoteEntityName;
   }
 
+  /**
+   * @inheritDoc
+   */
   public function getEntityName(): string {
     return $this->entityName;
-  }
-
-  public function getName(): string {
-    return $this->name;
-  }
-
-  public function getRemoteEntityName(): string {
-    return $this->remoteEntityName;
   }
 
   /**
    * @inheritDoc
    */
-  public function getExtraFieldNames(): array {
-    return ['custom.*'];
+  public function getName(): string {
+    return $this->name;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getRemoteEntityName(): string {
+    return $this->remoteEntityName;
   }
 
   /**
@@ -65,6 +67,23 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
     return $entityFields;
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function getSelectFieldNames(array $select, string $action, array $remoteSelect, ?int $contactId): array {
+    return $select;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
+    return FALSE;
+  }
+
+  /**
+   * @inheritDoc
+   */
   public function getFilter(?int $contactId): ?ConditionInterface {
     return NULL;
   }
@@ -72,24 +91,27 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(?int $contactId, array $entityValues): array {
+  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
     return $entityValues;
   }
 
   /**
    * @inheritDoc
    */
-  public function getCreateFormSpec(array $arguments, array $entityFields): FormSpec {
+  public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function getUpdateFormSpec(array $entityValues, array $entityFields): FormSpec {
+  public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
   }
 
+  /**
+   * @inheritDoc
+   */
   public function isFormSpecNeedsFieldOptions(): bool {
     return FALSE;
   }
@@ -97,56 +119,56 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function isCreateAllowed(?int $contactId, array $arguments): bool {
+  public function isCreateAllowed(array $arguments, ?int $contactId): bool {
     return FALSE;
   }
 
   /**
    * @inheritDoc
    */
-  public function isDeleteAllowed(?int $contactId, array $entityValues): bool {
+  public function isDeleteAllowed(array $entityValues, ?int $contactId): bool {
     return FALSE;
   }
 
   /**
    * @inheritDoc
    */
-  public function isUpdateAllowed(?int $contactId, array $entityValues): bool {
+  public function isUpdateAllowed(array $entityValues, ?int $contactId): bool {
     return FALSE;
   }
 
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData): ValidationResult {
+  public function validateCreateData(array $formData, ?int $contactId): ValidationResult {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function validateUpdateData(array $formData, array $currentEntityValues): ValidationResult {
+  public function validateUpdateData(array $formData, array $currentEntityValues, ?int $contactId): ValidationResult {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function convertCreateDataToEntityValues(array $formData): array {
+  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function convertUpdateDataToEntityValues(array $formData): array {
+  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function convertToFormData(array $entityValues): array {
+  public function convertToFormData(array $entityValues, ?int $contactId): array {
     throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
   }
 

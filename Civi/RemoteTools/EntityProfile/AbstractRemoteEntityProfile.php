@@ -23,17 +23,9 @@ use Civi\RemoteTools\Api4\Query\ConditionInterface;
 
 /**
  * Abstract implementation that assumes that internal and external fields are
- * the same. Create, delete, and update are allowed by default. All custom
- * fields are available.
+ * the same. Create, delete, and update are allowed by default.
  */
 abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterface {
-
-  /**
-   * @inheritDoc
-   */
-  public function getExtraFieldNames(): array {
-    return ['custom.*'];
-  }
 
   /**
    * @inheritDoc
@@ -42,6 +34,23 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
     return $entityFields;
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function getSelectFieldNames(array $select, string $action, array $remoteSelect, ?int $contactId): array {
+    return $select;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
+    return FALSE;
+  }
+
+  /**
+   * @inheritDoc
+   */
   public function getFilter(?int $contactId): ?ConditionInterface {
     return NULL;
   }
@@ -49,36 +58,42 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(?int $contactId, array $entityValues): array {
+  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
     return $entityValues;
   }
 
+  /**
+   * @inheritDoc
+   */
   public function isFormSpecNeedsFieldOptions(): bool {
     return FALSE;
   }
 
-  public function isCreateAllowed(?int $contactId, array $arguments): bool {
+  /**
+   * @inheritDoc
+   */
+  public function isCreateAllowed(array $arguments, ?int $contactId): bool {
     return TRUE;
   }
 
   /**
    * @inheritDoc
    */
-  public function isDeleteAllowed(?int $contactId, array $entityValues): bool {
+  public function isDeleteAllowed(array $entityValues, ?int $contactId): bool {
     return TRUE;
   }
 
   /**
    * @inheritDoc
    */
-  public function isUpdateAllowed(?int $contactId, array $entityValues): bool {
+  public function isUpdateAllowed(array $entityValues, ?int $contactId): bool {
     return TRUE;
   }
 
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData): ValidationResult {
+  public function validateCreateData(array $formData, ?int $contactId): ValidationResult {
     return new ValidationResult();
   }
 
@@ -87,7 +102,8 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
    */
   public function validateUpdateData(
           array $formData,
-          array $currentEntityValues
+    array $currentEntityValues,
+    ?int $contactId
   ): ValidationResult {
     return new ValidationResult();
   }
@@ -95,21 +111,21 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function convertCreateDataToEntityValues(array $formData): array {
+  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array {
     return $formData;
   }
 
   /**
    * @inheritDoc
    */
-  public function convertUpdateDataToEntityValues(array $formData): array {
+  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array {
     return $formData;
   }
 
   /**
    * @inheritDoc
    */
-  public function convertToFormData(array $entityValues): array {
+  public function convertToFormData(array $entityValues, ?int $contactId): array {
     return $entityValues;
   }
 

@@ -22,6 +22,9 @@ namespace Civi\RemoteTools\Api4\Query;
 use Civi\Api4\Generic\Result;
 use Civi\Api4\Generic\Traits\ArrayQueryActionTrait;
 
+/**
+ * Allows to apply the query properties from an action to an array.
+ */
 final class QueryApplier {
 
   use ArrayQueryActionTrait;
@@ -54,6 +57,10 @@ final class QueryApplier {
    */
   public function apply(array $values): Result {
     $result = new Result();
+    if (in_array('*', $this->select, TRUE)) {
+      // ArrayQueryActionTrait does not handle "*" as select field name.
+      $this->select = array_merge($this->select, $this->getStandardFieldNames($values));
+    }
     $this->queryArray($values, $result);
 
     return $result;
@@ -125,6 +132,21 @@ final class QueryApplier {
     $this->select = $select;
 
     return $this;
+  }
+
+  /**
+   * @phpstan-param array<array<string, mixed>> $values
+   *
+   * @phpstan-return array<string>
+   *   All field names that are not names of joined fields or pseudo constants.
+   *   This method assumes that all entries in $values have the same array keys.
+   */
+  private function getStandardFieldNames(array $values): array {
+    return array_filter(
+      // @phpstan-ignore-next-line
+      array_keys(reset($values) ?: []),
+      fn (string $fieldName) => !str_contains('.', $fieldName) && !str_contains(':', $fieldName)
+    );
   }
 
 }
