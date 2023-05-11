@@ -54,9 +54,6 @@ interface RequestContextInterface {
 
   public function getResolvedContactId(): ?int;
 
-  /**
-   * @param int|null $contactId
-   */
   public function setResolvedContactId(?int $contactId): void;
 
   public function isRemote(): bool;

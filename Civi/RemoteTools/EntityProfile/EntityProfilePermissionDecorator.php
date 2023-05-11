@@ -48,13 +48,6 @@ final class EntityProfilePermissionDecorator implements RemoteEntityProfileInter
   /**
    * @inheritDoc
    */
-  public function getExtraFieldNames(): array {
-    return $this->profile->getExtraFieldNames();
-  }
-
-  /**
-   * @inheritDoc
-   */
   public function getRemoteFields(array $entityFields): array {
     $remoteFields = $this->profile->getRemoteFields($entityFields);
     $remoteFields['CAN_delete'] = [
@@ -81,6 +74,22 @@ final class EntityProfilePermissionDecorator implements RemoteEntityProfileInter
     return $remoteFields;
   }
 
+  public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
+    return $this->profile->isImplicitJoinAllowed($fieldName, $joinFieldName, $contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getSelectFieldNames(
+    array $select,
+    string $action,
+    array $remoteSelect,
+    ?int $contactId
+  ): array {
+    return $this->profile->getSelectFieldNames($select, $action, $remoteSelect, $contactId);
+  }
+
   public function getFilter(?int $contactId): ?ConditionInterface {
     return $this->profile->getFilter($contactId);
   }
@@ -88,10 +97,10 @@ final class EntityProfilePermissionDecorator implements RemoteEntityProfileInter
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(?int $contactId, array $entityValues): array {
-    $remoteValues = $this->profile->convertToRemoteValues($contactId, $entityValues);
-    $remoteValues['CAN_delete'] = $this->profile->isDeleteAllowed($contactId, $entityValues);
-    $remoteValues['CAN_update'] = $this->profile->isUpdateAllowed($contactId, $entityValues);
+  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
+    $remoteValues = $this->profile->convertToRemoteValues($entityValues, $contactId);
+    $remoteValues['CAN_delete'] = $this->profile->isDeleteAllowed($entityValues, $contactId);
+    $remoteValues['CAN_update'] = $this->profile->isUpdateAllowed($entityValues, $contactId);
 
     return $remoteValues;
   }
@@ -99,15 +108,15 @@ final class EntityProfilePermissionDecorator implements RemoteEntityProfileInter
   /**
    * @inheritDoc
    */
-  public function getCreateFormSpec(array $arguments, array $entityFields): FormSpec {
-    return $this->profile->getCreateFormSpec($arguments, $entityFields);
+  public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec {
+    return $this->profile->getCreateFormSpec($arguments, $entityFields, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function getUpdateFormSpec(array $entityValues, array $entityFields): FormSpec {
-    return $this->profile->getUpdateFormSpec($entityValues, $entityFields);
+  public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec {
+    return $this->profile->getUpdateFormSpec($entityValues, $entityFields, $contactId);
   }
 
   /**
@@ -120,57 +129,57 @@ final class EntityProfilePermissionDecorator implements RemoteEntityProfileInter
   /**
    * @inheritDoc
    */
-  public function isCreateAllowed(?int $contactId, array $arguments): bool {
-    return $this->profile->isCreateAllowed($contactId, $arguments);
+  public function isCreateAllowed(array $arguments, ?int $contactId): bool {
+    return $this->profile->isCreateAllowed($arguments, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function isDeleteAllowed(?int $contactId, array $entityValues): bool {
-    return $this->profile->isDeleteAllowed($contactId, $entityValues);
+  public function isDeleteAllowed(array $entityValues, ?int $contactId): bool {
+    return $this->profile->isDeleteAllowed($entityValues, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function isUpdateAllowed(?int $contactId, array $entityValues): bool {
-    return $this->profile->isUpdateAllowed($contactId, $entityValues);
+  public function isUpdateAllowed(array $entityValues, ?int $contactId): bool {
+    return $this->profile->isUpdateAllowed($entityValues, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData): ValidationResult {
-    return $this->profile->validateCreateData($formData);
+  public function validateCreateData(array $formData, ?int $contactId): ValidationResult {
+    return $this->profile->validateCreateData($formData, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function validateUpdateData(array $formData, array $currentEntityValues): ValidationResult {
-    return $this->profile->validateUpdateData($formData, $currentEntityValues);
+  public function validateUpdateData(array $formData, array $currentEntityValues, ?int $contactId): ValidationResult {
+    return $this->profile->validateUpdateData($formData, $currentEntityValues, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function convertCreateDataToEntityValues(array $formData): array {
-    return $this->profile->convertCreateDataToEntityValues($formData);
+  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array {
+    return $this->profile->convertCreateDataToEntityValues($formData, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function convertUpdateDataToEntityValues(array $formData): array {
-    return $this->profile->convertUpdateDataToEntityValues($formData);
+  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array {
+    return $this->profile->convertUpdateDataToEntityValues($formData, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function convertToFormData(array $entityValues): array {
-    return $this->profile->convertToFormData($entityValues);
+  public function convertToFormData(array $entityValues, ?int $contactId): array {
+    return $this->profile->convertToFormData($entityValues, $contactId);
   }
 
 }

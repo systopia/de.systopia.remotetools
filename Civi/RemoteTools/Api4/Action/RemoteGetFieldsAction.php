@@ -45,7 +45,6 @@ final class RemoteGetFieldsAction extends BasicGetFieldsAction implements Profil
       $this->_ignoreMissingActionHandler = TRUE;
     }
     $this->doRun($result);
-    $this->queryArray($result->getArrayCopy(), $result);
   }
 
 }
