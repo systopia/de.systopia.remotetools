@@ -88,7 +88,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
      * (Via implicit joins even of referenced entities.)
      */
     $where = $action->getWhere();
-    $filter = $this->profile->getFilter($action->getResolvedContactId());
+    $filter = $this->profile->getFilter('delete', $action->getResolvedContactId());
     if (NULL !== $filter) {
       $where[] = $filter->toArray();
     }
@@ -135,7 +135,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
      * (Via implicit joins even of referenced entities.)
      */
     $where = $action->getWhere();
-    $filter = $this->profile->getFilter($action->getResolvedContactId());
+    $filter = $this->profile->getFilter('get', $action->getResolvedContactId());
     if (NULL !== $filter) {
       $where[] = $filter->toArray();
     }
@@ -228,7 +228,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   public function getUpdateForm(RemoteGetUpdateFormAction $action): array {
-    $entityValues = $this->getEntityById($action->getResolvedContactId(), $action->getId(), 'update');
+    $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
     if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $action->getResolvedContactId())) {
       throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
     }
@@ -277,7 +277,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function validateUpdateForm(RemoteValidateUpdateFormAction $action
   ): array {
-    $entityValues = $this->getEntityById($action->getResolvedContactId(), $action->getId(), 'update');
+    $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
     if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $action->getResolvedContactId())) {
       throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
     }
@@ -333,21 +333,21 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   }
 
   /**
-   * @phpstan-param 'delete'|'update' $action
+   * @phpstan-param 'delete'|'update' $actionName
    *
    * @phpstan-return array<string, mixed>|null
    *
    * @throws \CRM_Core_Exception
    */
-  protected function getEntityById(?int $contactId, int $id, string $action): ?array {
+  protected function getEntityById(int $id, string $actionName, ?int $contactId): ?array {
     $where = [['id', '=', $id]];
-    $filter = $this->profile->getFilter($contactId);
+    $filter = $this->profile->getFilter($actionName, $contactId);
     if (NULL !== $filter) {
       $where[] = $filter->toArray();
     }
 
     return $this->api4->execute($this->profile->getEntityName(), 'get', [
-      'select' => $this->profile->getSelectFieldNames(['*'], $action, [], $contactId),
+      'select' => $this->profile->getSelectFieldNames(['*'], $actionName, [], $contactId),
       'where' => $where,
       'checkPermissions' => $this->checkApiPermissions,
     ])->first();

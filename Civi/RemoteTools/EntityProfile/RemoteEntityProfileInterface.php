@@ -83,7 +83,7 @@ interface RemoteEntityProfileInterface {
    * @phpstan-param array<string> $select
    *   The proposed select field names. Contains only "allowed" values on get,
    *   e.g. no implicit joins that are not allowed.
-   * @phpstan-param 'delete'|'get'|'update' $action
+   * @phpstan-param 'delete'|'get'|'update' $actionName
    * @phpstan-param array<string> $remoteSelect
    *   The field names from the remote request if action is "get", empty array
    *   otherwise.
@@ -98,13 +98,15 @@ interface RemoteEntityProfileInterface {
    * @see getRemoteFields()
    * @see isImplicitJoinAllowed()
    */
-  public function getSelectFieldNames(array $select, string $action, array $remoteSelect, ?int $contactId): array;
+  public function getSelectFieldNames(array $select, string $actionName, array $remoteSelect, ?int $contactId): array;
 
   /**
+   * @phpstan-param 'delete'|'get'|'update' $actionName
+   *
    * @return \Civi\RemoteTools\Api4\Query\ConditionInterface
    *   Conditions applied to "where".
    */
-  public function getFilter(?int $contactId): ?ConditionInterface;
+  public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface;
 
   /**
    * @phpstan-param array<string, mixed> $entityValues

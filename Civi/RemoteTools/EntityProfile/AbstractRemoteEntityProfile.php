@@ -37,7 +37,7 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function getSelectFieldNames(array $select, string $action, array $remoteSelect, ?int $contactId): array {
+  public function getSelectFieldNames(array $select, string $actionName, array $remoteSelect, ?int $contactId): array {
     return $select;
   }
 
@@ -51,7 +51,7 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function getFilter(?int $contactId): ?ConditionInterface {
+  public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
     return NULL;
   }
 
