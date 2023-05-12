@@ -35,7 +35,7 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
     foreach ($remoteFields as $fieldName => $field) {
       if (($field['options'] ?? FALSE) !== FALSE && is_array($field['suffixes'] ?? NULL)) {
         foreach ($field['suffixes'] as $suffix) {
-          $remoteFields[$fieldName . ':' . $suffix] = $this->createField($field, $fieldName, $suffix);
+          $remoteFields[$fieldName . ':' . $suffix] ??= $this->createField($field, $fieldName, $suffix);
         }
       }
     }
