@@ -29,14 +29,23 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
     $this->profile = $profile;
   }
 
+  /**
+   * @inheritDoc
+   */
   public function getEntityName(): string {
     return $this->profile->getEntityName();
   }
 
+  /**
+   * @inheritDoc
+   */
   public function getName(): string {
     return $this->profile->getName();
   }
 
+  /**
+   * @inheritDoc
+   */
   public function getRemoteEntityName(): string {
     return $this->profile->getRemoteEntityName();
   }
@@ -48,6 +57,9 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
     return $this->profile->getRemoteFields($entityFields);
   }
 
+  /**
+   * @inheritDoc
+   */
   public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
     return $this->profile->isImplicitJoinAllowed($fieldName, $joinFieldName, $contactId);
   }
@@ -57,15 +69,18 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
    */
   public function getSelectFieldNames(
     array $select,
-    string $action,
+    string $actionName,
     array $remoteSelect,
     ?int $contactId
   ): array {
-    return $this->profile->getSelectFieldNames($select, $action, $remoteSelect, $contactId);
+    return $this->profile->getSelectFieldNames($select, $actionName, $remoteSelect, $contactId);
   }
 
-  public function getFilter(?int $contactId): ?ConditionInterface {
-    return $this->profile->getFilter($contactId);
+  /**
+   * @inheritDoc
+   */
+  public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
+    return $this->profile->getFilter($actionName, $contactId);
   }
 
   /**
