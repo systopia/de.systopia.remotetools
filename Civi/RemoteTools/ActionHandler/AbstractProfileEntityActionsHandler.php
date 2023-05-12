@@ -32,6 +32,7 @@ use Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\QueryApplier;
+use Civi\RemoteTools\EntityProfile\EntityProfileOptionSuffixDecorator;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
 use Civi\RemoteTools\EntityProfile\FormSpec;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
@@ -67,7 +68,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     bool $checkApiPermissions = FALSE
   ) {
     $this->api4 = $api4;
-    $this->profile = new EntityProfilePermissionDecorator($profile);
+    $this->profile = new EntityProfilePermissionDecorator(new EntityProfileOptionSuffixDecorator($profile));
     $this->checkApiPermissions = $checkApiPermissions;
     // Can be initialized by subclasses.
     // @phpstan-ignore-next-line
