@@ -39,6 +39,12 @@ final class FieldUtilTest extends TestCase {
     static::assertNull(FieldUtil::getJoinedFieldName('foo.bar', ['foo' => []]));
   }
 
+  public function testIsJoinedField(): void {
+    static::assertTrue(FieldUtil::isJoinedField('foo.bar'));
+    static::assertTrue(FieldUtil::isJoinedField('foo:bar'));
+    static::assertFalse(FieldUtil::isJoinedField('foo_bar'));
+  }
+
   public function testIsValidSuffix(): void {
     static::assertFalse(FieldUtil::isValidSuffix('test', ['suffixes' => ['foo']]));
     static::assertFalse(FieldUtil::isValidSuffix('test', []));
