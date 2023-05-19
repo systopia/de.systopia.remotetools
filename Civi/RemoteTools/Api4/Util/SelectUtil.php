@@ -44,17 +44,13 @@ final class SelectUtil {
   /**
    * Similar to \Civi\Api4\Utils\SelectUtil::isFieldSelected(), but also
    * returns TRUE if $select is empty and $field is not from a joined entity
-   * (i.e. contains no ".").
+   * (i.e. contains no "." or ":").
    *
    * @phpstan-param array<string> $select
    */
   public static function isFieldSelected(string $field, array $select): bool {
-    return [] === $select && !self::isJoinedField($field)
+    return [] === $select && !FieldUtil::isJoinedField($field)
       || \Civi\Api4\Utils\SelectUtil::isFieldSelected($field, $select);
-  }
-
-  private static function isJoinedField(string $field): bool {
-    return str_contains($field, '.');
   }
 
 }
