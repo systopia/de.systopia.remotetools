@@ -32,12 +32,12 @@ final class SelectFactory implements SelectFactoryInterface {
     array $remoteFields,
     callable $implicitJoinAllowedCallback
   ): array {
-    if ([] === $select) {
-      $select = array_keys($remoteFields);
-    }
-    elseif (in_array('*', $select, TRUE)) {
+    if ([] === $select || in_array('*', $select, TRUE)) {
       $rowCountSelected = in_array('row_count', $select, TRUE);
-      $select = array_keys($remoteFields);
+      $select = array_filter(
+        array_keys($remoteFields),
+        fn (string $fieldName) => !FieldUtil::isJoinedField($fieldName),
+      );
       if ($rowCountSelected) {
         $select[] = 'row_count';
       }

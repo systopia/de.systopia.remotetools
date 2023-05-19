@@ -47,6 +47,15 @@ final class FieldUtil {
   }
 
   /**
+   * @return bool
+   *   TRUE if the given string is the name of a joined field, i.e. contains a
+   *   "." or ":".
+   */
+  public static function isJoinedField(string $fieldName): bool {
+    return str_contains($fieldName, '.') || str_contains($fieldName, ':');
+  }
+
+  /**
    * @phpstan-param array<string, mixed> $field
    *
    * @return bool TRUE if $suffix is a valid option list suffix.
