@@ -27,7 +27,7 @@ interface SelectFactoryInterface {
    * @phpstan-param array<string, array<string, mixed>> $remoteFields
    * @phpstan-param callable(string $fieldName, string $joinedFieldName): bool $implicitJoinAllowedCallback
    *
-   * @phpstan-return array{entity: array<string>, remote: array<string>, differ: bool}
+   * @phpstan-return array{entity: array<string>, remote: array<string>}
    */
   public function getSelects(
     array $select,

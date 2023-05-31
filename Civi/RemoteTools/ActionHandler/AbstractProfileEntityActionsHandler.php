@@ -168,7 +168,11 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
     /** @phpstan-var array<string, mixed> $entityValues */
     foreach ($result as &$entityValues) {
-      $entityValues = $this->profile->convertToRemoteValues($entityValues, $action->getResolvedContactId());
+      $entityValues = $this->profile->convertToRemoteValues(
+        $entityValues,
+        $selects['remote'],
+        $action->getResolvedContactId()
+      );
     }
 
     if ($selects['differ'] || $orderByRemoteValuesRequired) {
@@ -385,6 +389,8 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
   /**
    * @phpstan-return array{entity: array<string>, remote: array<string>, differ: bool}
+   *   differ is TRUE if there are extra fields in entity that are not part of
+   *   remote.
    *
    * @throws \CRM_Core_Exception
    */
@@ -412,6 +418,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     if ($selects['entity'] != $entitySelect) {
       $selects['entity'] = $entitySelect;
       $selects['differ'] = TRUE;
+    }
+    else {
+      $selects['differ'] = FALSE;
     }
 
     return $selects;

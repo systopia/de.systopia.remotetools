@@ -86,8 +86,8 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
-    return $this->profile->convertToRemoteValues($entityValues, $contactId);
+  public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array {
+    return $this->profile->convertToRemoteValues($entityValues, $select, $contactId);
   }
 
   /**

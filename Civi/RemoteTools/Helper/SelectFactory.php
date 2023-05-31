@@ -45,7 +45,6 @@ final class SelectFactory implements SelectFactoryInterface {
 
     $entitySelect = [];
     $remoteSelect = [];
-    $differ = FALSE;
     $entityAndRemoteFieldNames = array_intersect(array_keys($entityFields), array_keys($remoteFields));
     $entityAndRemoteFieldNames[] = 'row_count';
     foreach ($select as $fieldName) {
@@ -62,9 +61,6 @@ final class SelectFactory implements SelectFactoryInterface {
           // Joined field was explicitly added to remote fields.
           $entitySelect[] = $fieldName;
         }
-        else {
-          $differ = TRUE;
-        }
       }
       elseif (!isset($entityFields[$fieldNameWithoutSuffix])) {
         $joinedField = FieldUtil::getJoinedFieldName($fieldName, $entityFields);
@@ -76,7 +72,7 @@ final class SelectFactory implements SelectFactoryInterface {
       }
     }
 
-    return ['entity' => $entitySelect, 'remote' => $remoteSelect, 'differ' => $differ];
+    return ['entity' => $entitySelect, 'remote' => $remoteSelect];
   }
 
 }
