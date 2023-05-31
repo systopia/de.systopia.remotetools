@@ -47,8 +47,11 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
    * @phpstan-param array<string, mixed> $field
    *
    * @phpstan-return array<string, mixed>
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   private function createField(array $field, string $fieldName, string $suffix): array {
+    // phpcs:enable
     /** @var string $title */
     $title = $field['title'] ?? $fieldName;
     /** @var string $label */
@@ -93,7 +96,7 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
 
     if (is_array($options[0] ?? NULL)) {
       $result = [];
-      foreach ($options as $key => $option) {
+      foreach ($options as $option) {
         // Should always be true.
         if (isset($option['id'])) {
           $result[(string) $option['id']] = $option[$suffix] ?? NULL;
