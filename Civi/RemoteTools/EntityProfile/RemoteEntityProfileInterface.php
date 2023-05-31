@@ -110,10 +110,11 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
+   * @phpstan-param array<string> $select Selected field names.
    *
    * @phpstan-return array<string, mixed>
    */
-  public function convertToRemoteValues(array $entityValues, ?int $contactId): array;
+  public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array;
 
   /**
    * @phpstan-param array<int|string, mixed> $arguments

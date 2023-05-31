@@ -58,10 +58,14 @@ final class EntityProfilePermissionDecorator extends AbstractRemoteEntityProfile
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
-    $remoteValues = parent::convertToRemoteValues($entityValues, $contactId);
-    $remoteValues['CAN_delete'] = $this->profile->isDeleteAllowed($entityValues, $contactId);
-    $remoteValues['CAN_update'] = $this->profile->isUpdateAllowed($entityValues, $contactId);
+  public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array {
+    $remoteValues = parent::convertToRemoteValues($entityValues, $select, $contactId);
+    if (in_array('CAN_delete', $select, TRUE)) {
+      $remoteValues['CAN_delete'] = $this->profile->isDeleteAllowed($entityValues, $contactId);
+    }
+    if (in_array('CAN_update', $select, TRUE)) {
+      $remoteValues['CAN_update'] = $this->profile->isUpdateAllowed($entityValues, $contactId);
+    }
 
     return $remoteValues;
   }

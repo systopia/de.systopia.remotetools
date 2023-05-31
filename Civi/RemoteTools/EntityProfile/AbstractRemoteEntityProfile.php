@@ -58,7 +58,7 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function convertToRemoteValues(array $entityValues, ?int $contactId): array {
+  public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array {
     return $entityValues;
   }
 
