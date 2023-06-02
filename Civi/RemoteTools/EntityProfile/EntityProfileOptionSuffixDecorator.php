@@ -29,8 +29,8 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function getRemoteFields(array $entityFields): array {
-    $remoteFields = parent::getRemoteFields($entityFields);
+  public function getRemoteFields(array $entityFields, ?int $contactId): array {
+    $remoteFields = parent::getRemoteFields($entityFields, $contactId);
 
     foreach ($remoteFields as $fieldName => $field) {
       if (($field['options'] ?? FALSE) !== FALSE && is_array($field['suffixes'] ?? NULL)) {

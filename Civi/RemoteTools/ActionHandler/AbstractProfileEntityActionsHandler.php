@@ -34,11 +34,10 @@ use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\QueryApplier;
 use Civi\RemoteTools\EntityProfile\EntityProfileOptionSuffixDecorator;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
-use Civi\RemoteTools\EntityProfile\FormSpec;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
-use Civi\RemoteTools\EntityProfile\ValidationResult;
-use Civi\RemoteTools\Helper\SelectFactory;
-use Civi\RemoteTools\Helper\SelectFactoryInterface;
+use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
 use CRM_Remotetools_ExtensionUtil as E;
 use Webmozart\Assert\Assert;
 
@@ -49,30 +48,18 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
   protected Api4Interface $api4;
 
+  protected ProfileEntityLoaderInterface $entityLoader;
+
   protected RemoteEntityProfileInterface $profile;
 
-  protected SelectFactoryInterface $selectFactory;
-
-  protected bool $checkApiPermissions;
-
-  /**
-   * @param bool $checkApiPermissions
-   *   Check permissions on CiviCRM API calls. The check will be applied to the
-   *   API user not to the resolved remote contact. For this reason FALSE is
-   *   used as default, so the API user just needs permission to access the
-   *   remote API.
-   */
   public function __construct(
     Api4Interface $api4,
-    RemoteEntityProfileInterface $profile,
-    bool $checkApiPermissions = FALSE
+    ProfileEntityLoaderInterface $entityLoader,
+    RemoteEntityProfileInterface $profile
   ) {
     $this->api4 = $api4;
+    $this->entityLoader = $entityLoader;
     $this->profile = new EntityProfilePermissionDecorator(new EntityProfileOptionSuffixDecorator($profile));
-    $this->checkApiPermissions = $checkApiPermissions;
-    // Can be initialized by subclasses.
-    // @phpstan-ignore-next-line
-    $this->selectFactory ??= new SelectFactory();
   }
 
   /**
@@ -96,7 +83,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     $getResult = $this->api4->execute($this->profile->getEntityName(), 'get', [
       'select' => $this->profile->getSelectFieldNames(['*'], 'delete', [], $action->getResolvedContactId()),
       'where' => $where,
-      'checkPermissions' => $this->checkApiPermissions,
+      'checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId()),
     ]);
 
     $deleteCount = 0;
@@ -109,7 +96,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
           $this->api4->deleteEntity(
             $this->profile->getEntityName(),
             $entityValues['id'],
-            ['checkPermissions' => $this->checkApiPermissions]
+            ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())]
           )->getArrayCopy(),
         );
         ++$deleteCount;
@@ -127,63 +114,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   public function get(RemoteGetAction $action): Result {
-    $selects = $this->createSelectsForGet($action);
-
-    /*
-     * @todo: Ensure where only contains remote fields.
-     * Otherwise it would be possible to find out values of not exposed fields.
-     * (Via implicit joins even of referenced entities.)
-     */
-    $where = $action->getWhere();
-    $filter = $this->profile->getFilter('get', $action->getResolvedContactId());
-    if (NULL !== $filter) {
-      $where[] = $filter->toArray();
-    }
-
-    $entityFields = $this->api4->execute($this->profile->getEntityName(), 'getFields', [
-      'checkPermissions' => $this->checkApiPermissions,
-    ])->indexBy('name')->getArrayCopy();
-
-    $entityOrderBy = [];
-    $orderByRemoteValuesRequired = FALSE;
-    foreach ($action->getOrderBy() as $fieldName => $direction) {
-      // @todo: Handle implicit joins
-      [$fieldNameWithoutOptionListProperty] = explode(':', $fieldName, 2);
-      if (isset($entityFields[$fieldNameWithoutOptionListProperty]) || in_array($fieldName, $selects['entity'], TRUE)) {
-        $entityOrderBy[$fieldName] = $direction;
-      }
-      else {
-        $orderByRemoteValuesRequired = TRUE;
-      }
-    }
-
-    $result = $this->api4->execute($this->profile->getEntityName(), 'get', [
-      'select' => $selects['entity'],
-      'where' => $where,
-      'orderBy' => $entityOrderBy,
-      'limit' => $action->getLimit(),
-      'offset' => $action->getOffset(),
-      'checkPermissions' => $this->checkApiPermissions,
-    ]);
-
-    /** @phpstan-var array<string, mixed> $entityValues */
-    foreach ($result as &$entityValues) {
-      $entityValues = $this->profile->convertToRemoteValues(
-        $entityValues,
-        $selects['remote'],
-        $action->getResolvedContactId()
-      );
-    }
-
-    if ($selects['differ'] || $orderByRemoteValuesRequired) {
-      $queryApplier = QueryApplier::new()
-        ->setSelect($selects['differ'] ? $selects['remote'] : [])
-        ->setOrderBy($action->getOrderBy());
-      // @phpstan-ignore-next-line
-      $result->exchangeArray($queryApplier->apply($result->getArrayCopy())->getArrayCopy());
-    }
-
-    return $result;
+    return $this->entityLoader->get($this->profile, $action);
   }
 
   /**
@@ -194,10 +125,10 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     $entityFields = $this->api4->execute($this->profile->getEntityName(), 'getFields', [
       'values' => $action->getValues(),
       'loadOptions' => $action->getLoadOptions(),
-      'checkPermissions' => $this->checkApiPermissions,
+      'checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId()),
     ])->indexBy('name')->getArrayCopy();
 
-    $remoteFields = $this->profile->getRemoteFields($entityFields);
+    $remoteFields = $this->profile->getRemoteFields($entityFields, $action->getResolvedContactId());
 
     return QueryApplier::new()
       ->setLimit($action->getLimit())
@@ -219,9 +150,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       throw new UnauthorizedException(E::ts('Permission to create entity is missing'));
     }
 
-    return $this->convertToForm($this->profile->getCreateFormSpec(
+    return $this->convertToGetFormResult($this->profile->getCreateFormSpec(
       $action->getArguments(),
-      $this->getEntityFieldsForFormSpec(),
+      $this->getEntityFieldsForFormSpec($action->getResolvedContactId()),
       $action->getResolvedContactId(),
     ));
   }
@@ -237,9 +168,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
     }
 
-    return $this->convertToForm($this->profile->getUpdateFormSpec(
+    return $this->convertToGetFormResult($this->profile->getUpdateFormSpec(
       $entityValues,
-      $this->getEntityFieldsForFormSpec(),
+      $this->getEntityFieldsForFormSpec($action->getResolvedContactId()),
       $action->getResolvedContactId(),
     ));
   }
@@ -251,24 +182,13 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function validateCreateForm(RemoteValidateCreateFormAction $action
   ): array {
-    if (!$this->profile->isCreateAllowed($action->getArguments(), $action->getResolvedContactId())) {
-      throw new UnauthorizedException(E::ts('Permission to create entity is missing'));
-    }
-
-    $formSpec = $this->profile->getCreateFormSpec(
+    $validationResult = $this->validateForCreate(
       $action->getArguments(),
-      $this->getEntityFieldsForFormSpec(),
+      $action->getData(),
       $action->getResolvedContactId(),
     );
-    $validationResult = $this->validateFormData($formSpec, $action->getData());
-
     if (!$validationResult->isValid()) {
-      return $this->convertToFormErrors($validationResult);
-    }
-
-    $validationResult = $this->profile->validateCreateData($action->getData(), $action->getResolvedContactId());
-    if (!$validationResult->isValid()) {
-      return $this->convertToFormErrors($validationResult);
+      return $this->convertToValidateActionResult($validationResult);
     }
 
     return [];
@@ -281,28 +201,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function validateUpdateForm(RemoteValidateUpdateFormAction $action
   ): array {
-    $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
-    if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $action->getResolvedContactId())) {
-      throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
-    }
-
-    $formSpec = $this->profile->getUpdateFormSpec(
-      $entityValues,
-      $this->getEntityFieldsForFormSpec(),
-      $action->getResolvedContactId(),
-    );
-    $validationResult = $this->validateFormData($formSpec, $action->getData());
+    $validationResult = $this->validateForUpdate($action->getId(), $action->getData(), $action->getResolvedContactId());
     if (!$validationResult->isValid()) {
-      return $this->convertToFormErrors($validationResult);
-    }
-
-    $validationResult = $this->profile->validateUpdateData(
-      $action->getData(),
-      $entityValues,
-      $action->getResolvedContactId(),
-    );
-    if (!$validationResult->isValid()) {
-      return $this->convertToFormErrors($validationResult);
+      return $this->convertToValidateActionResult($validationResult);
     }
 
     return [];
@@ -313,8 +214,22 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function submitCreateForm(RemoteSubmitCreateFormAction $action
   ): array {
-    // TODO: Implement submitCreateForm() method.
-    return [];
+    $validationResult = $this->validateForCreate(
+      $action->getArguments(),
+      $action->getData(),
+      $action->getResolvedContactId(),
+    );
+    if (!$validationResult->isValid()) {
+      throw $validationResult->toException();
+    }
+
+    $createdValues = $this->api4->createEntity(
+      $this->profile->getEntityName(),
+      $this->profile->convertCreateDataToEntityValues($action->getData(), $action->getResolvedContactId()),
+      ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
+    )->single();
+
+    return $this->profile->convertToRemoteValues($createdValues, [], $action->getResolvedContactId());
   }
 
   /**
@@ -322,18 +237,19 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function submitUpdateForm(RemoteSubmitUpdateFormAction $action
   ): array {
-    // TODO: Implement submitUpdateForm() method.
-    return [];
+    $validationResult = $this->validateForUpdate($action->getId(), $action->getData(), $action->getResolvedContactId());
+    if (!$validationResult->isValid()) {
+      throw $validationResult->toException();
+    }
 
-    // After successful validation:
     $updatedValues = $this->api4->updateEntity(
       $this->profile->getEntityName(),
       $action->getId(),
       $this->profile->convertUpdateDataToEntityValues($action->getData(), $action->getResolvedContactId()),
-      ['checkPermissions' => $this->checkApiPermissions],
-    )->first();
+      ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
+    )->single();
 
-    return $this->profile->convertToRemoteValues($updatedValues, $action->getContactId());
+    return $this->profile->convertToRemoteValues($updatedValues, [], $action->getResolvedContactId());
   }
 
   /**
@@ -353,7 +269,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     return $this->api4->execute($this->profile->getEntityName(), 'get', [
       'select' => $this->profile->getSelectFieldNames(['*'], $actionName, [], $contactId),
       'where' => $where,
-      'checkPermissions' => $this->checkApiPermissions,
+      'checkPermissions' => $this->profile->isCheckApiPermissions($contactId),
     ])->first();
   }
 
@@ -362,11 +278,11 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    *
    * @throws \CRM_Core_Exception
    */
-  protected function getEntityFieldsForFormSpec(): array {
+  protected function getEntityFieldsForFormSpec(?int $contactId): array {
     /** @phpstan-var array<string, array<string, mixed>> $fields */
     $fields = $this->api4->execute($this->profile->getEntityName(), 'getFields', [
       'loadOptions' => $this->profile->isFormSpecNeedsFieldOptions(),
-      'checkPermissions' => $this->checkApiPermissions,
+      'checkPermissions' => $this->profile->isCheckApiPermissions($contactId),
     ])->indexBy('name')->getArrayCopy();
 
     return $fields;
@@ -375,12 +291,17 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   /**
    * @phpstan-return array<int|string, mixed> JSON serializable.
    */
-  abstract protected function convertToForm(FormSpec $formSpec): array;
+  abstract protected function convertToGetFormResult(FormSpec $formSpec): array;
 
   /**
-   * @phpstan-return array<int|string, mixed> JSON serializable.
+   * @phpstan-return array<int|string|null, mixed> JSON serializable.
    */
-  abstract protected function convertToFormErrors(ValidationResult $validationResult): array;
+  protected function convertToValidateActionResult(ValidationResult $validationResult): array {
+    return [
+      'valid' => $validationResult->isValid(),
+      'errors' => $validationResult->getErrorMessages(),
+    ];
+  }
 
   /**
    * @phpstan-param array<string, mixed> $formData JSON serializable.
@@ -388,42 +309,55 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   abstract protected function validateFormData(FormSpec $formSpec, array $formData): ValidationResult;
 
   /**
-   * @phpstan-return array{entity: array<string>, remote: array<string>, differ: bool}
-   *   differ is TRUE if there are extra fields in entity that are not part of
-   *   remote.
+   * @phpstan-param array<int|string, mixed> $arguments
+   * @phpstan-param array<string, mixed> $formData
    *
+   * @throws \Civi\API\Exception\UnauthorizedException
    * @throws \CRM_Core_Exception
    */
-  private function createSelectsForGet(RemoteGetAction $action): array {
-    /** @phpstan-var array<string, array<string, mixed>> $entityFields */
-    $entityFields = $this->api4->execute($this->profile->getEntityName(), 'getFields', [
-      'checkPermissions' => $this->checkApiPermissions,
-    ])->indexBy('name')->getArrayCopy();
-    $remoteFields = $this->profile->getRemoteFields($entityFields);
-
-    $implicitJoinAllowedCallback = fn(string $fieldName, string $joinField)
-    => $this->profile->isImplicitJoinAllowed($fieldName, $joinField, $action->getResolvedContactId());
-    $selects = $this->selectFactory->getSelects(
-      $action->getSelect(),
-      $entityFields,
-      $remoteFields,
-      $implicitJoinAllowedCallback,
-    );
-    $entitySelect = $this->profile->getSelectFieldNames(
-      $selects['entity'],
-      'get',
-      $selects['remote'],
-      $action->getResolvedContactId(),
-    );
-    if ($selects['entity'] != $entitySelect) {
-      $selects['entity'] = $entitySelect;
-      $selects['differ'] = TRUE;
-    }
-    else {
-      $selects['differ'] = FALSE;
+  private function validateForCreate(array $arguments, array $formData, ?int $contactId): ValidationResult {
+    if (!$this->profile->isCreateAllowed($arguments, $contactId)) {
+      throw new UnauthorizedException(E::ts('Permission to create entity is missing'));
     }
 
-    return $selects;
+    $formSpec = $this->profile->getCreateFormSpec(
+      $arguments,
+      $this->getEntityFieldsForFormSpec($contactId),
+      $contactId,
+    );
+    $validationResult = $this->validateFormData($formSpec, $formData);
+
+    if (!$validationResult->isValid()) {
+      return $validationResult;
+    }
+
+    return $this->profile->validateCreateData($formData, $contactId);
+  }
+
+  /**
+   * @phpstan-param array<string, mixed> $formData
+   *
+   * @throws \Civi\API\Exception\UnauthorizedException
+   * @throws \CRM_Core_Exception
+   */
+  private function validateForUpdate(int $id, array $formData, ?int $contactId): ValidationResult {
+    $entityValues = $this->getEntityById($id, 'update', $contactId);
+    if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $contactId)) {
+      throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
+    }
+
+    $formSpec = $this->profile->getUpdateFormSpec(
+      $entityValues,
+      $this->getEntityFieldsForFormSpec($contactId),
+      $contactId,
+    );
+
+    $validationResult = $this->validateFormData($formSpec, $formData);
+    if (!$validationResult->isValid()) {
+      return $validationResult;
+    }
+
+    return $this->profile->validateUpdateData($formData, $entityValues, $contactId);
   }
 
 }

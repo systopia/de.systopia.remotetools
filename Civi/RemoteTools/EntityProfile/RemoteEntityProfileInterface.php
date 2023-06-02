@@ -20,6 +20,8 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 /**
  * A profile for a remote entity that is mapped to one APIv4 entity. Custom
@@ -58,13 +60,22 @@ interface RemoteEntityProfileInterface {
   public function getRemoteEntityName(): string;
 
   /**
+   * @return bool
+   *   Check permissions on CiviCRM API calls. The check will be applied to the
+   *   API user not to the resolved remote contact. For this reason FALSE is
+   *   recommended in most cases, so the API user just needs permission to
+   *   access the remote API.
+   */
+  public function isCheckApiPermissions(?int $contactId): bool;
+
+  /**
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Fields indexed by field name.
    *
    * @phpstan-return array<string, array<string, mixed>>
    *   Fields indexed by field name.
    */
-  public function getRemoteFields(array $entityFields): array;
+  public function getRemoteFields(array $entityFields, ?int $contactId): array;
 
   /**
    * @param string $fieldName
@@ -110,7 +121,8 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
-   * @phpstan-param array<string> $select Selected field names.
+   * @phpstan-param array<string> $select
+   *   Selected field names. Maybe empty on create or update.
    *
    * @phpstan-return array<string, mixed>
    */

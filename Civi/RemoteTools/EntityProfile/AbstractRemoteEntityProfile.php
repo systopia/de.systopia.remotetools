@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 /**
  * Abstract implementation that assumes that internal and external fields are
@@ -30,7 +31,14 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function getRemoteFields(array $entityFields): array {
+  public function isCheckApiPermissions(?int $contactId): bool {
+    return FALSE;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getRemoteFields(array $entityFields, ?int $contactId): array {
     return $entityFields;
   }
 
