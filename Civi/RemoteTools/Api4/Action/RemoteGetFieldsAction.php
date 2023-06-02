@@ -26,7 +26,7 @@ use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait;
 
-final class RemoteGetFieldsAction extends BasicGetFieldsAction implements ProfileAwareRemoteActionInterface {
+class RemoteGetFieldsAction extends BasicGetFieldsAction implements ProfileAwareRemoteActionInterface {
 
   use ActionHandlerRunTrait;
 

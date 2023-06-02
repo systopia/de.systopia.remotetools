@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\Api4\Action;
 
 use Civi\RemoteTools\Api4\Action\Traits\ArgumentsParameterOptionalTrait;
 
-final class RemoteGetCreateFormAction extends AbstractProfileAwareRemoteAction {
+class RemoteGetCreateFormAction extends AbstractProfileAwareRemoteAction {
 
   use ArgumentsParameterOptionalTrait;
 

@@ -30,6 +30,7 @@ parameters:
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
+	checkGenericClassInNonGenericObjectType: false
 	treatPhpDocTypesAsCertain: false
 	exceptions:
 		check:

@@ -20,6 +20,8 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfileInterface {
 
@@ -53,8 +55,15 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function getRemoteFields(array $entityFields): array {
-    return $this->profile->getRemoteFields($entityFields);
+  public function isCheckApiPermissions(?int $contactId): bool {
+    return $this->profile->isCheckApiPermissions($contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getRemoteFields(array $entityFields, ?int $contactId): array {
+    return $this->profile->getRemoteFields($entityFields, $contactId);
   }
 
   /**

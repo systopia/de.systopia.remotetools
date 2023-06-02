@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
+use Civi\RemoteTools\Api4\Util\SelectUtil;
 use CRM_Remotetools_ExtensionUtil as E;
 
 /**
@@ -29,8 +30,8 @@ final class EntityProfilePermissionDecorator extends AbstractRemoteEntityProfile
   /**
    * @inheritDoc
    */
-  public function getRemoteFields(array $entityFields): array {
-    $remoteFields = parent::getRemoteFields($entityFields);
+  public function getRemoteFields(array $entityFields, ?int $contactId): array {
+    $remoteFields = parent::getRemoteFields($entityFields, $contactId);
     $remoteFields['CAN_delete'] = [
       'type' => 'Extra',
       'entity' => $this->profile->getRemoteEntityName(),
@@ -60,10 +61,10 @@ final class EntityProfilePermissionDecorator extends AbstractRemoteEntityProfile
    */
   public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array {
     $remoteValues = parent::convertToRemoteValues($entityValues, $select, $contactId);
-    if (in_array('CAN_delete', $select, TRUE)) {
+    if (SelectUtil::isFieldSelected('CAN_delete', $select)) {
       $remoteValues['CAN_delete'] = $this->profile->isDeleteAllowed($entityValues, $contactId);
     }
-    if (in_array('CAN_update', $select, TRUE)) {
+    if (SelectUtil::isFieldSelected('CAN_update', $select)) {
       $remoteValues['CAN_update'] = $this->profile->isUpdateAllowed($entityValues, $contactId);
     }
 
