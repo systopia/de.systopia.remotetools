@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2023 SYSTOPIA GmbH
+ * Copyright (C) 2022 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,16 +17,15 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\EntityProfile;
+namespace Civi\RemoteTools\JsonSchema\Validation;
 
-/**
- * @todo: Implement.
- * Maybe move to other namespace.
- */
-class ValidationResult {
+use Civi\RemoteTools\JsonSchema\JsonSchema;
 
-  public function isValid(): bool {
-    return TRUE;
-  }
+interface ValidatorInterface {
+
+  /**
+   * @phpstan-param array<string, mixed> $data JSON serializable.
+   */
+  public function validate(JsonSchema $jsonSchema, array $data, int $maxErrors = 1): ValidationResult;
 
 }

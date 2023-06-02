@@ -19,24 +19,59 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\ActionHandler;
 
-use Civi\RemoteTools\EntityProfile\FormSpec;
-use Civi\RemoteTools\EntityProfile\ValidationResult;
+use Civi\RemoteTools\Api4\Api4Interface;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
+use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
+use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\Validation\ValidationError;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
+use Civi\RemoteTools\JsonForms\FormSpec\UiSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\Validation\ValidatorInterface as JsonSchemaValidatorInterface;
 
 final class JsonFormsRemoteActionsHandler extends AbstractProfileEntityActionsHandler {
 
-  protected function convertToForm(FormSpec $formSpec): array {
-    // TODO: Implement convertToForm() method.
-    return [];
+  private JsonSchemaFactoryInterface $jsonSchemaFactory;
+
+  private UiSchemaFactoryInterface $uiSchemaFactory;
+
+  private JsonSchemaValidatorInterface $validator;
+
+  public function __construct(
+    Api4Interface $api4,
+    ProfileEntityLoaderInterface $entityLoader,
+    RemoteEntityProfileInterface $profile,
+    JsonSchemaFactoryInterface $jsonSchemaFactory,
+    UiSchemaFactoryInterface $uiSchemaFactory,
+    JsonSchemaValidatorInterface $validator
+  ) {
+    parent::__construct($api4, $entityLoader, $profile);
+    $this->jsonSchemaFactory = $jsonSchemaFactory;
+    $this->uiSchemaFactory = $uiSchemaFactory;
+    $this->validator = $validator;
   }
 
-  protected function convertToFormErrors(ValidationResult $validationResult): array {
-    // TODO: Implement convertToFormErrors() method.
-    return [];
+  protected function convertToGetFormResult(FormSpec $formSpec): array {
+    return [
+      'jsonSchema' => $this->jsonSchemaFactory->createJsonSchema($formSpec),
+      'uiSchema' => $this->uiSchemaFactory->createUiSchema($formSpec),
+    ];
   }
 
   protected function validateFormData(FormSpec $formSpec, array $formData): ValidationResult {
-    // TODO: Implement validateFormData() method.
-    return new ValidationResult();
+    $jsonSchema = $this->jsonSchemaFactory->createJsonSchema($formSpec);
+    $result = ValidationResult::new();
+    $leafErrorMessages = $this->validator->validate($jsonSchema, $formData, 20)->getLeafErrorMessages();
+
+    foreach ($leafErrorMessages as $field => $messages) {
+      $errors = array_map(
+        fn (string $message) => ValidationError::new(ltrim($field, '/'), $message),
+        $messages
+      );
+      $result->addErrors(...$errors);
+    }
+
+    return $result;
   }
 
 }

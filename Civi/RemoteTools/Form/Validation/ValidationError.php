@@ -17,12 +17,32 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\EntityProfile;
+namespace Civi\RemoteTools\Form\Validation;
 
 /**
- * @todo: Define and implement.
- * Maybe move to other namespace.
+ * @codeCoverageIgnore
  */
-class FormSpec {
+final class ValidationError {
+
+  public string $field;
+
+  public string $message;
+
+  /**
+   * @param string $field
+   *   Empty string, if the error is not related to a specific field.
+   */
+  public static function new(string $field, string $message): self {
+    return new self($field, $message);
+  }
+
+  /**
+   * @param string $field
+   *   Empty string, if the error is not related to a specific field.
+   */
+  public function __construct(string $field, string $message) {
+    $this->field = $field;
+    $this->message = $message;
+  }
 
 }

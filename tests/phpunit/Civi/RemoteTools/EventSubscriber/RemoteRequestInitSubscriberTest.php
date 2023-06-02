@@ -55,7 +55,10 @@ final class RemoteRequestInitSubscriberTest extends TestCase {
     parent::setUp();
 
     $this->eventMock = $this->createMock(AuthorizeEvent::class);
-    $this->requestMock = $this->createPartialMock(AbstractRemoteAction::class, []);
+    $this->requestMock = $this->createPartialMock(AbstractRemoteAction::class, [
+      // Required because otherwise option callbacks would be called that (might) require a complete Civi env.
+      'getParamInfo',
+    ]);
     $this->eventMock->method('getApiRequest')->willReturn($this->requestMock);
 
     $this->remoteContactIdResolverMock = $this->createMock(RemoteContactIdResolverInterface::class);

@@ -35,7 +35,11 @@ use Civi\RemoteTools\Contact\RemoteContactIdResolverProvider;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProviderInterface;
 use Civi\RemoteTools\DependencyInjection\Compiler\ActionHandlerPass;
 use Civi\RemoteTools\DependencyInjection\Compiler\RemoteEntityProfilePass;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoader;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EventSubscriber\RemoteRequestInitSubscriber;
+use Civi\RemoteTools\Helper\SelectFactory;
+use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\RequestContext\RequestContext;
 use Civi\RemoteTools\RequestContext\RequestContextInterface;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
@@ -63,3 +67,6 @@ $container->autowire(RemoteContactIdResolverProviderInterface::class, RemoteCont
 
 $container->autowire(RemoteRequestInitSubscriber::class)
   ->addTag('kernel.event_subscriber');
+
+$container->autowire(SelectFactoryInterface::class, SelectFactory::class);
+$container->autowire(ProfileEntityLoaderInterface::class, ProfileEntityLoader::class);
