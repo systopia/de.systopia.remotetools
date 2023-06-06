@@ -149,7 +149,7 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData, ?int $contactId): ValidationResult {
+  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
@@ -163,14 +163,14 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array {
+  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array {
+  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
   }
 

@@ -172,8 +172,9 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $formData
+   * @phpstan-param array<int|string, mixed> $arguments
    */
-  public function validateCreateData(array $formData, ?int $contactId): ValidationResult;
+  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult;
 
   /**
    * @phpstan-param array<string, mixed> $formData
@@ -183,17 +184,19 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $formData
+   * @phpstan-param array<int|string, mixed> $arguments
    *
    * @phpstan-return array<string, mixed>
    */
-  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array;
+  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array;
 
   /**
    * @phpstan-param array<string, mixed> $formData
+   * @phpstan-param array<string, mixed> $currentEntityValues
    *
    * @phpstan-return array<string, mixed>
    */
-  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array;
+  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array;
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
