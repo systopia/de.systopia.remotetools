@@ -144,8 +144,8 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData, ?int $contactId): ValidationResult {
-    return $this->profile->validateCreateData($formData, $contactId);
+  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult {
+    return $this->profile->validateCreateData($formData, $arguments, $contactId);
   }
 
   /**
@@ -158,15 +158,15 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function convertCreateDataToEntityValues(array $formData, ?int $contactId): array {
-    return $this->profile->convertCreateDataToEntityValues($formData, $contactId);
+  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array {
+    return $this->profile->convertCreateDataToEntityValues($formData, $arguments, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function convertUpdateDataToEntityValues(array $formData, ?int $contactId): array {
-    return $this->profile->convertUpdateDataToEntityValues($formData, $contactId);
+  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array {
+    return $this->profile->convertUpdateDataToEntityValues($formData, $currentEntityValues, $contactId);
   }
 
   /**

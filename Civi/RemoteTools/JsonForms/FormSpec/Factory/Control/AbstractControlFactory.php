@@ -27,7 +27,7 @@ abstract class AbstractControlFactory extends AbstractConcreteElementUiSchemaFac
   }
 
   protected function getScope(AbstractFormField $field): string {
-    return '/#properties/' . $field->getName();
+    return '#/properties/' . $field->getName();
   }
 
   abstract protected function createFieldSchema(

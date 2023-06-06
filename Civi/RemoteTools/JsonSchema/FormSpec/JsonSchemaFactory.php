@@ -46,7 +46,10 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
       }
     }
 
-    return new JsonSchemaObject($properties, ['required' => $required]);
+    return new JsonSchemaObject($properties, [
+      'required' => $required,
+      'additionalProperties' => FALSE,
+    ]);
   }
 
 }
