@@ -29,7 +29,7 @@ final class MultiLineTextControlFactory extends AbstractControlFactory {
   }
 
   protected function supportsField(AbstractFormField $field): bool {
-    return 'multilineText' === $field->getFieldType();
+    return $field instanceof MultilineTextField;
   }
 
 }

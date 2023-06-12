@@ -39,7 +39,13 @@ $container->register(OpisValidator::class)->setFactory([OpisValidatorFactory::cl
 $container->autowire(ValidatorInterface::class, Validator::class);
 
 $container->autowire(JsonSchemaFactoryInterface::class, JsonSchemaFactory::class)
-  ->addArgument(new TaggedIteratorArgument(FieldJsonSchemaFactoryInterface::SERVICE_TAG));
+  ->addArgument(new TaggedIteratorArgument(
+    FieldJsonSchemaFactoryInterface::SERVICE_TAG,
+    NULL,
+    NULL,
+    FALSE,
+    'getPriority'
+  ));
 
 ServiceRegistrator::autowireAllImplementing(
   $container,
@@ -51,7 +57,13 @@ ServiceRegistrator::autowireAllImplementing(
 
 $container->autowire(UiSchemaFactoryInterface::class, UiSchemaFactory::class);
 $container->autowire(ElementUiSchemaFactoryInterface::class, ElementUiSchemaFactory::class)
-  ->addArgument(new TaggedIteratorArgument(ConcreteElementUiSchemaFactoryInterface::SERVICE_TAG));
+  ->addArgument(new TaggedIteratorArgument(
+    ConcreteElementUiSchemaFactoryInterface::SERVICE_TAG,
+    NULL,
+    NULL,
+    FALSE,
+    'getPriority'
+  ));
 
 ServiceRegistrator::autowireAllImplementing(
   $container,
