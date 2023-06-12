@@ -244,6 +244,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     }
 
     $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
+    Assert::notNull($entityValues);
     $newEntityValues = $this->profile->convertUpdateDataToEntityValues(
       $action->getData(),
       $entityValues,
@@ -281,6 +282,8 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   }
 
   /**
+   * @phpstan-param array<string, mixed> $values
+   *
    * @phpstan-return array<string, array<string, mixed>>
    *
    * @throws \CRM_Core_Exception
@@ -368,6 +371,11 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     return $this->profile->validateUpdateData($formData, $entityValues, $contactId);
   }
 
+  /**
+   * @phpstan-param array<string, mixed> $newValues
+   *
+   * @phpstan-return array<int|string, mixed> JSON serializable.
+   */
   protected function convertToSubmitFormResult(array $newValues, ?int $getResolvedContactId): array {
     return ['message' => E::ts('Saved successfully')];
   }
