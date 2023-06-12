@@ -17,9 +17,6 @@ final class OptionFieldFactory extends AbstractFieldJsonSchemaFactory {
       'type' => ['null', 'boolean', 'number', 'string'],
       'enum' => array_unique(array_values($field->getOptions())),
     ];
-    if ($field->isNullable() && !in_array(NULL, $keywords['enum'], TRUE)) {
-      $keywords['enum'][] = NULL;
-    }
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
     }
