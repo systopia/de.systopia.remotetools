@@ -177,4 +177,11 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
     return $this->profile->convertToFormData($entityValues, $contactId);
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
+    return $this->profile->getSaveSuccessMessage($newValues, $action, $contactId);
+  }
+
 }

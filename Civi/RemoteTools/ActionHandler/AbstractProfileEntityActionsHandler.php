@@ -233,7 +233,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
     )->single();
 
-    return $this->convertToSubmitFormResult($createdValues, $action->getResolvedContactId());
+    return $this->convertToSubmitFormResult($createdValues, 'create', $action->getResolvedContactId());
   }
 
   /**
@@ -260,7 +260,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
     )->single();
 
-    return $this->convertToSubmitFormResult($updatedValues, $action->getResolvedContactId());
+    return $this->convertToSubmitFormResult($updatedValues, 'update', $action->getResolvedContactId());
   }
 
   /**
@@ -378,11 +378,12 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
   /**
    * @phpstan-param array<string, mixed> $newValues
+   * @phpstan-param 'create'|'update' $action
    *
    * @phpstan-return array<int|string, mixed> JSON serializable.
    */
-  protected function convertToSubmitFormResult(array $newValues, ?int $getResolvedContactId): array {
-    return ['message' => E::ts('Saved successfully')];
+  protected function convertToSubmitFormResult(array $newValues, string $action, ?int $contactId): array {
+    return ['message' => $this->profile->getSaveSuccessMessage($newValues, $action, $contactId)];
   }
 
 }

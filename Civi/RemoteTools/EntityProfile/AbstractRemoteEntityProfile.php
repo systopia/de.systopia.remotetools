@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\EntityProfile;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
+use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * Abstract implementation that assumes that internal and external fields are
@@ -136,6 +137,13 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
    */
   public function convertToFormData(array $entityValues, ?int $contactId): array {
     return $entityValues;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
+    return E::ts('Saved successfully');
   }
 
 }
