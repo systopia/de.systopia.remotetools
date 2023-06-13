@@ -24,7 +24,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 final class JsonSchemaUtil {
 
   /**
-   * @phpstan-param array<int|string, scalar> $titles
+   * @phpstan-param array<int|string, string> $titles
    *   Allowed values mapped to titles.
    *
    * @phpstan-return array<JsonSchema> To be used as value of "oneOf" keyword.
