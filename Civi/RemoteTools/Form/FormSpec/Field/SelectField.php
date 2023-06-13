@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 /**
- * @extends AbstractOptionField<scalar>
+ * @extends AbstractOptionField<int|string>
  *
  * @codeCoverageIgnore
  */
