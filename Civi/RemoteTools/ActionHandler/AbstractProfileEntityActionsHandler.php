@@ -90,7 +90,8 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     $result = [];
     /** @phpstan-var array<string, mixed>&array{id: int} $entityValues */
     foreach ($getResult as $entityValues) {
-      if ($this->profile->isDeleteAllowed($entityValues, $action->getResolvedContactId())) {
+      $grantResult = $this->profile->isDeleteGranted($entityValues, $action->getResolvedContactId());
+      if ($grantResult->granted) {
         $result = array_merge(
           $result,
           $this->api4->deleteEntity(
@@ -146,8 +147,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   public function getCreateForm(RemoteGetCreateFormAction $action): array {
-    if (!$this->profile->isCreateAllowed($action->getArguments(), $action->getResolvedContactId())) {
-      throw new UnauthorizedException(E::ts('Permission to create entity is missing'));
+    $grantResult = $this->profile->isCreateGranted($action->getArguments(), $action->getResolvedContactId());
+    if (!$grantResult->granted) {
+      throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to create entity is missing'));
     }
 
     return $this->convertToGetFormResult($this->profile->getCreateFormSpec(
@@ -164,8 +166,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function getUpdateForm(RemoteGetUpdateFormAction $action): array {
     $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
-    if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $action->getResolvedContactId())) {
-      throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
+    $grantResult = $this->profile->isUpdateGranted($entityValues, $action->getResolvedContactId());
+    if (NULL === $entityValues || !$grantResult->granted) {
+      throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to update entity is missing'));
     }
 
     return $this->convertToGetFormResult($this->profile->getUpdateFormSpec(
@@ -322,8 +325,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   private function validateForCreate(array $formData, array $arguments, ?int $contactId): ValidationResult {
-    if (!$this->profile->isCreateAllowed($arguments, $contactId)) {
-      throw new UnauthorizedException(E::ts('Permission to create entity is missing'));
+    $grantResult = $this->profile->isCreateGranted($arguments, $contactId);
+    if (!$grantResult->granted) {
+      throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to create entity is missing'));
     }
 
     $formSpec = $this->profile->getCreateFormSpec(
@@ -353,8 +357,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   private function validateForUpdate(int $id, array $formData, ?int $contactId): ValidationResult {
     $entityValues = $this->getEntityById($id, 'update', $contactId);
-    if (NULL === $entityValues || !$this->profile->isUpdateAllowed($entityValues, $contactId)) {
-      throw new UnauthorizedException(E::ts('Permission to update entity is missing'));
+    $grantResult = $this->profile->isUpdateGranted($entityValues, $contactId);
+    if (NULL === $entityValues || !$grantResult->granted) {
+      throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to update entity is missing'));
     }
 
     $formSpec = $this->profile->getUpdateFormSpec(
