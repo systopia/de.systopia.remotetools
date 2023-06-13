@@ -10,6 +10,7 @@ use Civi\RemoteTools\Api4\Action\RemoteGetCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetFieldsAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
+use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
@@ -105,9 +106,9 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $arguments = ['key' => 'value'];
     $actionMock->setArguments($arguments);
 
-    $this->profileMock->method('isCreateAllowed')
+    $this->profileMock->method('isCreateGranted')
       ->with($arguments, self::RESOLVED_CONTACT_ID)
-      ->willReturn(TRUE);
+      ->willReturn(GrantResult::newPermitted());
     $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
 
     $entityFields = [
@@ -117,6 +118,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->api4Mock->method('execute')
       ->with('Entity', 'getFields', [
         'loadOptions' => TRUE,
+        'values' => [],
         'checkPermissions' => FALSE,
       ])
       ->willReturn(new Result(array_values($entityFields)));
@@ -138,11 +140,12 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $arguments = ['key' => 'value'];
     $actionMock->setArguments($arguments);
 
-    $this->profileMock->method('isCreateAllowed')
+    $this->profileMock->method('isCreateGranted')
       ->with($arguments, self::RESOLVED_CONTACT_ID)
-      ->willReturn(FALSE);
+      ->willReturn(GrantResult::newDenied('Denied'));
 
     $this->expectException(UnauthorizedException::class);
+    $this->expectExceptionMessage('Denied');
 
     static::assertSame(['form' => 'Test'], $this->handler->getCreateForm($actionMock));
   }
@@ -160,9 +163,9 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('getSelectFieldNames')
       ->with(['*'], 'update', [], self::RESOLVED_CONTACT_ID)
       ->willReturn(['foo']);
-    $this->profileMock->method('isUpdateAllowed')
+    $this->profileMock->method('isUpdateGranted')
       ->with($entityValues, self::RESOLVED_CONTACT_ID)
-      ->willReturn(TRUE);
+      ->willReturn(GrantResult::newPermitted());
     $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(FALSE);
 
     $this->api4Mock->method('execute')
@@ -179,6 +182,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
         [
           'Entity', 'getFields', [
             'loadOptions' => FALSE,
+            'values' => ['id' => 12],
             'checkPermissions' => FALSE,
           ],
         ],
@@ -209,9 +213,9 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('getSelectFieldNames')
       ->with(['*'], 'update', [], self::RESOLVED_CONTACT_ID)
       ->willReturn(['foo']);
-    $this->profileMock->method('isUpdateAllowed')
+    $this->profileMock->method('isUpdateGranted')
       ->with($entityValues, self::RESOLVED_CONTACT_ID)
-      ->willReturn(FALSE);
+      ->willReturn(GrantResult::newDenied('Denied'));
 
     $this->api4Mock->method('execute')
       ->with('Entity', 'get', [
@@ -224,6 +228,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       );
 
     $this->expectException(UnauthorizedException::class);
+    $this->expectExceptionMessage('Denied');
     $this->handler->getUpdateForm($actionMock);
   }
 

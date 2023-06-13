@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 
@@ -158,17 +159,20 @@ interface RemoteEntityProfileInterface {
   /**
    * @phpstan-param array<int|string, mixed> $arguments
    */
-  public function isCreateAllowed(array $arguments, ?int $contactId): bool;
+  public function isCreateGranted(array $arguments, ?int $contactId): GrantResult;
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
    */
-  public function isDeleteAllowed(array $entityValues, ?int $contactId): bool;
+  public function isDeleteGranted(array $entityValues, ?int $contactId): GrantResult;
 
   /**
-   * @phpstan-param array<string, mixed> $entityValues
+   * @phpstan-param array<string, mixed>|null $entityValues
+   *   If NULL, entity to update was not found. The update won't be granted in
+   *   that case, anyway, but the implementation might want to override the
+   *   message in that case.
    */
-  public function isUpdateAllowed(array $entityValues, ?int $contactId): bool;
+  public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult;
 
   /**
    * @phpstan-param array<string, mixed> $formData
