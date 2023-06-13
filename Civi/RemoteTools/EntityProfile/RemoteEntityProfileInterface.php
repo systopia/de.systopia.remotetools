@@ -209,4 +209,14 @@ interface RemoteEntityProfileInterface {
    */
   public function convertToFormData(array $entityValues, ?int $contactId): array;
 
+  /**
+   * @phpstan-param array<string, mixed> $newValues
+   * @phpstan-param 'create'|'update' $action
+   *
+   * @return string
+   *   The message that is shown when an entity was successfully inserted or
+   *   updated.
+   */
+  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string;
+
 }

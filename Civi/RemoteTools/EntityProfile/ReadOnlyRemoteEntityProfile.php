@@ -182,4 +182,11 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
     throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
+    throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
+  }
+
 }
