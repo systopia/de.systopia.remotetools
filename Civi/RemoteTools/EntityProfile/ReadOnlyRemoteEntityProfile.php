@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 
@@ -128,22 +129,22 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function isCreateAllowed(array $arguments, ?int $contactId): bool {
-    return FALSE;
+  public function isCreateGranted(array $arguments, ?int $contactId): GrantResult {
+    return GrantResult::newDenied();
   }
 
   /**
    * @inheritDoc
    */
-  public function isDeleteAllowed(array $entityValues, ?int $contactId): bool {
-    return FALSE;
+  public function isDeleteGranted(array $entityValues, ?int $contactId): GrantResult {
+    return GrantResult::newDenied();
   }
 
   /**
    * @inheritDoc
    */
-  public function isUpdateAllowed(array $entityValues, ?int $contactId): bool {
-    return FALSE;
+  public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult {
+    return GrantResult::newDenied();
   }
 
   /**
