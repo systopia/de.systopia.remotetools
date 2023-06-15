@@ -14,7 +14,7 @@ class SelectField extends AbstractOptionField {
     return 'scalar';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'select';
   }
 

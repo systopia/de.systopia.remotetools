@@ -16,7 +16,7 @@ final class DateTimeField extends AbstractFormField {
     return 'string';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'dateTime';
   }
 

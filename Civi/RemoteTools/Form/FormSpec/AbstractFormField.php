@@ -8,13 +8,7 @@ namespace Civi\RemoteTools\Form\FormSpec;
  *
  * @codeCoverageIgnore
  */
-abstract class AbstractFormField implements FormElementInterface {
-
-  private string $name;
-
-  private string $label;
-
-  private string $description = '';
+abstract class AbstractFormField extends AbstractFormInput {
 
   private bool $required = FALSE;
 
@@ -28,52 +22,8 @@ abstract class AbstractFormField implements FormElementInterface {
    */
   private $defaultValue = NULL;
 
-  public function __construct(string $name, string $label) {
-    $this->name = $name;
-    $this->label = $label;
-  }
-
   public function getType(): string {
     return 'field';
-  }
-
-  public function getName(): string {
-    return $this->name;
-  }
-
-  /**
-   * @return $this
-   */
-  public function setName(string $name): self {
-    $this->name = $name;
-
-    return $this;
-  }
-
-  public function getLabel(): string {
-    return $this->label;
-  }
-
-  /**
-   * @return $this
-   */
-  public function setLabel(string $label): self {
-    $this->label = $label;
-
-    return $this;
-  }
-
-  public function getDescription(): string {
-    return $this->description;
-  }
-
-  /**
-   * @return $this
-   */
-  public function setDescription(string $description): self {
-    $this->description = $description;
-
-    return $this;
   }
 
   public function isRequired(): bool {
@@ -148,9 +98,5 @@ abstract class AbstractFormField implements FormElementInterface {
 
     return $this;
   }
-
-  abstract public function getDataType(): string;
-
-  abstract public function getFieldType(): string;
 
 }

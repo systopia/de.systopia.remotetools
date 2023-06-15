@@ -17,14 +17,35 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
+namespace Civi\RemoteTools\Form\FormSpec\Markup;
 
-use Civi\RemoteTools\JsonSchema\FormSpec\FieldJsonSchemaFactoryInterface;
+use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 
-abstract class AbstractFieldJsonSchemaFactory implements FieldJsonSchemaFactoryInterface {
+final class HtmlElement implements FormElementInterface {
 
-  public static function getPriority(): int {
-    return 0;
+  private string $content;
+
+  public function __construct(string $content) {
+    $this->content = $content;
+  }
+
+  public function getType(): string {
+    return 'html';
+  }
+
+  public function getContent(): string {
+    return $this->content;
+  }
+
+  /**
+   * @param string $content
+   *
+   * @return $this
+   */
+  public function setContent(string $content): self {
+    $this->content = $content;
+
+    return $this;
   }
 
 }

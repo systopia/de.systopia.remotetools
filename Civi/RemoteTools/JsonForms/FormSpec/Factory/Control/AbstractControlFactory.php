@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory\Control;
 
-use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\AbstractFormInput;
 use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\Factory\AbstractConcreteElementUiSchemaFactory;
@@ -12,29 +12,29 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractControlFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  public function createSchema(
+  final public function createSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
-    Assert::isInstanceOf($element, AbstractFormField::class);
-    /** @var \Civi\RemoteTools\Form\FormSpec\AbstractFormField $element */
+    Assert::isInstanceOf($element, AbstractFormInput::class);
+    /** @var \Civi\RemoteTools\Form\FormSpec\AbstractFormInput $element */
 
-    return $this->createFieldSchema($element, $factory);
+    return $this->createInputSchema($element, $factory);
   }
 
-  public function supportsElement(FormElementInterface $element): bool {
-    return $element instanceof AbstractFormField && $this->supportsField($element);
+  final public function supportsElement(FormElementInterface $element): bool {
+    return $element instanceof AbstractFormInput && $this->supportsInput($element);
   }
 
-  protected function getScope(AbstractFormField $field): string {
+  final protected function getScope(AbstractFormInput $field): string {
     return '#/properties/' . $field->getName();
   }
 
-  abstract protected function createFieldSchema(
-    AbstractFormField $field,
+  abstract protected function createInputSchema(
+    AbstractFormInput $input,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement;
 
-  abstract protected function supportsField(AbstractFormField $field): bool;
+  abstract protected function supportsInput(AbstractFormInput $input): bool;
 
 }
