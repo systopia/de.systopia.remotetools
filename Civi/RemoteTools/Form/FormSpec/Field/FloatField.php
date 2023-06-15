@@ -16,7 +16,7 @@ class FloatField extends AbstractNumberField {
     return 'number';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'float';
   }
 

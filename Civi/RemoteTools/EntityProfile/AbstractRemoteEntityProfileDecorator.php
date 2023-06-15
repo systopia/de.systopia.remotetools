@@ -145,15 +145,25 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult {
-    return $this->profile->validateCreateData($formData, $arguments, $contactId);
+  public function validateCreateData(
+    array $formData,
+    array $arguments,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult {
+    return $this->profile->validateCreateData($formData, $arguments, $entityFields, $contactId);
   }
 
   /**
    * @inheritDoc
    */
-  public function validateUpdateData(array $formData, array $currentEntityValues, ?int $contactId): ValidationResult {
-    return $this->profile->validateUpdateData($formData, $currentEntityValues, $contactId);
+  public function validateUpdateData(
+    array $formData,
+    array $currentEntityValues,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult {
+    return $this->profile->validateUpdateData($formData, $currentEntityValues, $entityFields, $contactId);
   }
 
   /**
@@ -180,8 +190,14 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
-    return $this->profile->getSaveSuccessMessage($newValues, $action, $contactId);
+  public function getSaveSuccessMessage(
+    array $newValues,
+    array $oldValues,
+    string $action,
+    array $formData,
+    ?int $contactId
+  ): string {
+    return $this->profile->getSaveSuccessMessage($newValues, $oldValues, $action, $formData, $contactId);
   }
 
 }

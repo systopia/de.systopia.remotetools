@@ -103,7 +103,12 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult {
+  public function validateCreateData(
+    array $formData,
+    array $arguments,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult {
     return new ValidationResult();
   }
 
@@ -111,8 +116,9 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
    * @inheritDoc
    */
   public function validateUpdateData(
-          array $formData,
+    array $formData,
     array $currentEntityValues,
+    array $entityFields,
     ?int $contactId
   ): ValidationResult {
     return new ValidationResult();
@@ -142,7 +148,13 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
+  public function getSaveSuccessMessage(
+    array $newValues,
+    array $oldValues,
+    string $action,
+    array $formData,
+    ?int $contactId
+  ): string {
     return E::ts('Saved successfully');
   }
 

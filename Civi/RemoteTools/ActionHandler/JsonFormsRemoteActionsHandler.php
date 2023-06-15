@@ -29,7 +29,7 @@ use Civi\RemoteTools\JsonForms\FormSpec\UiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\Validation\ValidatorInterface as JsonSchemaValidatorInterface;
 
-final class JsonFormsRemoteActionsHandler extends AbstractProfileEntityActionsHandler {
+class JsonFormsRemoteActionsHandler extends AbstractProfileEntityActionsHandler {
 
   private JsonSchemaFactoryInterface $jsonSchemaFactory;
 

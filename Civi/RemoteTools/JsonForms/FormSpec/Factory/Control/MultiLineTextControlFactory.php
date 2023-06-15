@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory\Control;
 
-use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\AbstractFormInput;
 use Civi\RemoteTools\Form\FormSpec\Field\MultilineTextField;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\JsonFormsControl;
@@ -12,24 +12,24 @@ use Webmozart\Assert\Assert;
 
 final class MultiLineTextControlFactory extends AbstractControlFactory {
 
-  protected function createFieldSchema(
-    AbstractFormField $field,
+  protected function createInputSchema(
+    AbstractFormInput $input,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
-    Assert::isInstanceOf($field, MultilineTextField::class);
+    Assert::isInstanceOf($input, MultilineTextField::class);
 
     return new JsonFormsControl(
-      $this->getScope($field),
-      $field->getLabel(),
-      $field->getDescription(),
+      $this->getScope($input),
+      $input->getLabel(),
+      $input->getDescription(),
       NULL,
       NULL,
       ['multi' => TRUE],
     );
   }
 
-  protected function supportsField(AbstractFormField $field): bool {
-    return $field instanceof MultilineTextField;
+  protected function supportsInput(AbstractFormInput $input): bool {
+    return $input instanceof MultilineTextField;
   }
 
 }

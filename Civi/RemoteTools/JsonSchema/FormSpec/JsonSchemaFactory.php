@@ -6,6 +6,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaObject;
+use Civi\RemoteTools\JsonSchema\JsonSchemaString;
 
 final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
 
@@ -39,15 +40,28 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
       if (!isset($properties[$field->getName()])) {
         throw new \InvalidArgumentException(sprintf(
           'Unsupported field type "%s" (field: %s, class: %s)',
-          $field->getFieldType(),
+          $field->getInputType(),
           $field->getName(),
           get_class($field),
         ));
       }
     }
 
+    $oneOf = [];
+    foreach ($formSpec->getSubmitButtons() as $name => $buttons) {
+      // Require one of the buttons to be pressed.
+      $oneOf[] = new JsonSchema(['required' => [$name]]);
+      $values = [];
+      foreach ($buttons as $button) {
+        $values[] = $button->getValue();
+      }
+
+      $properties[$name] = new JsonSchemaString(['enum' => $values]);
+    }
+
     return new JsonSchemaObject($properties, [
       'required' => $required,
+      'oneOf' => $oneOf,
       'additionalProperties' => FALSE,
     ]);
   }

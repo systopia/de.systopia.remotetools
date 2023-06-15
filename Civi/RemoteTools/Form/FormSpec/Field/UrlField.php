@@ -16,7 +16,7 @@ final class UrlField extends AbstractFormField {
     return 'string';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'url';
   }
 

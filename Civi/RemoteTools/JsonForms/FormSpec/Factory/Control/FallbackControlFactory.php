@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory\Control;
 
-use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\AbstractFormInput;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\JsonFormsControl;
 use Civi\RemoteTools\JsonForms\JsonFormsElement;
@@ -14,14 +14,14 @@ final class FallbackControlFactory extends AbstractControlFactory {
     return -100;
   }
 
-  public function createFieldSchema(
-    AbstractFormField $field,
+  public function createInputSchema(
+    AbstractFormInput $input,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
-    return new JsonFormsControl($this->getScope($field), $field->getLabel(), $field->getDescription());
+    return new JsonFormsControl($this->getScope($input), $input->getLabel(), $input->getDescription());
   }
 
-  protected function supportsField(AbstractFormField $field): bool {
+  protected function supportsInput(AbstractFormInput $input): bool {
     return TRUE;
   }
 
