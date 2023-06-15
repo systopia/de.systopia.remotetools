@@ -16,7 +16,7 @@ final class MoneyField extends FloatField {
     $this->currency = $currency;
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'money';
   }
 

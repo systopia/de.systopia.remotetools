@@ -233,7 +233,13 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
     )->single();
 
-    return $this->convertToSubmitFormResult($createdValues, 'create', $action->getResolvedContactId());
+    return $this->convertToSubmitFormResult(
+      $createdValues,
+      [],
+      'create',
+      $action->getData(),
+      $action->getResolvedContactId()
+    );
   }
 
   /**
@@ -259,8 +265,17 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       $newEntityValues,
       ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
     )->single();
+    // For values that are not part of $newEntityValues we use the previous
+    // ones. Fields updated by triggers might be outdated, though.
+    $updatedValues += $entityValues;
 
-    return $this->convertToSubmitFormResult($updatedValues, 'update', $action->getResolvedContactId());
+    return $this->convertToSubmitFormResult(
+      $updatedValues,
+      $entityValues,
+      'update',
+      $action->getData(),
+      $action->getResolvedContactId()
+    );
   }
 
   /**
@@ -330,11 +345,8 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to create entity is missing'));
     }
 
-    $formSpec = $this->profile->getCreateFormSpec(
-      $arguments,
-      $this->getEntityFieldsForFormSpec($contactId),
-      $contactId,
-    );
+    $entityFields = $this->getEntityFieldsForFormSpec($contactId);
+    $formSpec = $this->profile->getCreateFormSpec($arguments, $entityFields, $contactId);
     $validationResult = $this->validateFormData($formSpec, $formData);
 
     if (!$validationResult->isValid()) {
@@ -362,28 +374,38 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to update entity is missing'));
     }
 
-    $formSpec = $this->profile->getUpdateFormSpec(
-      $entityValues,
-      $this->getEntityFieldsForFormSpec($contactId, ['id' => $id]),
-      $contactId,
-    );
+    $entityFields = $this->getEntityFieldsForFormSpec($contactId, ['id' => $id]);
+    $formSpec = $this->profile->getUpdateFormSpec($entityValues, $entityFields, $contactId);
 
     $validationResult = $this->validateFormData($formSpec, $formData);
     if (!$validationResult->isValid()) {
       return $validationResult;
     }
 
-    return $this->profile->validateUpdateData($formData, $entityValues, $contactId);
+    return $this->profile->validateUpdateData($formData, $entityValues, $entityFields, $contactId);
   }
 
   /**
    * @phpstan-param array<string, mixed> $newValues
+   * @phpstan-param array<string, mixed> $oldValues
+   *   Empty array on create.
    * @phpstan-param 'create'|'update' $action
+   * @phpstan-param array<string, mixed> $formData
    *
    * @phpstan-return array<int|string, mixed> JSON serializable.
    */
-  protected function convertToSubmitFormResult(array $newValues, string $action, ?int $contactId): array {
-    return ['message' => $this->profile->getSaveSuccessMessage($newValues, $action, $contactId)];
+  protected function convertToSubmitFormResult(
+    array $newValues,
+    array $oldValues,
+    string $action,
+    array $formData,
+    ?int $contactId
+  ): array {
+    $message = $this->profile->getSaveSuccessMessage($newValues, $oldValues, $action, $formData, $contactId);
+
+    return [
+      'message' => $message,
+    ];
   }
 
 }

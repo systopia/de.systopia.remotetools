@@ -18,7 +18,7 @@ final class IntegerField extends AbstractNumberField {
     return 'integer';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'integer';
   }
 

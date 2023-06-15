@@ -8,7 +8,7 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
  */
 final class TextField extends AbstractTextField {
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'text';
   }
 

@@ -150,14 +150,24 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult {
+  public function validateCreateData(
+    array $formData,
+    array $arguments,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult {
     throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
   }
 
   /**
    * @inheritDoc
    */
-  public function validateUpdateData(array $formData, array $currentEntityValues, ?int $contactId): ValidationResult {
+  public function validateUpdateData(
+    array $formData,
+    array $currentEntityValues,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
   }
 
@@ -185,7 +195,13 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string {
+  public function getSaveSuccessMessage(
+    array $newValues,
+    array $oldValues,
+    string $action,
+    array $formData,
+    ?int $contactId
+  ): string {
     throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
   }
 

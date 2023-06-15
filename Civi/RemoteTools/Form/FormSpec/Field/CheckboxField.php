@@ -16,7 +16,7 @@ final class CheckboxField extends AbstractFormField {
     return 'boolean';
   }
 
-  public function getFieldType(): string {
+  public function getInputType(): string {
     return 'checkbox';
   }
 

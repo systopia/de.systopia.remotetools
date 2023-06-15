@@ -53,10 +53,16 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
         );
         $profileIds[] = $profileId;
 
-        $handlerClass = $attributes['handler_class'] ?? self::DEFAULT_HANDLER_CLASS;
+        $handlerClass = $this->getAttributeOrConst(
+          $container,
+          $id,
+          'handler_class',
+          $attributes,
+          self::DEFAULT_HANDLER_CLASS
+        );
         $container->autowire(self::buildHandlerServiceId($remoteEntityName, $profileName), $handlerClass)
           ->setArgument('$profile', new Reference($id))
-          ->addTag(JsonFormsRemoteActionsHandler::SERVICE_TAG, [
+          ->addTag(ActionHandlerInterface::SERVICE_TAG, [
             'entity_name' => $remoteEntityName,
             'profile_name' => $profileName,
             'priority' => -1000,
@@ -73,7 +79,8 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
     ContainerBuilder $container,
     string $id,
     string $key,
-    array $attributes
+    array $attributes,
+    string $default = NULL
   ): string {
     if (isset($attributes[$key])) {
       Assert::string($attributes[$key], sprintf(
@@ -91,6 +98,10 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
     if (defined($constantName)) {
       // @phpstan-ignore-next-line
       return constant($constantName);
+    }
+
+    if (NULL !== $default) {
+      return $default;
     }
 
     throw new \RuntimeException(sprintf(

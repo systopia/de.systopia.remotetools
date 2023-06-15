@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec;
 
+use Civi\RemoteTools\Form\FormSpec\Button\SubmitButton;
+
 abstract class AbstractFormElementContainer {
 
   private string $title;
@@ -92,6 +94,31 @@ abstract class AbstractFormElementContainer {
     }
 
     return $fields;
+  }
+
+  /**
+   * @phpstan-return array<string, array<SubmitButton>>
+   *   Mapping of button name to buttons with that name.
+   */
+  public function getSubmitButtons(): array {
+    $buttons = [];
+
+    foreach ($this->elements as $element) {
+      if ($element instanceof SubmitButton) {
+        if (isset($buttons[$element->getName()])) {
+          $buttons[$element->getName()][] = $element;
+        }
+        else {
+          $buttons[$element->getName()] = [$element];
+        }
+      }
+      elseif ($element instanceof FormElementContainer) {
+        $containerButtons = $element->getSubmitButtons();
+        $buttons = array_merge_recursive($buttons, $containerButtons);
+      }
+    }
+
+    return $buttons;
   }
 
 }

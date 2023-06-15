@@ -35,6 +35,10 @@ use Civi\RemoteTools\Form\Validation\ValidationResult;
  * Instead of the constants mentioned above the values can be provided as tag
  * attributes with lower cased constant name as key.
  *
+ * Additionally a custom handler class might be specified with the constant
+ * HANDLER_CLASS (or lower cased as tag attribute). The constructor must have an
+ * argument named $profile. All other arguments have to be autowireable.
+ *
  * Please note: With special where conditions it is possible to find out values
  * of not exposed fields. (Via implicit joins even of referenced entities.)
  *
@@ -177,14 +181,28 @@ interface RemoteEntityProfileInterface {
   /**
    * @phpstan-param array<string, mixed> $formData
    * @phpstan-param array<int|string, mixed> $arguments
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *   Entity fields indexed by name.
    */
-  public function validateCreateData(array $formData, array $arguments, ?int $contactId): ValidationResult;
+  public function validateCreateData(
+    array $formData,
+    array $arguments,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult;
 
   /**
    * @phpstan-param array<string, mixed> $formData
    * @phpstan-param array<string, mixed> $currentEntityValues
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *   Entity fields indexed by name.
    */
-  public function validateUpdateData(array $formData, array $currentEntityValues, ?int $contactId): ValidationResult;
+  public function validateUpdateData(
+    array $formData,
+    array $currentEntityValues,
+    array $entityFields,
+    ?int $contactId
+  ): ValidationResult;
 
   /**
    * @phpstan-param array<string, mixed> $formData
@@ -211,12 +229,21 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $newValues
+   * @phpstan-param array<string, mixed> $oldValues
+   *   Empty array on create.
    * @phpstan-param 'create'|'update' $action
+   * @phpstan-param array<string, mixed> $formData
    *
    * @return string
    *   The message that is shown when an entity was successfully inserted or
    *   updated.
    */
-  public function getSaveSuccessMessage(array $newValues, string $action, ?int $contactId): string;
+  public function getSaveSuccessMessage(
+    array $newValues,
+    array $oldValues,
+    string $action,
+    array $formData,
+    ?int $contactId
+  ): string;
 
 }
