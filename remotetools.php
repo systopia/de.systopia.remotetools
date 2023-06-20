@@ -29,7 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 function remotetools_civicrm_config(&$config)
 {
-    require_once __DIR__ . '/vendor/autoload.php';
+    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+      require_once __DIR__ . '/vendor/autoload.php';
+    }
     _remotetools_civix_civicrm_config($config);
 
     // register events (with our own wrapper to avoid duplicate registrations)
