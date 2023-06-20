@@ -47,7 +47,10 @@ class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements Pro
         throw $e;
       }
 
-      if ($this->select !== ['row_count']) {
+      if ('getFields' === $this->action) {
+        $result->exchangeArray($this->fields());
+      }
+      elseif ($this->select !== ['row_count']) {
         $result[] = [
           'default_value' => NULL,
           'type' => 'Field',
@@ -64,7 +67,7 @@ class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements Pro
       }
 
       if (in_array('row_count', $this->select, TRUE)) {
-        $result->setCountMatched(1);
+        $result->setCountMatched($result->count());
       }
     }
   }
