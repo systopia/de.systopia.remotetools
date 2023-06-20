@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-
+require_once __DIR__ . '/vendor/autoload.php';
 require_once 'remotetools.civix.php';
 
 use CRM_Remotetools_ExtensionUtil as E;
