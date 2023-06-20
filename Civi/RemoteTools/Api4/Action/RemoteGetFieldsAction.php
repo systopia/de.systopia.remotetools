@@ -19,32 +19,54 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
-use Civi\Api4\Generic\BasicGetFieldsAction;
 use Civi\Api4\Generic\Result;
-use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait;
+use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
-class RemoteGetFieldsAction extends BasicGetFieldsAction implements ProfileAwareRemoteActionInterface {
+/**
+ * If no profile is set and no action handler is found an "id" field is added by
+ * default.
+ *
+ * Note: SearchKit administration fails to load if no field is returned for
+ * CiviCRM <5.62.
+ *
+ * @see https://github.com/civicrm/civicrm-core/pull/26045
+ */
+class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements ProfileAwareRemoteActionInterface {
 
-  use ActionHandlerRunTrait;
-
-  // Called by API explorer, so parameters need to be optional.
+  // Called by API explorer and SearchKit, so parameters need to be optional.
   use ProfileParameterOptionalTrait;
 
-  use RemoteContactIdParameterOptionalTrait;
-
-  use ResolvedContactIdTrait;
-
-  /**
-   * @todo: Filter information not relevant for remote API.
-   */
   public function _run(Result $result): void {
-    if (NULL === $this->profile) {
-      $this->_ignoreMissingActionHandler = TRUE;
+    try {
+      $this->doRun($result);
     }
-    $this->doRun($result);
+    // @phpstan-ignore-next-line
+    catch (ActionHandlerNotFoundException $e) {
+      if (NULL !== $this->profile) {
+        throw $e;
+      }
+
+      if ($this->select !== ['row_count']) {
+        $result[] = [
+          'default_value' => NULL,
+          'type' => 'Field',
+          'entity' => $this->getEntityName(),
+          'required' => TRUE,
+          'nullable' => FALSE,
+          'readonly' => TRUE,
+          'name' => 'id',
+          'title' => 'ID',
+          'data_type' => 'Integer',
+          'options' => FALSE,
+          'label' => 'ID',
+        ];
+      }
+
+      if (in_array('row_count', $this->select, TRUE)) {
+        $result->setCountMatched(1);
+      }
+    }
   }
 
 }
