@@ -353,7 +353,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       return $validationResult;
     }
 
-    return $this->profile->validateCreateData($formData, $arguments, $contactId);
+    return $this->profile->validateCreateData($formData, $arguments, $entityFields, $contactId);
   }
 
   /**
