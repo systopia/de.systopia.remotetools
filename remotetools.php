@@ -13,7 +13,6 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-require_once __DIR__ . '/vendor/autoload.php';
 require_once 'remotetools.civix.php';
 
 use CRM_Remotetools_ExtensionUtil as E;
@@ -30,6 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 function remotetools_civicrm_config(&$config)
 {
+    require_once __DIR__ . '/vendor/autoload.php';
     _remotetools_civix_civicrm_config($config);
 
     // register events (with our own wrapper to avoid duplicate registrations)
