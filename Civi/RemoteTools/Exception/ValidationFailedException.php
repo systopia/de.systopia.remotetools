@@ -19,5 +19,5 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Exception;
 
-final class ValidationFailedException extends \RuntimeException implements ExceptionInterface {
+final class ValidationFailedException extends RuntimeException {
 }

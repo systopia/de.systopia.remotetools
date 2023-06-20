@@ -22,7 +22,7 @@ namespace Civi\RemoteTools\Exception;
 use Civi\Api4\Generic\AbstractAction;
 use Civi\RemoteTools\Api4\Action\ProfileAwareActionInterface;
 
-final class ActionHandlerNotFoundException extends \RuntimeException implements ExceptionInterface {
+final class ActionHandlerNotFoundException extends RuntimeException {
 
   private AbstractAction $action;
 
