@@ -9,6 +9,7 @@ use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
+use Civi\RemoteTools\Helper\WhereFactoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -29,13 +30,20 @@ final class ProfileEntityLoaderTest extends TestCase {
    */
   private MockObject $selectFactoryMock;
 
+  /**
+   * @var \Civi\RemoteTools\Helper\WhereFactoryInterface&\PHPUnit\Framework\MockObject\MockObject
+   */
+  private MockObject $whereFactoryMock;
+
   protected function setUp(): void {
     parent::setUp();
     $this->api4Mock = $this->createMock(Api4Interface::class);
     $this->selectFactoryMock = $this->createMock(SelectFactoryInterface::class);
+    $this->whereFactoryMock = $this->createMock(WhereFactoryInterface::class);
     $this->entityLoader = new ProfileEntityLoader(
       $this->api4Mock,
-      $this->selectFactoryMock
+      $this->selectFactoryMock,
+      $this->whereFactoryMock,
     );
   }
 
@@ -47,6 +55,11 @@ final class ProfileEntityLoaderTest extends TestCase {
       ->with($resolvedContactId)
       ->willReturn(FALSE);
     $profileMock->method('getEntityName')->willReturn('Entity');
+
+    $remoteWhere = [
+      ['foo', '=', 'bar'],
+      ['bar', '=', 'baz'],
+    ];
 
     $actionMock = $this->createPartialMock(RemoteGetAction::class, [
       'getActionName',
@@ -60,13 +73,9 @@ final class ProfileEntityLoaderTest extends TestCase {
     $actionMock->method('getResolvedContactId')->willReturn($resolvedContactId);
     $actionMock->addSelect('foo', 'baz');
     $actionMock->addOrderBy('foo', 'DESC');
-    $actionMock->addWhere('foo', '!=', 'bar');
+    $actionMock->setWhere($remoteWhere);
     $actionMock->setLimit(10);
     $actionMock->setOffset(4);
-
-    $profileMock->method('getFilter')
-      ->with('get', $resolvedContactId)
-      ->willReturn(Comparison::new('bar', '=', 'foo'));
 
     $entityFields = [
       'foo' => ['name' => 'foo'],
@@ -91,6 +100,27 @@ final class ProfileEntityLoaderTest extends TestCase {
       ->with($entitySelect, 'get', $remoteSelect, $resolvedContactId)
       ->willReturn($profileEntitySelect);
 
+    $profileFilter = Comparison::new('extra', '!=', 'abc');
+    $profileMock->method('getFilter')
+      ->with('get', $resolvedContactId)
+      ->willReturn($profileFilter);
+
+    $entityWhere = [
+      ['foo', '=', 'bar'],
+    ];
+    $entityWhereWithFilter = [
+      ['foo', '=', 'bar'],
+      ['extra', '!=', 'abc'],
+    ];
+    $this->whereFactoryMock->method('getWhere')
+      ->with(
+        $remoteWhere,
+        $entityFields,
+        $remoteFields,
+        static::isType('callable'),
+        static::isType('callable')
+      )->willReturn($entityWhere);
+
     $entityValues = ['foo' => 'a', 'extra' => 'e'];
     $this->api4Mock->method('execute')
       ->willReturnMap([
@@ -105,10 +135,7 @@ final class ProfileEntityLoaderTest extends TestCase {
           'get',
           [
             'select' => $profileEntitySelect,
-            'where' => [
-              ['foo', '!=', 'bar'],
-              ['bar', '=', 'foo'],
-            ],
+            'where' => $entityWhereWithFilter,
             'orderBy' => ['foo' => 'DESC'],
             'limit' => 10,
             'offset' => 4,

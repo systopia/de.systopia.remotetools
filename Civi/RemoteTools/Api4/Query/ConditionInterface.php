@@ -20,9 +20,9 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Api4\Query;
 
 /**
- * @phpstan-type ComparisonT array{string, string, 2?: scalar|array<scalar>}
+ * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
  * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, so that is not possible
- * @phpstan-type CompositeConditionT array{string, array<int, array>}
+ * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
  */
 interface ConditionInterface {
 
@@ -30,7 +30,7 @@ interface ConditionInterface {
 
   /**
    * @return array
-   * @phpstan-return ComparisonT|CompositeConditionT
+   * @phpstan-return comparisonT|compositeConditionT
    */
   public function toArray(): array;
 

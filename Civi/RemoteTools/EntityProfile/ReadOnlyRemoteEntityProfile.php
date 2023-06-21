@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
+use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
@@ -95,6 +96,13 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
    * @inheritDoc
    */
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
+    return NULL;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function convertRemoteFieldComparison(Comparison $comparison, ?int $contactId): ?ConditionInterface {
     return NULL;
   }
 
