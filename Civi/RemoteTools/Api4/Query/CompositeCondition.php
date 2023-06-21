@@ -19,6 +19,10 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Query;
 
+/**
+ * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, so that is not possible
+ * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
+ */
 final class CompositeCondition implements ConditionInterface {
 
   private string $operator;
@@ -74,6 +78,8 @@ final class CompositeCondition implements ConditionInterface {
 
   /**
    * @inheritDoc
+   *
+   * @phpstan-return compositeConditionT
    */
   public function toArray(): array {
     $conditions = array_map(fn (ConditionInterface $condition) => $condition->toArray(), $this->conditions);

@@ -12,6 +12,7 @@ use Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
@@ -31,6 +32,11 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
   private MockObject $api4Mock;
 
   /**
+   * @var \Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface&\PHPUnit\Framework\MockObject\MockObject
+   */
+  private MockObject $entityDeleterMock;
+
+  /**
    * @var \Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface&\PHPUnit\Framework\MockObject\MockObject
    */
   private MockObject $entityLoaderMock;
@@ -48,11 +54,12 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
   protected function setUp(): void {
     parent::setUp();
     $this->api4Mock = $this->createMock(Api4Interface::class);
+    $this->entityDeleterMock = $this->createMock(ProfileEntityDeleterInterface::class);
     $this->entityLoaderMock = $this->createMock(ProfileEntityLoaderInterface::class);
     $this->profileMock = $this->createMock(RemoteEntityProfileInterface::class);
     $this->handler = $this->getMockForAbstractClass(
     AbstractProfileEntityActionsHandler::class,
-      [$this->api4Mock, $this->entityLoaderMock, $this->profileMock],
+      [$this->api4Mock, $this->entityDeleterMock, $this->entityLoaderMock, $this->profileMock],
     );
 
     $this->profileMock->method('getEntityName')->willReturn('Entity');
