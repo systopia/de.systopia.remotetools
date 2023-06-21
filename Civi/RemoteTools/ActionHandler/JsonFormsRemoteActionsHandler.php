@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\ActionHandler;
 
 use Civi\RemoteTools\Api4\Api4Interface;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
@@ -39,13 +40,14 @@ class JsonFormsRemoteActionsHandler extends AbstractProfileEntityActionsHandler 
 
   public function __construct(
     Api4Interface $api4,
+    ProfileEntityDeleterInterface $entityDeleter,
     ProfileEntityLoaderInterface $entityLoader,
     RemoteEntityProfileInterface $profile,
     JsonSchemaFactoryInterface $jsonSchemaFactory,
     UiSchemaFactoryInterface $uiSchemaFactory,
     JsonSchemaValidatorInterface $validator
   ) {
-    parent::__construct($api4, $entityLoader, $profile);
+    parent::__construct($api4, $entityDeleter, $entityLoader, $profile);
     $this->jsonSchemaFactory = $jsonSchemaFactory;
     $this->uiSchemaFactory = $uiSchemaFactory;
     $this->validator = $validator;

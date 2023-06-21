@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
+use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
@@ -74,13 +75,27 @@ interface RemoteEntityProfileInterface {
   public function isCheckApiPermissions(?int $contactId): bool;
 
   /**
+   * Fields only available as remote field should be handled in
+   * convertRemoteFieldComparison(). The comparison cannot be applied on the
+   * API result because it contradicts pagination.
+   *
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Fields indexed by field name.
    *
    * @phpstan-return array<string, array<string, mixed>>
    *   Fields indexed by field name.
+   *
+   * @see convertRemoteFieldComparison()
    */
   public function getRemoteFields(array $entityFields, ?int $contactId): array;
+
+  /**
+   * Convert a comparison of a remote only field to an APIv4 condition. If NULL
+   * is returned, no condition will be applied.
+   *
+   * @param \Civi\RemoteTools\Api4\Query\Comparison $comparison
+   */
+  public function convertRemoteFieldComparison(Comparison $comparison, ?int $contactId): ?ConditionInterface;
 
   /**
    * @param string $fieldName

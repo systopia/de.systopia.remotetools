@@ -34,6 +34,7 @@ use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\QueryApplier;
 use Civi\RemoteTools\EntityProfile\EntityProfileOptionSuffixDecorator;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
+use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
@@ -48,67 +49,31 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
   protected Api4Interface $api4;
 
+  protected ProfileEntityDeleterInterface $entityDeleter;
+
   protected ProfileEntityLoaderInterface $entityLoader;
 
   protected RemoteEntityProfileInterface $profile;
 
   public function __construct(
     Api4Interface $api4,
+    ProfileEntityDeleterInterface $entityDeleter,
     ProfileEntityLoaderInterface $entityLoader,
     RemoteEntityProfileInterface $profile
   ) {
     $this->api4 = $api4;
+    $this->entityDeleter = $entityDeleter;
     $this->entityLoader = $entityLoader;
     $this->profile = new EntityProfilePermissionDecorator(new EntityProfileOptionSuffixDecorator($profile));
   }
 
   /**
    * @inheritDoc
+   *
    * @throws \CRM_Core_Exception
    */
   public function delete(RemoteDeleteAction $action): array {
-    Assert::eq($action->getOffset(), 0, 'Offset is not allowed in delete action');
-
-    /*
-     * @todo: Ensure where only contains remote fields.
-     * Otherwise it would be possible to find out values of not exposed fields.
-     * (Via implicit joins even of referenced entities.)
-     */
-    $where = $action->getWhere();
-    $filter = $this->profile->getFilter('delete', $action->getResolvedContactId());
-    if (NULL !== $filter) {
-      $where[] = $filter->toArray();
-    }
-
-    $getResult = $this->api4->execute($this->profile->getEntityName(), 'get', [
-      'select' => $this->profile->getSelectFieldNames(['*'], 'delete', [], $action->getResolvedContactId()),
-      'where' => $where,
-      'checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId()),
-    ]);
-
-    $deleteCount = 0;
-    $result = [];
-    /** @phpstan-var array<string, mixed>&array{id: int} $entityValues */
-    foreach ($getResult as $entityValues) {
-      $grantResult = $this->profile->isDeleteGranted($entityValues, $action->getResolvedContactId());
-      if ($grantResult->granted) {
-        $result = array_merge(
-          $result,
-          $this->api4->deleteEntity(
-            $this->profile->getEntityName(),
-            $entityValues['id'],
-            ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())]
-          )->getArrayCopy(),
-        );
-        ++$deleteCount;
-        if ($deleteCount === $action->getLimit()) {
-          break;
-        }
-      }
-    }
-
-    /** @phpstan-var array<array<string, mixed>> $result */
-    return $result;
+    return $this->entityDeleter->delete($this->profile, $action);
   }
 
   /**
