@@ -74,8 +74,10 @@ final class FieldUtil {
    */
   public static function removeLastImplicitJoin(string $fieldName): ?string {
     $pos = strrpos($fieldName, '.');
+    /** @var string|null $result */
+    $result = FALSE === $pos ? NULL : substr($fieldName, 0, $pos);
 
-    return FALSE === $pos ? NULL : substr($fieldName, 0, $pos);
+    return $result;
   }
 
   /**
