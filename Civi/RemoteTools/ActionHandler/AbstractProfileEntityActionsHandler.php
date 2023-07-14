@@ -64,7 +64,9 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     $this->api4 = $api4;
     $this->entityDeleter = $entityDeleter;
     $this->entityLoader = $entityLoader;
-    $this->profile = new EntityProfilePermissionDecorator(new EntityProfileOptionSuffixDecorator($profile));
+    $this->profile = new EntityProfilePermissionDecorator(
+      new EntityProfileOptionSuffixDecorator($profile, $api4)
+    );
   }
 
   /**
