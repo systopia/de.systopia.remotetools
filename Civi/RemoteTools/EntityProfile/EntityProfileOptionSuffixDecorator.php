@@ -19,15 +19,30 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
-use CRM_Remotetools_ExtensionUtil as E;
+use Civi\RemoteTools\Api4\Api4Interface;
 
 /**
  * Adds fields for option suffixes, e.g. option_field:value
  */
 final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfileDecorator {
 
+  private Api4Interface $api4;
+
+  /**
+   * @phpstan-var array<string, array<string, array<array<string, scalar|null>>>>
+   *   entity name => field name => [options]
+   */
+  private array $options = [];
+
+  public function __construct(RemoteEntityProfileInterface $profile, Api4Interface $api4) {
+    parent::__construct($profile);
+    $this->api4 = $api4;
+  }
+
   /**
    * @inheritDoc
+   *
+   * @throws \CRM_Core_Exception
    */
   public function getRemoteFields(array $entityFields, ?int $contactId): array {
     $remoteFields = parent::getRemoteFields($entityFields, $contactId);
@@ -35,6 +50,16 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
     foreach ($remoteFields as $fieldName => $field) {
       if (($field['options'] ?? FALSE) !== FALSE && is_array($field['suffixes'] ?? NULL)) {
         foreach ($field['suffixes'] as $suffix) {
+          if (
+            is_array($field['options'])
+            && [] !== $field['options']
+            && (!is_array($field['options'][0]) || !array_key_exists($suffix, $field['options'][0]))
+          ) {
+            // "loadOptions" was set to TRUE or the suffix was not part of "loadOptions".
+            // @phpstan-ignore-next-line
+            $field['options'] = $this->getEntityFieldOptions($field['entity'], $fieldName);
+          }
+
           $remoteFields[$fieldName . ':' . $suffix] ??= $this->createField($field, $fieldName, $suffix);
         }
       }
@@ -69,7 +94,7 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
       'permission' => $field['permission'] ?? NULL,
       'fk_entity' => $field['fk_entity'] ?? NULL,
       // @phpstan-ignore-next-line
-      'options' => $this->getOptions($field['options'] ?? TRUE, $suffix),
+      'options' => $this->getSuffixFieldOptions($field['options'], $suffix),
       'title' => sprintf('%s [%s]', $title, $suffix),
       'label' => sprintf('%s [%s]', $label, $suffix),
       'description' => sprintf('%s [%s:%s]', $description, $fieldName, $suffix),
@@ -81,37 +106,47 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
   }
 
   /**
+   * @throws \CRM_Core_Exception
+   *
+   * @phpstan-return array<array<string, scalar|null>>
+   */
+  private function getEntityFieldOptions(string $entityName, string $fieldName): array {
+    $entityOptions = $this->options[$entityName] ??= $this->api4->execute($entityName, 'getFields', [
+      'select' => ['name', 'options'],
+      'where' => [['options', '!=', FALSE]],
+      'loadOptions' => [
+        'id',
+        'name',
+        'label',
+        'abbr',
+        'description',
+        'color',
+        'icon',
+      ],
+      'checkPermissions' => FALSE,
+    ])->indexBy('name')
+      ->column('options');
+
+    return $entityOptions[$fieldName] ?? [];
+  }
+
+  /**
    * @param bool|array $options
-   * @phpstan-param true|array<string, scalar|null>|array<int, array<string, scalar|null>> $options
-   *   The actual value depends on the value of the "loadOptions" action
-   *   parameter that was used.
+   * @phpstan-param true|array<array<string, scalar|null>> $options
    *
    * @return bool|array
-   * @phpstan-return true|array<string, scalar|null>
+   * @phpstan-return true|array<int|string, scalar>
    */
-  private function getOptions($options, string $suffix) {
+  private function getSuffixFieldOptions($options, string $suffix) {
     if (!is_array($options)) {
       return TRUE;
     }
 
-    if (is_array($options[0] ?? NULL)) {
-      $result = [];
-      foreach ($options as $option) {
-        // Should always be true.
-        if (isset($option['id'])) {
-          $result[(string) $option['id']] = $option[$suffix] ?? NULL;
-        }
-      }
+    return array_filter(
+      array_column($options, $suffix, $suffix),
+      fn ($value) => NULL !== $value,
+    );
 
-      return $result;
-    }
-
-    if ('name' === $suffix) {
-      /** @phpstan-var array<string, scalar|null> */
-      return $options;
-    }
-
-    return TRUE;
   }
 
 }
