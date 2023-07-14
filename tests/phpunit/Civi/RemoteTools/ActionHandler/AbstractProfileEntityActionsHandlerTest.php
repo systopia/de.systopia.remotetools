@@ -175,29 +175,30 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->willReturn(GrantResult::newPermitted());
     $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(FALSE);
 
-    $this->api4Mock->method('execute')
-      ->withConsecutive(
+    $valueMap = [
+      [
+        'Entity',
+        'get',
         [
-          'Entity',
-          'get',
-          [
-            'select' => ['foo'],
-            'where' => [['id', '=', 12]],
-            'checkPermissions' => FALSE,
-          ],
+          'select' => ['foo'],
+          'where' => [['id', '=', 12]],
+          'checkPermissions' => FALSE,
         ],
-        [
-          'Entity', 'getFields', [
-            'loadOptions' => FALSE,
-            'values' => ['id' => 12],
-            'checkPermissions' => FALSE,
-          ],
-        ],
-      )
-      ->willReturnOnConsecutiveCalls(
         new Result([$entityValues]),
+      ],
+      [
+        'Entity',
+        'getFields',
+        [
+          'loadOptions' => FALSE,
+          'values' => ['id' => 12],
+          'checkPermissions' => FALSE,
+        ],
         new Result(array_values($entityFields)),
-      );
+      ],
+    ];
+    $this->api4Mock->method('execute')
+      ->willReturnMap($valueMap);
 
     $formSpec = new FormSpec('Title');
     $this->profileMock->method('getUpdateFormSpec')
