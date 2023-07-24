@@ -27,6 +27,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Webmozart\Assert\Assert;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class RemoteEntityProfilePass implements CompilerPassInterface {
 
   private const DEFAULT_HANDLER_CLASS = JsonFormsRemoteActionsHandler::class;

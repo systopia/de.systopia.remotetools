@@ -19,6 +19,9 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile\Authorization;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class GrantResult {
 
   public bool $granted;

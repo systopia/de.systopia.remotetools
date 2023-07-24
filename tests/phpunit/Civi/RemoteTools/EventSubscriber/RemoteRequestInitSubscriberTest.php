@@ -23,6 +23,7 @@ use Civi\API\Event\AuthorizeEvent;
 use Civi\RemoteTools\Api4\Action\AbstractRemoteAction;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverInterface;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProviderInterface;
+use Civi\RemoteTools\PHPUnit\Traits\CreateMockTrait;
 use Civi\RemoteTools\RequestContext\RequestContext;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +32,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \Civi\RemoteTools\EventSubscriber\RemoteRequestInitSubscriber
  */
 final class RemoteRequestInitSubscriberTest extends TestCase {
+
+  use CreateMockTrait;
 
   /**
    * @var \Civi\API\Event\AuthorizeEvent&\PHPUnit\Framework\MockObject\MockObject
@@ -55,10 +58,7 @@ final class RemoteRequestInitSubscriberTest extends TestCase {
     parent::setUp();
 
     $this->eventMock = $this->createMock(AuthorizeEvent::class);
-    $this->requestMock = $this->createPartialMock(AbstractRemoteAction::class, [
-      // Required because otherwise option callbacks would be called that (might) require a complete Civi env.
-      'getParamInfo',
-    ]);
+    $this->requestMock = $this->createPartialApi4ActionMock(AbstractRemoteAction::class, 'RemoteEntity', 'get');
     $this->eventMock->method('getApiRequest')->willReturn($this->requestMock);
 
     $this->remoteContactIdResolverMock = $this->createMock(RemoteContactIdResolverInterface::class);

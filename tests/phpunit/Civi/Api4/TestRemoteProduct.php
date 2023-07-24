@@ -17,31 +17,23 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\Api4\Action;
+namespace Civi\Api4;
 
-use Civi\Api4\Generic\AbstractQueryAction;
-use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
-use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait;
+use Civi\Remoteactivity\Api4\Permissions;
+use Civi\RemoteTools\Api4\AbstractRemoteEntity;
 
-class RemoteDeleteAction extends AbstractQueryAction implements ProfileAwareRemoteActionInterface {
-
-  use ActionHandlerRunTrait;
-
-  use ProfileParameterTrait;
-
-  use RemoteContactIdParameterOptionalTrait;
-
-  use ResolvedContactIdTrait;
+final class TestRemoteProduct extends AbstractRemoteEntity {
 
   /**
-   * Make where parameter required.
+   * @inheritDoc
    *
-   * @var array
-   * @required
-   * @phpstan-ignore-next-line
+   * @return array<string, array<string|string[]>>
    */
-  protected $where = [];
+  public static function permissions(): array {
+    return [
+      'meta' => ['access TestRemoteProduct'],
+      'default' => ['access TestRemoteProduct'],
+    ];
+  }
 
 }

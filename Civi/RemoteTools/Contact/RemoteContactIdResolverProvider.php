@@ -30,8 +30,7 @@ final class RemoteContactIdResolverProvider implements RemoteContactIdResolverPr
   }
 
   public function get(RemoteActionInterface $action): RemoteContactIdResolverInterface {
-    // TODO: Remote contact ID resolver depending on action.
-
+    // @todo: Remote contact ID resolver depending on action.
     return $this->remoteContactIdResolver;
   }
 

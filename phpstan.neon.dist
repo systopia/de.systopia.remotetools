@@ -47,4 +47,9 @@ parameters:
 		- '#^Method Civi\\RemoteTools\\Api4\\Api4::createAction\(\) should return Civi\\Api4\\Generic\\AbstractAction but returns array|Civi\Api4\Generic\AbstractAction.$#'
 		- '#^Method Civi\\RemoteTools\\Api4\\Query\\[^\\]+::toArray\(\) return type has no value type specified in iterable type array.$#'
 
+		- '#^Method Civi\\RemoteTools\\Fixture\\[^\s]+Fixture::[^\s]+ should return array\{id: int\} but returns array.$#'
+		-
+			message: '#caught "Exception" must be rethrown.#'
+			path: */tests/phpunit/Civi/*
+
 	tmpDir: .phpstan

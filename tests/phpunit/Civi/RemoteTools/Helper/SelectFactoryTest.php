@@ -58,6 +58,62 @@ final class SelectFactoryTest extends TestCase {
     ));
   }
 
+  public function testGetSelectsJoinFieldsWithEmptySelect(): void {
+    $entityFields = [
+      'fieldA' => ['name' => 'fieldA'],
+      'fieldB' => [
+        'name' => 'fieldB',
+        'fk_entity' => 'Test',
+      ],
+    ];
+    $remoteFields = [
+      'fieldA' => ['name' => 'fieldA'],
+      'fieldB.fieldC' => ['name' => 'fieldB.fieldC'],
+    ];
+
+    $select = [];
+
+    $expected = [
+      'entity' => ['fieldA'],
+      'remote' => ['fieldA'],
+    ];
+
+    static::assertSame($expected, $this->selectFactory->getSelects(
+      $select,
+      $entityFields,
+      $remoteFields,
+      fn() => FALSE,
+    ));
+  }
+
+  public function testGetSelectsJoinFieldsWithSelectAsteriskAndRowCount(): void {
+    $entityFields = [
+      'fieldA' => ['name' => 'fieldA'],
+      'fieldB' => [
+        'name' => 'fieldB',
+        'fk_entity' => 'Test',
+      ],
+    ];
+    $remoteFields = [
+      'fieldA' => ['name' => 'fieldA'],
+      'fieldB.fieldC' => ['name' => 'fieldB.fieldC'],
+    ];
+
+    $select = ['*', 'row_count'];
+
+    $expected = [
+      'entity' => ['fieldA', 'row_count'],
+      'remote' => ['fieldA', 'row_count'],
+    ];
+
+    static::assertSame($expected, $this->selectFactory->getSelects(
+      $select,
+      $entityFields,
+      $remoteFields,
+      fn() => FALSE,
+    ));
+  }
+
   public function testGetSelectsImplicitJoinInRemote(): void {
     $entityFields = [
       'fieldA' => [

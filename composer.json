@@ -59,5 +59,8 @@
     },
     "require-dev": {
         "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3"
+    },
+    "conflict": {
+      "symfony/cache": ">=6"
     }
 }

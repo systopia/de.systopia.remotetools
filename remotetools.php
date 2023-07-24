@@ -29,12 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 function remotetools_civicrm_config(&$config)
 {
-    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-      require_once __DIR__ . '/vendor/autoload.php';
-    }
     _remotetools_civix_civicrm_config($config);
 
-    // register events (with our own wrapper to avoid duplicate registrations)
+   // register events (with our own wrapper to avoid duplicate registrations)
     $dispatcher = new \Civi\RemoteToolsDispatcher();
 
     // EVENT REMOTECONTAT GETPROFILES
@@ -70,19 +67,33 @@ function remotetools_civicrm_config(&$config)
 }
 
 function remotetools_civicrm_container(ContainerBuilder $container): void {
+    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+        $classLoader = require_once __DIR__ . '/vendor/autoload.php';
+        if ($classLoader instanceof \Composer\Autoload\ClassLoader) {
+            // Re-register class loader to append it. (It's automatically prepended.)
+            $classLoader->unregister();
+            $classLoader->register();
+        }
+    }
+
     // Allow lazy service instantiation (requires symfony/proxy-manager-bridge)
     if (class_exists(\ProxyManager\Configuration::class) && class_exists(RuntimeInstantiator::class)) {
         $container->setProxyInstantiator(new RuntimeInstantiator());
     }
 
     $globResource = new GlobResource(__DIR__ . '/services', '/*.php', FALSE);
-    // Container will be rebuilt if a *.php file is added to services
+    // Container will be rebuilt if a *.php file is added to services.
     $container->addResource($globResource);
     foreach ($globResource->getIterator() as $path => $info) {
-        // Container will be rebuilt if file changes
+        // Container will be rebuilt if file changes.
         $container->addResource(new FileResource($path));
         require $path;
     }
+
+  if (function_exists('_remotetools_test_civicrm_container')) {
+    // Allow to use different services in tests.
+    _remotetools_test_civicrm_container($container);
+  }
 }
 
 /**

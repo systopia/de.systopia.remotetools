@@ -5,10 +5,12 @@ namespace Civi\RemoteTools\ActionHandler;
 
 use Civi\API\Exception\UnauthorizedException;
 use Civi\Api4\Generic\Result;
+use Civi\RemoteTools\Api4\Action\RemoteDeleteAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetFieldsAction;
 use Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction;
+use Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
@@ -16,6 +18,9 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\Validation\ValidationError;
+use Civi\RemoteTools\Form\Validation\ValidationResult;
+use Civi\RemoteTools\PHPUnit\Traits\CreateMockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -23,6 +28,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Civi\RemoteTools\ActionHandler\AbstractProfileEntityActionsHandler
  */
 final class AbstractProfileEntityActionsHandlerTest extends TestCase {
+  use CreateMockTrait;
 
   private const RESOLVED_CONTACT_ID = 2;
 
@@ -66,6 +72,17 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isCheckApiPermissions')
       ->with(self::RESOLVED_CONTACT_ID)
       ->willReturn(FALSE);
+  }
+
+  public function testDelete(): void {
+    $actionMock = $this->createMock(RemoteDeleteAction::class);
+
+    $result = new Result();
+    $this->entityDeleterMock->method('delete')
+      ->with(static::isInstanceOf(EntityProfilePermissionDecorator::class), $actionMock)
+      ->willReturn([['id' => 1]]);
+
+    static::assertSame([['id' => 1]], $this->handler->delete($actionMock));
   }
 
   public function testGet(): void {
@@ -157,6 +174,50 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     static::assertSame(['form' => 'Test'], $this->handler->getCreateForm($actionMock));
   }
 
+  public function testValidateCreateForm(): void {
+    $actionMock = $this->createActionMock(RemoteValidateCreateFormAction::class);
+    $arguments = ['key' => 'value'];
+    $formData = ['property' => 'value'];
+    $actionMock->setArguments($arguments);
+    $actionMock->setData($formData);
+
+    $this->profileMock->method('isCreateGranted')
+      ->with($arguments, self::RESOLVED_CONTACT_ID)
+      ->willReturn(GrantResult::newPermitted());
+    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
+
+    $entityFields = [
+      'foo' => ['name' => 'foo'],
+      'bar' => ['name' => 'bar'],
+    ];
+    $this->api4Mock->method('execute')
+      ->with('Entity', 'getFields', [
+        'loadOptions' => TRUE,
+        'values' => [],
+        'checkPermissions' => FALSE,
+      ])
+      ->willReturn(new Result(array_values($entityFields)));
+
+    $formSpec = new FormSpec('Title');
+    $this->profileMock->method('getCreateFormSpec')
+      ->with($arguments, $entityFields, self::RESOLVED_CONTACT_ID)
+      ->willReturn($formSpec);
+
+    $this->handler->method('validateFormData')
+      ->with($formSpec, $formData)
+      ->willReturn(ValidationResult::new(
+        ValidationError::new('field', 'invalid1'),
+        ValidationError::new('field', 'invalid2'),
+      ));
+
+    static::assertSame([
+      'valid' => FALSE,
+      'errors' => [
+        'field' => ['invalid1', 'invalid2'],
+      ],
+    ], $this->handler->validateCreateForm($actionMock));
+  }
+
   public function testGetUpdateForm(): void {
     $actionMock = $this->createActionMock(RemoteGetUpdateFormAction::class);
     $actionMock->setId(12);
@@ -242,22 +303,15 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
 
   /**
    * Intersection types are not supported by phpstan in template.
+   *
    * @template T of \Civi\Api4\Generic\AbstractAction //&\Civi\RemoteTools\Api4\Action\RemoteActionInterface
    *
-   * @phpstan-param class-string<T> $class
+   * @phpstan-param class-string<T> $className
    *
    * @phpstan-return T&MockObject
    */
-  private function createActionMock(string $class): MockObject {
-    $actionMock = $this->createPartialMock($class, [
-      'getActionName',
-      'getEntityName',
-      'getResolvedContactId',
-      // Required because otherwise option callbacks would be called that (might) require a complete Civi env.
-      'getParamInfo',
-    ]);
-    $actionMock->method('getActionName')->willReturn('get');
-    $actionMock->method('getEntityName')->willReturn('RemoteEntity');
+  private function createActionMock(string $className): MockObject {
+    $actionMock = $this->createPartialApi4ActionMock($className, 'RemoteEntity', 'get', ['getResolvedContactId']);
     // @phpstan-ignore-next-line
     $actionMock->method('getResolvedContactId')->willReturn(self::RESOLVED_CONTACT_ID);
 
