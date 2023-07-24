@@ -157,11 +157,8 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       $action->getArguments(),
       $action->getResolvedContactId(),
     );
-    if (!$validationResult->isValid()) {
-      return $this->convertToValidateActionResult($validationResult);
-    }
 
-    return [];
+    return $this->convertToValidateActionResult($validationResult);
   }
 
   /**
