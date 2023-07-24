@@ -28,6 +28,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Webmozart\Assert\Assert;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class ActionHandlerPass implements CompilerPassInterface {
 
   public static function buildHandlerKey(string $entityName, string $actionName, ?string $profileName): string {

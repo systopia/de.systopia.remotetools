@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2023 SYSTOPIA GmbH
+ * Copyright (C) 2022 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,15 +17,25 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\Api4\Action;
+namespace Civi\RemoteTools\Fixture;
 
-use Civi\RemoteTools\Api4\Action\Traits\ArgumentsParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\DataParameterTrait;
+use Civi\Api4\Product;
 
-class RemoteValidateCreateFormAction extends AbstractProfileAwareRemoteAction {
+final class ProductFixture {
 
-  use ArgumentsParameterOptionalTrait;
-
-  use DataParameterTrait;
+  /**
+   * @param array<string, scalar> $values
+   *
+   * @return array
+   * @phpstan-return array<string, scalar|null>&array{id: int}
+   *
+   * @throws \CRM_Core_Exception
+   */
+  public static function addProduct(array $values = []): array {
+    return Product::create(FALSE)
+      ->setValues($values + [
+        'name' => 'TestProduct',
+      ])->execute()->single();
+  }
 
 }

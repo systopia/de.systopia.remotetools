@@ -39,7 +39,7 @@ final class RemoteCheckAccessAction extends CheckAccessAction implements Profile
 
   public function _run(Result $result): void {
     parent::_run($result);
-    if (($result->first()['granted'] ?? NULL) === TRUE) {
+    if (($result->first()['access'] ?? NULL) === TRUE) {
       try {
         $this->doRun($result);
       }

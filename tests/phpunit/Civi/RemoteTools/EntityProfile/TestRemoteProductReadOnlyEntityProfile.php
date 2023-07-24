@@ -17,15 +17,18 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\Api4\Action;
+namespace Civi\RemoteTools\EntityProfile;
 
-use Civi\RemoteTools\Api4\Action\Traits\ArgumentsParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\DataParameterTrait;
+final class TestRemoteProductReadOnlyEntityProfile extends ReadOnlyRemoteEntityProfile {
 
-class RemoteValidateCreateFormAction extends AbstractProfileAwareRemoteAction {
+  public const NAME = 'readOnlyTest';
 
-  use ArgumentsParameterOptionalTrait;
+  public const ENTITY_NAME = 'Product';
 
-  use DataParameterTrait;
+  public const REMOTE_ENTITY_NAME = 'TestRemoteProduct';
+
+  public function __construct() {
+    parent::__construct(self::NAME, self::ENTITY_NAME, self::REMOTE_ENTITY_NAME);
+  }
 
 }
