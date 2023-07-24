@@ -59,11 +59,15 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
       $properties[$name] = new JsonSchemaString(['enum' => $values]);
     }
 
-    return new JsonSchemaObject($properties, [
+    $keywords = [
       'required' => $required,
-      'oneOf' => $oneOf,
       'additionalProperties' => FALSE,
-    ]);
+    ];
+    if ([] !== $oneOf) {
+      $keywords['oneOf'] = $oneOf;
+    }
+
+    return new JsonSchemaObject($properties, $keywords);
   }
 
 }
