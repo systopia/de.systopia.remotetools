@@ -25,6 +25,9 @@ use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfileInterface {
 
   protected RemoteEntityProfileInterface $profile;

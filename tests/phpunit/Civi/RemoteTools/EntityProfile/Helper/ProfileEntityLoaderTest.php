@@ -10,6 +10,7 @@ use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\Helper\WhereFactoryInterface;
+use Civi\RemoteTools\PHPUnit\Traits\CreateMockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +18,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoader
  */
 final class ProfileEntityLoaderTest extends TestCase {
+
+  use CreateMockTrait;
 
   /**
    * @var \Civi\RemoteTools\Api4\Api4Interface&\PHPUnit\Framework\MockObject\MockObject
@@ -61,15 +64,12 @@ final class ProfileEntityLoaderTest extends TestCase {
       ['bar', '=', 'baz'],
     ];
 
-    $actionMock = $this->createPartialMock(RemoteGetAction::class, [
-      'getActionName',
-      'getEntityName',
-      'getResolvedContactId',
-      // Required because otherwise option callbacks would be called that (might) require a complete Civi env.
-      'getParamInfo',
-    ]);
-    $actionMock->method('getActionName')->willReturn('get');
-    $actionMock->method('getEntityName')->willReturn('RemoteEntity');
+    $actionMock = $this->createPartialApi4ActionMock(
+      RemoteGetAction::class,
+      'RemoteEntity',
+      'get',
+      ['getResolvedContactId']
+    );
     $actionMock->method('getResolvedContactId')->willReturn($resolvedContactId);
     $actionMock->addSelect('foo', 'baz');
     $actionMock->addOrderBy('foo', 'DESC');

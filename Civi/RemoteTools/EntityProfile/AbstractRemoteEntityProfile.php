@@ -28,6 +28,8 @@ use CRM_Remotetools_ExtensionUtil as E;
 /**
  * Abstract implementation that assumes that internal and external fields are
  * the same. Create, delete, and update are allowed by default.
+ *
+ * @codeCoverageIgnore
  */
 abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterface {
 

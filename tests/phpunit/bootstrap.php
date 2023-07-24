@@ -1,6 +1,9 @@
 <?php
 
+use Civi\RemoteTools\EntityProfile\TestRemoteProductReadOnlyEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteProductReadWriteEntityProfile;
 use Composer\Autoload\ClassLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 ini_set('memory_limit', '2G');
 ini_set('safe_mode', 0);
@@ -26,6 +29,14 @@ $loader->register();
 
 // Ensure function ts() is available - it's declared in the same file as CRM_Core_I18n
 \CRM_Core_I18n::singleton();
+
+function _remotetools_test_civicrm_container(ContainerBuilder $container): void {
+  $container->autowire(TestRemoteProductReadOnlyEntityProfile::class)
+    ->addTag(TestRemoteProductReadOnlyEntityProfile::SERVICE_TAG);
+
+  $container->autowire(TestRemoteProductReadWriteEntityProfile::class)
+    ->addTag(TestRemoteProductReadWriteEntityProfile::SERVICE_TAG);
+}
 
 /**
  * Call the "cv" command.
