@@ -32,7 +32,7 @@ final class ResultUtilTest extends TestCase {
     $to = new Result();
     ResultUtil::copy($from, $to);
     static::assertSame(['foo' => 'bar'], $to->getArrayCopy());
-    static::assertSame(1, $to->count());
+    static::assertCount(1, $to);
     static::assertSame(1, $to->countFetched());
     $this->expectException(\CRM_Core_Exception::class);
     $to->countMatched();
@@ -44,7 +44,7 @@ final class ResultUtilTest extends TestCase {
     $to = new Result();
     ResultUtil::copy($from, $to);
     static::assertSame(['foo' => 'bar'], $to->getArrayCopy());
-    static::assertSame(2, $to->count());
+    static::assertCount(2, $to);
     static::assertSame(1, $to->countFetched());
     static::assertSame(2, $to->countMatched());
   }
