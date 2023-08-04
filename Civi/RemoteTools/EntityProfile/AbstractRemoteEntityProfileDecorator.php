@@ -23,7 +23,6 @@ use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
-use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 /**
  * @codeCoverageIgnore
@@ -156,59 +155,13 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function validateCreateData(
-    array $formData,
-    array $arguments,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    return $this->profile->validateCreateData($formData, $arguments, $entityFields, $contactId);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function validateUpdateData(
-    array $formData,
-    array $currentEntityValues,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    return $this->profile->validateUpdateData($formData, $currentEntityValues, $entityFields, $contactId);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array {
-    return $this->profile->convertCreateDataToEntityValues($formData, $arguments, $contactId);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array {
-    return $this->profile->convertUpdateDataToEntityValues($formData, $currentEntityValues, $contactId);
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertToFormData(array $entityValues, ?int $contactId): array {
-    return $this->profile->convertToFormData($entityValues, $contactId);
-  }
-
-  /**
-   * @inheritDoc
-   */
   public function getSaveSuccessMessage(
     array $newValues,
-    array $oldValues,
-    string $action,
+    ?array $oldValues,
     array $formData,
     ?int $contactId
   ): string {
-    return $this->profile->getSaveSuccessMessage($newValues, $oldValues, $action, $formData, $contactId);
+    return $this->profile->getSaveSuccessMessage($newValues, $oldValues, $formData, $contactId);
   }
 
 }

@@ -23,7 +23,6 @@ use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
-use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 /**
  * @codeCoverageIgnore
@@ -161,55 +160,9 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function validateCreateData(
-    array $formData,
-    array $arguments,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function validateUpdateData(
-    array $formData,
-    array $currentEntityValues,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array {
-    throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array {
-    throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertToFormData(array $entityValues, ?int $contactId): array {
-    throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
   public function getSaveSuccessMessage(
     array $newValues,
-    array $oldValues,
-    string $action,
+    ?array $oldValues,
     array $formData,
     ?int $contactId
   ): string {

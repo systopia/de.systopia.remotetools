@@ -23,7 +23,6 @@ use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
-use Civi\RemoteTools\Form\Validation\ValidationResult;
 
 /**
  * A profile for a remote entity that is mapped to one APIv4 entity. Custom
@@ -159,6 +158,7 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
+   *   Should be used for default values in form spec.
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Entity fields indexed by name.
    *
@@ -194,59 +194,9 @@ interface RemoteEntityProfileInterface {
   public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult;
 
   /**
-   * @phpstan-param array<string, mixed> $formData
-   * @phpstan-param array<int|string, mixed> $arguments
-   * @phpstan-param array<string, array<string, mixed>> $entityFields
-   *   Entity fields indexed by name.
-   */
-  public function validateCreateData(
-    array $formData,
-    array $arguments,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult;
-
-  /**
-   * @phpstan-param array<string, mixed> $formData
-   * @phpstan-param array<string, mixed> $currentEntityValues
-   * @phpstan-param array<string, array<string, mixed>> $entityFields
-   *   Entity fields indexed by name.
-   */
-  public function validateUpdateData(
-    array $formData,
-    array $currentEntityValues,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult;
-
-  /**
-   * @phpstan-param array<string, mixed> $formData
-   * @phpstan-param array<int|string, mixed> $arguments
-   *
-   * @phpstan-return array<string, mixed>
-   */
-  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array;
-
-  /**
-   * @phpstan-param array<string, mixed> $formData
-   * @phpstan-param array<string, mixed> $currentEntityValues
-   *
-   * @phpstan-return array<string, mixed>
-   */
-  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array;
-
-  /**
-   * @phpstan-param array<string, mixed> $entityValues
-   *
-   * @phpstan-return array<string, mixed>
-   */
-  public function convertToFormData(array $entityValues, ?int $contactId): array;
-
-  /**
    * @phpstan-param array<string, mixed> $newValues
-   * @phpstan-param array<string, mixed> $oldValues
-   *   Empty array on create.
-   * @phpstan-param 'create'|'update' $action
+   * @phpstan-param array<string, mixed>|null $oldValues
+   *   NULL on create.
    * @phpstan-param array<string, mixed> $formData
    *
    * @return string
@@ -255,8 +205,7 @@ interface RemoteEntityProfileInterface {
    */
   public function getSaveSuccessMessage(
     array $newValues,
-    array $oldValues,
-    string $action,
+    ?array $oldValues,
     array $formData,
     ?int $contactId
   ): string;

@@ -18,6 +18,7 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\FormSpec\ValidatorInterface;
 use Civi\RemoteTools\Form\Validation\ValidationError;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 use Civi\RemoteTools\PHPUnit\Traits\CreateMockTrait;
@@ -152,7 +153,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->with($arguments, $entityFields, self::RESOLVED_CONTACT_ID)
       ->willReturn($formSpec);
 
-    $this->handler->method('convertToGetFormResult')
+    $this->handler->method('convertToGetFormActionResult')
       ->with($formSpec)
       ->willReturn(['form' => 'Test']);
 
@@ -199,16 +200,19 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->willReturn(new Result(array_values($entityFields)));
 
     $formSpec = new FormSpec('Title');
+    $formSpec->appendValidator(new class implements ValidatorInterface {
+
+      public function validate(array $formData, ?array $currentEntityValues, ?int $contactId): ValidationResult {
+        return ValidationResult::new(
+          ValidationError::new('field', 'invalid1'),
+          ValidationError::new('field', 'invalid2'),
+        );
+      }
+
+    });
     $this->profileMock->method('getCreateFormSpec')
       ->with($arguments, $entityFields, self::RESOLVED_CONTACT_ID)
       ->willReturn($formSpec);
-
-    $this->handler->method('validateFormData')
-      ->with($formSpec, $formData)
-      ->willReturn(ValidationResult::new(
-        ValidationError::new('field', 'invalid1'),
-        ValidationError::new('field', 'invalid2'),
-      ));
 
     static::assertSame([
       'valid' => FALSE,
@@ -266,7 +270,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->with($entityValues, $entityFields, self::RESOLVED_CONTACT_ID)
       ->willReturn($formSpec);
 
-    $this->handler->method('convertToGetFormResult')
+    $this->handler->method('convertToGetFormActionResult')
       ->with($formSpec)
       ->willReturn(['form' => 'Test']);
 
