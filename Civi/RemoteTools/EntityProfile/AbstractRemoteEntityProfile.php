@@ -22,7 +22,6 @@ namespace Civi\RemoteTools\EntityProfile;
 use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
-use Civi\RemoteTools\Form\Validation\ValidationResult;
 use CRM_Remotetools_ExtensionUtil as E;
 
 /**
@@ -113,55 +112,9 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function validateCreateData(
-    array $formData,
-    array $arguments,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    return new ValidationResult();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function validateUpdateData(
-    array $formData,
-    array $currentEntityValues,
-    array $entityFields,
-    ?int $contactId
-  ): ValidationResult {
-    return new ValidationResult();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertCreateDataToEntityValues(array $formData, array $arguments, ?int $contactId): array {
-    return $formData;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertUpdateDataToEntityValues(array $formData, array $currentEntityValues, ?int $contactId): array {
-    return $formData;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertToFormData(array $entityValues, ?int $contactId): array {
-    return $entityValues;
-  }
-
-  /**
-   * @inheritDoc
-   */
   public function getSaveSuccessMessage(
     array $newValues,
-    array $oldValues,
-    string $action,
+    ?array $oldValues,
     array $formData,
     ?int $contactId
   ): string {
