@@ -31,11 +31,6 @@ final class OpisValidatorFactory {
 
   public static function getValidator(): Validator {
     if (!isset(self::$validator)) {
-      $autoloadFile = E::path() . '/vendor/autoload.php';
-      if (!\class_exists(SymfonyExpressionHandler::class) && file_exists($autoloadFile)) {
-        require_once $autoloadFile;
-      }
-
       $expressionHandler = new SymfonyExpressionHandler(new SystopiaExpressionLanguage());
       self::$validator = new SystopiaValidator([
         'calculator' => $expressionHandler,
