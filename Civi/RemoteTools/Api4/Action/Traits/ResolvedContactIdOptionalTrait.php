@@ -19,18 +19,21 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action\Traits;
 
-/**
- * @method string getRemoteContactId()
- * @method $this setRemoteContactId(string $remoteContactId)
- *
- * @see \Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait
- */
-trait RemoteContactIdParameterTrait {
+use Civi\RemoteTools\RequestContext\RequestContextInterface;
 
-  /**
-   * @var string
-   * @required
-   */
-  protected ?string $remoteContactId = NULL;
+/**
+ * @see \Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait
+ */
+trait ResolvedContactIdOptionalTrait {
+
+  protected ?RequestContextInterface $_requestContext = NULL;
+
+  public function getResolvedContactId(): ?int {
+    // @phpstan-ignore-next-line
+    $this->_requestContext ??= \Civi::service(RequestContextInterface::class);
+
+    // @phpstan-ignore-next-line
+    return $this->_requestContext->getResolvedContactId();
+  }
 
 }
