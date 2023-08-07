@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 /**
  * @method string|null getRemoteContactId()
  * @method $this setRemoteContactId(string $remoteContactId)
+ *
+ * @see \Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait
  */
 trait RemoteContactIdParameterOptionalTrait {
 

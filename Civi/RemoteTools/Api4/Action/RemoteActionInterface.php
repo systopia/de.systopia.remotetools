@@ -24,7 +24,7 @@ namespace Civi\RemoteTools\Api4\Action;
  *
  * @see \Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterTrait
  * @see \Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait
- * @see \Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait
+ * @see \Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait
  */
 interface RemoteActionInterface {
 

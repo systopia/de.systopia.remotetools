@@ -22,7 +22,7 @@ namespace Civi\RemoteTools\Api4\Action;
 use Civi\Api4\Generic\BasicGetFieldsAction;
 use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait;
+use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
 /**
  * @todo: Filter information not relevant for remote API?
@@ -33,6 +33,6 @@ abstract class AbstractRemoteGetFieldsAction extends BasicGetFieldsAction {
 
   use RemoteContactIdParameterOptionalTrait;
 
-  use ResolvedContactIdTrait;
+  use ResolvedContactIdOptionalTrait;
 
 }

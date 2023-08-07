@@ -21,11 +21,14 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 
 use Civi\RemoteTools\RequestContext\RequestContextInterface;
 
+/**
+ * @see \Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterTrait
+ */
 trait ResolvedContactIdTrait {
 
   protected ?RequestContextInterface $_requestContext = NULL;
 
-  public function getResolvedContactId(): ?int {
+  public function getResolvedContactId(): int {
     // @phpstan-ignore-next-line
     $this->_requestContext ??= \Civi::service(RequestContextInterface::class);
 

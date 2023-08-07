@@ -24,7 +24,7 @@ use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdTrait;
+use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
 final class RemoteCheckAccessAction extends CheckAccessAction implements ProfileAwareRemoteActionInterface {
@@ -35,7 +35,7 @@ final class RemoteCheckAccessAction extends CheckAccessAction implements Profile
 
   use RemoteContactIdParameterOptionalTrait;
 
-  use ResolvedContactIdTrait;
+  use ResolvedContactIdOptionalTrait;
 
   public function _run(Result $result): void {
     parent::_run($result);
