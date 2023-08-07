@@ -39,9 +39,12 @@ trait ActionHandlerTrait {
           ActionHandlerInterface $actionHandler = NULL
   ) {
     parent::__construct($entityName, $actionName);
+    $this->initActionHandler($actionHandler);
+  }
+
+  protected function initActionHandler(?ActionHandlerInterface $actionHandler): void {
     // @phpstan-ignore-next-line
-    $this->_actionHandler = $actionHandler
-            ?? \Civi::service(ActionHandlerInterface::class);
+    $this->_actionHandler = $actionHandler ?? \Civi::service(ActionHandlerInterface::class);
   }
 
   /**
