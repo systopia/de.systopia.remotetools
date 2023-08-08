@@ -89,7 +89,7 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
       Assert::string($attributes[$key], sprintf(
         'Attribute "%s" in tag "%s" of service "%s" expected to be string, got %s',
         $key,
-        ActionHandlerInterface::SERVICE_TAG,
+        RemoteEntityProfileInterface::SERVICE_TAG,
         $id,
         gettype($attributes[$key])
       ));
@@ -110,7 +110,7 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
     throw new \RuntimeException(sprintf(
       'Neither attribute "%s" in tag "%s" of service "%s" nor constant "%s" exists',
       $key,
-      ActionHandlerInterface::SERVICE_TAG,
+      RemoteEntityProfileInterface::SERVICE_TAG,
       $id,
       $constantName
     ));
