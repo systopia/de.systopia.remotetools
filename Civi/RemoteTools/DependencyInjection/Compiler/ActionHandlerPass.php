@@ -49,7 +49,7 @@ final class ActionHandlerPass implements CompilerPassInterface {
     $handlerPriorities = [];
     foreach ($container->findTaggedServiceIds(ActionHandlerInterface::SERVICE_TAG) as $id => $tags) {
       foreach ($tags as $attributes) {
-        $entityName = $this->getAttribute($id, 'entity_name', $attributes);
+        $entityName = $this->getAttributeOrConst($container, $id, 'entity_name', $attributes);
         $profileName = $attributes['profile_name'] ?? NULL;
         $priority = $attributes['priority'] ?? 0;
         $serviceClass = $this->getServiceClass($container, $id);
@@ -86,20 +86,40 @@ final class ActionHandlerPass implements CompilerPassInterface {
   /**
    * @phpstan-param array<int|string, scalar> $attributes
    */
-  private function getAttribute(string $id, string $key, array $attributes): string {
-    Assert::keyExists(
-      $attributes,
-      $key,
-      sprintf('Attribute "%s" in tag "%s" of service "%s" is missing', $key, ActionHandlerInterface::SERVICE_TAG, $id)
-    );
-    Assert::string($attributes[$key], sprintf(
-      'Attribute "%s" in tag "%s" of service "%s" expected to be string, got %s',
-      $key, ActionHandlerInterface::SERVICE_TAG,
-      $id,
-      gettype($attributes[$key])
-    ));
+  private function getAttributeOrConst(
+    ContainerBuilder $container,
+    string $id,
+    string $key,
+    array $attributes
+  ): string {
+    if (isset($attributes[$key])) {
+      Assert::string(
+        $attributes[$key],
+        sprintf(
+          'Attribute "%s" in tag "%s" of service "%s" expected to be string, got %s',
+          $key,
+          ActionHandlerInterface::SERVICE_TAG,
+          $id,
+          gettype($attributes[$key])
+        )
+      );
 
-    return $attributes[$key];
+      return $attributes[$key];
+    }
+
+    $constantName = $this->getServiceClass($container, $id) . '::' . strtoupper($key);
+    if (defined($constantName)) {
+      // @phpstan-ignore-next-line
+      return constant($constantName);
+    }
+
+    throw new \RuntimeException(sprintf(
+      'Neither attribute "%s" in tag "%s" of service "%s" nor constant "%s" exists',
+      $key,
+      ActionHandlerInterface::SERVICE_TAG,
+      $id,
+      $constantName
+    ));
   }
 
   /**
