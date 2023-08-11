@@ -71,6 +71,7 @@ class CRM_Remotetools_ContactRoles
 
             // load contact roles
             $roles_field = CRM_Remotetools_CustomData::getCustomFieldKey('remote_contact_data', 'remote_contact_roles');
+            $query = [];
             CRM_Remotetools_CustomData::resolveCustomFields($query);
             $roles = civicrm_api3('Contact', 'getvalue', [
                 'id'     => $contact_id,
