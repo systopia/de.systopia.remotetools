@@ -24,4 +24,11 @@ final class JsonConverterTest extends TestCase {
     static::assertSame('bar', $object->foo);
   }
 
+  public function testToStdClassEmptyArray(): void {
+    $array = [];
+    $object = JsonConverter::toStdClass($array);
+
+    static::assertEquals(new \stdClass(), $object);
+  }
+
 }
