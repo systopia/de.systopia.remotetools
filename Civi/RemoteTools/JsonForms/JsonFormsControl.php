@@ -25,21 +25,25 @@ class JsonFormsControl extends JsonFormsElement {
 
   /**
    * @phpstan-param array<string, mixed>|null $options
+   * @phpstan-param array{
+   *  prefix?: string,
+   *  suffix?: string,
+   *  rule?: JsonFormsRule|JsonSchema,
+   * } $keywords
    */
-  public function __construct(string $scope, string $label,
-    ?string $description = NULL, ?string $prefix = NULL, ?string $suffix = NULL, ?array $options = NULL) {
-    $keywords = [
+  public function __construct(
+    string $scope,
+    string $label,
+    ?string $description = NULL,
+    ?array $options = NULL,
+    array $keywords = []
+  ) {
+    $keywords += [
       'scope' => $scope,
       'label' => $label,
     ];
     if (NULL !== $description) {
       $keywords['description'] = $description;
-    }
-    if (NULL !== $prefix) {
-      $keywords['prefix'] = $prefix;
-    }
-    if (NULL !== $suffix) {
-      $keywords['suffix'] = $suffix;
     }
     if (NULL !== $options) {
       $keywords['options'] = JsonSchema::fromArray($options);

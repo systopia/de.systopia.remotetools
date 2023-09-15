@@ -28,7 +28,13 @@ use Civi\RemoteTools\JsonForms\JsonFormsControl;
  */
 class JsonFormsSubmitButton extends JsonFormsControl {
 
-  public function __construct(string $scope, string $data, string $label, ?string $confirm = NULL) {
+  public function __construct(
+    string $scope,
+    string $data,
+    string $label,
+    ?string $confirm = NULL,
+    array $keywords = []
+  ) {
     $options = [
       'type' => 'submit',
       'data' => $data,
@@ -37,7 +43,7 @@ class JsonFormsSubmitButton extends JsonFormsControl {
     if (NULL !== $confirm) {
       $options['confirm'] = $confirm;
     }
-    parent::__construct($scope, $label, NULL, NULL, NULL, $options);
+    parent::__construct($scope, $label, NULL, $options, $keywords);
   }
 
 }

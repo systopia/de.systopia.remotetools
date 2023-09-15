@@ -26,10 +26,23 @@ use Civi\RemoteTools\JsonForms\JsonFormsLayout;
  */
 class JsonFormsCloseableGroup extends JsonFormsLayout {
 
-  public function __construct(string $label, array $elements, ?string $description = NULL, ?array $options = NULL) {
+  public function __construct(
+    string $label,
+    array $elements,
+    ?string $description = NULL,
+    ?array $options = NULL,
+    array $keywords = []
+  ) {
     $options ??= [];
     $options['closeable'] = TRUE;
-    parent::__construct('Group', $label, $elements, $description, $options);
+    parent::__construct(
+      'Group',
+      $label,
+      $elements,
+      $description,
+      $options,
+      $keywords
+    );
   }
 
 }
