@@ -28,10 +28,10 @@ use Civi\RemoteTools\JsonForms\JsonFormsControl;
  */
 class JsonFormsHidden extends JsonFormsControl {
 
-  public function __construct(string $scope) {
-    parent::__construct($scope, '', NULL, NULL, NULL, [
+  public function __construct(string $scope, array $keywords) {
+    parent::__construct($scope, '', NULL, [
       'type' => 'hidden',
-    ]);
+    ], $keywords);
   }
 
 }

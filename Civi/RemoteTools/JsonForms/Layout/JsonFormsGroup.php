@@ -26,8 +26,21 @@ use Civi\RemoteTools\JsonForms\JsonFormsLayout;
  */
 class JsonFormsGroup extends JsonFormsLayout {
 
-  public function __construct(string $label, array $elements, ?string $description = NULL, ?array $options = NULL) {
-    parent::__construct('Group', $label, $elements, $description, $options);
+  public function __construct(
+    string $label,
+    array $elements,
+    ?string $description = NULL,
+    ?array $options = NULL,
+    array $keywords = []
+  ) {
+    parent::__construct(
+      'Group',
+      $label,
+      $elements,
+      $description,
+      $options,
+      $keywords
+    );
   }
 
 }

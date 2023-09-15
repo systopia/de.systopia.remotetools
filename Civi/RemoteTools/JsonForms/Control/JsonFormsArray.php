@@ -40,14 +40,15 @@ class JsonFormsArray extends JsonFormsControl {
     string $label,
     ?string $description = NULL,
     ?array $elements = NULL,
-    ?array $options = NULL
+    ?array $options = NULL,
+    array $keywords = []
   ) {
     if (NULL !== $elements) {
       $options['detail'] ??= [];
       $options['detail']['elements'] = $elements;
     }
 
-    parent::__construct($scope, $label, $description, NULL, NULL, $options);
+    parent::__construct($scope, $label, $description, $options, $keywords);
   }
 
   /**

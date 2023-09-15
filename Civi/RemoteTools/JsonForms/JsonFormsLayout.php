@@ -35,12 +35,12 @@ class JsonFormsLayout extends JsonFormsElement {
     string $label,
     array $elements,
     ?string $description = NULL,
-    ?array $options = NULL
+    ?array $options = NULL,
+    array $keywords = []
   ) {
-    $keywords = [
-      'label' => $label,
-      'elements' => JsonSchema::convertToJsonSchemaArray($elements),
-    ];
+    $keywords['label'] = $label;
+    $keywords['elements'] = JsonSchema::convertToJsonSchemaArray($elements);
+
     if (NULL !== $description) {
       $keywords['description'] = $description;
     }

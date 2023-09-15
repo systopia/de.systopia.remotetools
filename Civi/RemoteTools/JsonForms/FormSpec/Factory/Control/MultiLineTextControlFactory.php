@@ -19,12 +19,7 @@ final class MultiLineTextControlFactory extends AbstractControlFactory {
     Assert::isInstanceOf($input, MultilineTextField::class);
 
     return new JsonFormsControl(
-      $this->getScope($input),
-      $input->getLabel(),
-      $input->getDescription(),
-      NULL,
-      NULL,
-      ['multi' => TRUE],
+      $this->getScope($input), $input->getLabel(), $input->getDescription(), ['multi' => TRUE],
     );
   }
 

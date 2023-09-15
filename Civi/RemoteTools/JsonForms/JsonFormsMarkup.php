@@ -26,11 +26,11 @@ namespace Civi\RemoteTools\JsonForms;
  */
 class JsonFormsMarkup extends JsonFormsElement {
 
-  public function __construct(string $content, string $contentMediaType = 'text/html') {
+  public function __construct(string $content, string $contentMediaType = 'text/html', array $keywords = []) {
     parent::__construct('Markup', [
       'content' => $content,
       'contentMediaType' => $contentMediaType,
-    ]);
+    ] + $keywords);
   }
 
 }
