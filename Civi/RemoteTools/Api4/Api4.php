@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\Api4;
 use Civi\API\Request;
 use Civi\Api4\Generic\AbstractAction;
 use Civi\Api4\Generic\Result;
+use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Webmozart\Assert\Assert;
 
@@ -120,6 +121,13 @@ final class Api4 implements Api4Interface {
       'limit' => $limit,
       'offset' => $offset,
     ] + $extraParams);
+  }
+
+  public function getEntity(string $entityName, int $id, array $options = []): ?array {
+    return $this->execute($entityName, 'get', [
+      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'where' => [['id', '=', $id]],
+    ])->first();
   }
 
   public function updateEntity(string $entityName, int $id, array $values, array $options = []): Result {
