@@ -50,7 +50,8 @@ final class SelectUtil {
    */
   public static function isFieldSelected(string $field, array $select): bool {
     return [] === $select && !FieldUtil::isJoinedField($field)
-      || \Civi\Api4\Utils\SelectUtil::isFieldSelected($field, $select);
+      || \Civi\Api4\Utils\SelectUtil::isFieldSelected($field, $select)
+      || \Civi\Api4\Utils\SelectUtil::isFieldSelected('DISTINCT ' . $field, $select);
   }
 
 }
