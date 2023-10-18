@@ -94,6 +94,14 @@ interface Api4Interface {
   ): Result;
 
   /**
+   * @phpstan-param array{checkPermissions?: bool} $options
+   *   checkPermissions defaults to TRUE.
+   *
+   * @throws \CRM_Core_Exception
+   */
+  public function getEntity(string $entityName, int $id, array $options = []): ?array;
+
+  /**
    * @phpstan-param array<string, mixed> $values
    * @phpstan-param array{checkPermissions?: bool} $options
    *   checkPermissions defaults to TRUE.
