@@ -17,23 +17,18 @@
 
 declare(strict_types = 1);
 
-namespace Civi\Api4;
+namespace Civi\RemoteTools\EntityProfile;
 
-use Civi\Remoteactivity\Api4\Permissions;
-use Civi\RemoteTools\Api4\AbstractRemoteEntity;
+final class TestRemoteGroupReadOnlyEntityProfile extends ReadOnlyRemoteEntityProfile {
 
-final class TestRemoteProduct extends AbstractRemoteEntity {
+  public const NAME = 'readOnlyTest';
 
-  /**
-   * @inheritDoc
-   *
-   * @return array<string, array<string|string[]>>
-   */
-  public static function permissions(): array {
-    return [
-      'meta' => ['access TestRemoteProduct'],
-      'default' => ['access TestRemoteProduct'],
-    ];
+  public const ENTITY_NAME = 'Group';
+
+  public const REMOTE_ENTITY_NAME = 'TestRemoteGroup';
+
+  public function __construct() {
+    parent::__construct(self::NAME, self::ENTITY_NAME, self::REMOTE_ENTITY_NAME);
   }
 
 }

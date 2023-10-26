@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2023 SYSTOPIA GmbH
+ * Copyright (C) 2022 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,18 +17,29 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\EntityProfile;
+namespace Civi\RemoteTools\Fixture;
 
-final class TestRemoteProductReadOnlyEntityProfile extends ReadOnlyRemoteEntityProfile {
+use Civi\Api4\Group;
 
-  public const NAME = 'readOnlyTest';
+final class GroupFixture {
 
-  public const ENTITY_NAME = 'Product';
+  /**
+   * @param array<string, scalar> $values
+   *
+   * @return array
+   * @phpstan-return array<string, scalar|null>&array{id: int}
+   *
+   * @throws \CRM_Core_Exception
+   */
+  public static function addGroup(array $values = []): array {
+    static $count = 0;
+    ++$count;
 
-  public const REMOTE_ENTITY_NAME = 'TestRemoteProduct';
-
-  public function __construct() {
-    parent::__construct(self::NAME, self::ENTITY_NAME, self::REMOTE_ENTITY_NAME);
+    return Group::create(FALSE)
+      ->setValues($values + [
+        'name' => 'TestGroup' . $count,
+        'title' => 'TestTitle' . $count,
+      ])->execute()->single();
   }
 
 }

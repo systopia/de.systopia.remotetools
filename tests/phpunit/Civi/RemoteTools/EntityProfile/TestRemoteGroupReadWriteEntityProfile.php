@@ -22,13 +22,13 @@ namespace Civi\RemoteTools\EntityProfile;
 use Civi\RemoteTools\Form\FormSpec\Field\TextField;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
-final class TestRemoteProductReadWriteEntityProfile extends AbstractRemoteEntityProfile {
+final class TestRemoteGroupReadWriteEntityProfile extends AbstractRemoteEntityProfile {
 
   public const NAME = 'readWriteTest';
 
-  public const ENTITY_NAME = 'Product';
+  public const ENTITY_NAME = 'Group';
 
-  public const REMOTE_ENTITY_NAME = 'TestRemoteProduct';
+  public const REMOTE_ENTITY_NAME = 'TestRemoteGroup';
 
   public function getEntityName(): string {
     return self::ENTITY_NAME;
@@ -46,6 +46,9 @@ final class TestRemoteProductReadWriteEntityProfile extends AbstractRemoteEntity
     return (new FormSpec('Create Form Title'))
       ->addElement(
         (new TextField('name', 'Enter Name'))->setRequired(TRUE)
+      )
+      ->addElement(
+        (new TextField('title', 'Enter Name'))->setRequired(TRUE)
       );
   }
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2022 SYSTOPIA GmbH
+ * Copyright (C) 2023 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,25 +17,23 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\Fixture;
+namespace Civi\Api4;
 
-use Civi\Api4\Product;
+use Civi\Remoteactivity\Api4\Permissions;
+use Civi\RemoteTools\Api4\AbstractRemoteEntity;
 
-final class ProductFixture {
+final class TestRemoteGroup extends AbstractRemoteEntity {
 
   /**
-   * @param array<string, scalar> $values
+   * @inheritDoc
    *
-   * @return array
-   * @phpstan-return array<string, scalar|null>&array{id: int}
-   *
-   * @throws \CRM_Core_Exception
+   * @return array<string, array<string|string[]>>
    */
-  public static function addProduct(array $values = []): array {
-    return Product::create(FALSE)
-      ->setValues($values + [
-        'name' => 'TestProduct',
-      ])->execute()->single();
+  public static function permissions(): array {
+    return [
+      'meta' => ['access TestRemoteGroup'],
+      'default' => ['access TestRemoteGroup'],
+    ];
   }
 
 }
