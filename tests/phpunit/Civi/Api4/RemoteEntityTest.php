@@ -21,10 +21,10 @@ namespace Civi\Api4;
 
 use Civi\API\Exception\UnauthorizedException;
 use Civi\RemoteTools\AbstractRemoteToolsHeadlessTestCase;
-use Civi\RemoteTools\EntityProfile\TestRemoteProductReadOnlyEntityProfile;
-use Civi\RemoteTools\EntityProfile\TestRemoteProductReadWriteEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadOnlyEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadWriteEntityProfile;
 use Civi\RemoteTools\Exception\ValidationFailedException;
-use Civi\RemoteTools\Fixture\ProductFixture;
+use Civi\RemoteTools\Fixture\GroupFixture;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
 /**
@@ -38,15 +38,18 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
 
   protected function setUp(): void {
     parent::setUp();
-    $this->setUserPermissions(['access TestRemoteProduct']);
+    $this->setUserPermissions(['access TestRemoteGroup']);
+    Group::delete(FALSE)
+      ->addWhere('id', 'IS NOT NULL')
+      ->execute();
   }
 
   /**
    * @covers \Civi\RemoteTools\Api4\Action\RemoteCheckAccessAction
    */
   public function testCheckAccess(): void {
-    $result = TestRemoteProduct::checkAccess()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    $result = TestRemoteGroup::checkAccess()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->setAction('get')
       ->addValue('id', 1)
       ->execute();
@@ -59,8 +62,8 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    */
   public function testCheckAccessPermissionMissing(): void {
     $this->setUserPermissions(['access CiviCRM']);
-    $result = TestRemoteProduct::checkAccess()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    $result = TestRemoteGroup::checkAccess()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->setAction('get')
       ->addValue('id', 1)
       ->execute();
@@ -74,7 +77,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testCheckAccessWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::checkAccess()
+    TestRemoteGroup::checkAccess()
       ->setAction('get')
       ->addValue('id', 1)
       ->execute();
@@ -84,31 +87,31 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteDeleteAction
    */
   public function testDelete(): void {
-    $product1 = ProductFixture::addProduct();
-    $product2 = ProductFixture::addProduct();
+    $group1 = GroupFixture::addGroup();
+    $group2 = GroupFixture::addGroup();
 
-    $result = TestRemoteProduct::delete()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->addWhere('id', '=', $product1['id'])
+    $result = TestRemoteGroup::delete()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->addWhere('id', '=', $group1['id'])
       ->execute();
-    static::assertArraySubset([['id' => $product1['id']]], $result->getArrayCopy());
+    static::assertArraySubset([['id' => $group1['id']]], $result->getArrayCopy());
 
-    static::assertSame([$product2['id']], Product::get(FALSE)->execute()->column('id'));
+    static::assertSame([$group2['id']], Group::get(FALSE)->execute()->column('id'));
   }
 
   /**
    * @covers \Civi\RemoteTools\Api4\Action\RemoteDeleteAction
    */
   public function testDeletePermissionMissing(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
-    $result = TestRemoteProduct::delete()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->addWhere('id', '=', $product['id'])
+    $result = TestRemoteGroup::delete()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->addWhere('id', '=', $group['id'])
       ->execute();
     static::assertSame([], $result->getArrayCopy());
 
-    static::assertSame([$product['id']], Product::get(FALSE)->execute()->column('id'));
+    static::assertSame([$group['id']], Group::get(FALSE)->execute()->column('id'));
   }
 
   /**
@@ -117,7 +120,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testDeleteWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::delete()
+    TestRemoteGroup::delete()
       ->addWhere('id', '=', 12)
       ->execute();
   }
@@ -126,7 +129,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetActions
    */
   public function testGetActions(): void {
-    $result = TestRemoteProduct::getActions()->execute();
+    $result = TestRemoteGroup::getActions()->execute();
     static::assertEquals([
       'checkAccess',
       'delete',
@@ -146,11 +149,11 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetFieldsAction
    */
   public function testGetFields(): void {
-    $result = TestRemoteProduct::getFields()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    $result = TestRemoteGroup::getFields()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->execute();
 
-    $expectedFieldNames = Product::getFields(FALSE)->execute()->column('name');
+    $expectedFieldNames = Group::getFields(FALSE)->execute()->column('name');
     static::assertArraySubset($expectedFieldNames, $result->column('name'));
   }
 
@@ -158,7 +161,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetFieldsAction
    */
   public function testGetFieldsWithoutProfile(): void {
-    $result = TestRemoteProduct::getFields()->execute();
+    $result = TestRemoteGroup::getFields()->execute();
     static::assertCount(1, $result);
     static::assertSame(['id'], $result->column('name'));
   }
@@ -167,36 +170,37 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetAction
    */
   public function testGet(): void {
-    $result = TestRemoteProduct::get()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    $result = TestRemoteGroup::get()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->execute();
     static::assertCount(0, $result);
 
-    $product = ProductFixture::addProduct();
-    $product = Product::get(FALSE)
-      ->addWhere('id', '=', $product['id'])
+    $group = GroupFixture::addGroup();
+    $group = Group::get(FALSE)
+      ->addWhere('id', '=', $group['id'])
       ->execute()
       ->single();
-    $result = TestRemoteProduct::get()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    $result = TestRemoteGroup::get()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->addSelect('*', 'CAN_delete', 'CAN_update')
       ->execute();
     static::assertCount(1, $result);
-    $expectedRemoteProduct = $product + [
+    $expectedRemoteGroup = $group + [
       'CAN_delete' => FALSE,
       'CAN_update' => FALSE,
     ];
-    static::assertEquals([$expectedRemoteProduct], $result->getArrayCopy());
+    static::assertEquals([$expectedRemoteGroup], $result->getArrayCopy());
 
-    $result = TestRemoteProduct::get()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->addWhere('id', '=', $product['id'])
+    $result = TestRemoteGroup::get()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->addWhere('id', '=', $group['id'])
       ->execute();
     static::assertCount(1, $result);
-    static::assertEquals([$expectedRemoteProduct], $result->getArrayCopy());
+    static::assertEquals([$group], $result->getArrayCopy());
 
-    $result = TestRemoteProduct::get()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->addWhere('id', '=', $product['id'] + 1)
+    $result = TestRemoteGroup::get()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->addWhere('id', '=', $group['id'] + 1)
       ->execute();
     static::assertCount(0, $result);
   }
@@ -207,15 +211,15 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testGetWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::get()->execute();
+    TestRemoteGroup::get()->execute();
   }
 
   /**
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetCreateFormAction
    */
   public function testGetCreateForm(): void {
-    $result = TestRemoteProduct::getCreateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
+    $result = TestRemoteGroup::getCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
       ->execute();
     $resultJson = json_encode($result->getArrayCopy(), JSON_THROW_ON_ERROR);
@@ -229,8 +233,8 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testGetCreateFormUnauthorized(): void {
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to create entity is missing');
-    TestRemoteProduct::getCreateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    TestRemoteGroup::getCreateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
       ->execute();
   }
@@ -241,7 +245,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testGetCreateFormWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    $result = TestRemoteProduct::getCreateForm()
+    $result = TestRemoteGroup::getCreateForm()
       ->execute();
   }
 
@@ -249,20 +253,20 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction
    */
   public function testValidateCreateForm(): void {
-    $result = TestRemoteProduct::validateCreateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
+    $result = TestRemoteGroup::validateCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
-      ->setData(['foo' => 'bar'])
+      ->setData(['name' => 'bar', 'foo' => 'bar'])
       ->execute();
     static::assertFalse($result['valid']);
-    // "name" is required, additional properties are not allowed.
+    // "title" is required, additional properties (foo) are not allowed.
     // @phpstan-ignore-next-line
     static::assertCount(2, $result['errors']['']);
 
-    $result = TestRemoteProduct::validateCreateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
+    $result = TestRemoteGroup::validateCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
-      ->setData(['name' => 'bar'])
+      ->setData(['name' => 'bar', 'title' => 'Bar'])
       ->execute();
 
     static::assertTrue($result['valid']);
@@ -275,8 +279,8 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function tesValidateCreateFormUnauthorized(): void {
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to create entity is missing');
-    TestRemoteProduct::validateCreateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    TestRemoteGroup::validateCreateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
       ->setData(['foo' => 'bar'])
       ->execute();
@@ -288,7 +292,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testValidateCreateFormWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::validateCreateForm()
+    TestRemoteGroup::validateCreateForm()
       ->execute();
   }
 
@@ -296,15 +300,16 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitCreateFormAction
    */
   public function testSubmitCreateForm(): void {
-    $result = TestRemoteProduct::submitCreateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
+    $result = TestRemoteGroup::submitCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
-      ->setData(['name' => 'bar'])
+      ->setData(['name' => 'bar', 'title' => 'Bar'])
       ->execute();
     static::assertSame(['message' => 'Saved successfully'], $result->getArrayCopy());
 
-    $result = Product::get(FALSE)
+    $result = Group::get(FALSE)
       ->addWhere('name', '=', 'bar')
+      ->addWhere('title', '=', 'Bar')
       ->execute();
     static::assertCount(1, $result);
   }
@@ -315,8 +320,8 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testSubmitCreateFormUnauthorized(): void {
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to create entity is missing');
-    TestRemoteProduct::submitCreateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
+    TestRemoteGroup::submitCreateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
       ->setData(['foo' => 'bar'])
       ->execute();
@@ -328,7 +333,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
   public function testSubmitCreateFormWithoutProfile(): void {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::submitCreateForm()
+    TestRemoteGroup::submitCreateForm()
       ->execute();
   }
 
@@ -337,8 +342,8 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    */
   public function testSubmitCreateFormInvalidData(): void {
     $this->expectException(ValidationFailedException::class);
-    TestRemoteProduct::submitCreateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
+    TestRemoteGroup::submitCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
       ->setArguments(['x' => 'y'])
       ->setData(['foo' => 'bar'])
       ->execute();
@@ -348,10 +353,10 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction
    */
   public function testGetUpdateForm(): void {
-    $product = ProductFixture::addProduct();
-    $result = TestRemoteProduct::getUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'])
+    $group = GroupFixture::addGroup();
+    $result = TestRemoteGroup::getUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'])
       ->execute();
     $resultJson = json_encode($result->getArrayCopy(), JSON_THROW_ON_ERROR);
     static::assertStringContainsString('Update Form Title', $resultJson);
@@ -362,13 +367,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction
    */
   public function testGetUpdateFormUnauthorized(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::getUpdateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->setId($product['id'])
+    TestRemoteGroup::getUpdateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->setId($group['id'])
       ->execute();
   }
 
@@ -376,13 +381,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction
    */
   public function testGetUpdateFormEntityMissing(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::getUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'] + 1)
+    TestRemoteGroup::getUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'] + 1)
       ->execute();
   }
 
@@ -390,12 +395,12 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteGetUpdateFormAction
    */
   public function testGetUpdateFormWithoutProfile(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::getUpdateForm()
-      ->setId($product['id'])
+    TestRemoteGroup::getUpdateForm()
+      ->setId($group['id'])
       ->execute();
   }
 
@@ -403,11 +408,11 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction
    */
   public function testValidateUpdateForm(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
-    $result = TestRemoteProduct::validateUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'])
+    $result = TestRemoteGroup::validateUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['name' => 'x'])
       ->execute();
 
@@ -416,9 +421,9 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     // @phpstan-ignore-next-line
     static::assertCount(1, $result['errors']['name']);
 
-    $result = TestRemoteProduct::validateUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'])
+    $result = TestRemoteGroup::validateUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['name' => 'xy'])
       ->execute();
 
@@ -430,13 +435,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction
    */
   public function testValidateUpdateFormUnauthorized(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::validateUpdateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->setId($product['id'])
+    TestRemoteGroup::validateUpdateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['foo' => 'bar'])
       ->execute();
   }
@@ -445,13 +450,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction
    */
   public function testValidateUpdateFormEntityMissing(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::validateUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'] + 1)
+    TestRemoteGroup::validateUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'] + 1)
       ->setData(['name' => 'test'])
       ->execute();
   }
@@ -460,12 +465,12 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction
    */
   public function testValidateUpdateFormWithoutProfile(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::validateUpdateForm()
-      ->setId($product['id'])
+    TestRemoteGroup::validateUpdateForm()
+      ->setId($group['id'])
       ->execute();
   }
 
@@ -473,16 +478,16 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction
    */
   public function testSubmitUpdateForm(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
-    $result = TestRemoteProduct::submitUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'])
+    $result = TestRemoteGroup::submitUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['name' => 'xy'])
       ->execute();
     static::assertSame(['message' => 'Saved successfully'], $result->getArrayCopy());
 
-    $result = Product::get(FALSE)
+    $result = Group::get(FALSE)
       ->addWhere('name', '=', 'xy')
       ->execute();
     static::assertCount(1, $result);
@@ -492,13 +497,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction
    */
   public function testSubmitUpdateFormUnauthorized(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::submitUpdateForm()
-      ->setProfile(TestRemoteProductReadOnlyEntityProfile::NAME)
-      ->setId($product['id'])
+    TestRemoteGroup::submitUpdateForm()
+      ->setProfile(TestRemoteGroupReadOnlyEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['foo' => 'bar'])
       ->execute();
   }
@@ -507,13 +512,13 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction
    */
   public function testSubmitUpdateFormEntityMissing(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(UnauthorizedException::class);
     $this->expectExceptionMessage('Permission to update entity is missing');
-    TestRemoteProduct::submitUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'] + 1)
+    TestRemoteGroup::submitUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'] + 1)
       ->setData(['name' => 'test'])
       ->execute();
   }
@@ -522,12 +527,12 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction
    */
   public function testSubmitUpdateFormWithoutProfile(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
-    TestRemoteProduct::submitUpdateForm()
-      ->setId($product['id'])
+    TestRemoteGroup::submitUpdateForm()
+      ->setId($group['id'])
       ->execute();
   }
 
@@ -535,12 +540,12 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    * @covers \Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction
    */
   public function testSubmitUpdateFormInvalidData(): void {
-    $product = ProductFixture::addProduct();
+    $group = GroupFixture::addGroup();
 
     $this->expectException(ValidationFailedException::class);
-    TestRemoteProduct::submitUpdateForm()
-      ->setProfile(TestRemoteProductReadWriteEntityProfile::NAME)
-      ->setId($product['id'])
+    TestRemoteGroup::submitUpdateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setId($group['id'])
       ->setData(['name' => 'x'])
       ->execute();
   }

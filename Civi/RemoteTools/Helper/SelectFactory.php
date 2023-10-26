@@ -25,6 +25,8 @@ final class SelectFactory implements SelectFactoryInterface {
 
   /**
    * @inheritDoc
+   *
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
   public function getSelects(
     array $select,
@@ -32,12 +34,20 @@ final class SelectFactory implements SelectFactoryInterface {
     array $remoteFields,
     callable $implicitJoinAllowedCallback
   ): array {
+  // phpcs:enable
     if ([] === $select || in_array('*', $select, TRUE)) {
       $rowCountSelected = in_array('row_count', $select, TRUE);
-      $select = array_filter(
-        array_keys($remoteFields),
-        fn (string $fieldName) => !FieldUtil::isJoinedField($fieldName),
-      );
+      $select = array_keys(array_filter(
+        $remoteFields,
+        // @phpstan-ignore-next-line
+        fn (array $field) => (!FieldUtil::isJoinedField($field['name'])
+          // CiviCRM excludes fields of type "Extra" if not explicitly selected,
+          // see \Civi\Api4\Query\Api4SelectQuery. This includes fields like
+          // "has_base" for managed entity types which are fetched using a sub
+          // query.
+          && 'Extra' !== ($field['type'] ?? NULL))
+          || in_array($field['name'], $select, TRUE),
+      ));
       if ($rowCountSelected) {
         $select[] = 'row_count';
       }

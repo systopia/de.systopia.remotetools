@@ -142,6 +142,48 @@ final class SelectFactoryTest extends TestCase {
     ));
   }
 
+  public function testGetSelectsExtraFields(): void {
+    $entityFields = [
+      'fieldA' => [
+        'name' => 'fieldA',
+        'type' => 'Extra',
+      ],
+    ];
+    $remoteFields = [
+      'fieldA' => [
+        'name' => 'fieldA',
+        'type' => 'Extra',
+      ],
+      'fieldB' => [
+        'name' => 'fieldB',
+      ],
+    ];
+
+    $expectedSelectAll = [
+      'entity' => [],
+      'remote' => ['fieldB'],
+    ];
+
+    static::assertSame($expectedSelectAll, $this->selectFactory->getSelects(
+      [],
+      $entityFields,
+      $remoteFields,
+      fn() => FALSE,
+    ));
+
+    $expectedSelectExplicitly = [
+      'entity' => ['fieldA'],
+      'remote' => ['fieldA', 'fieldB'],
+    ];
+
+    static::assertSame($expectedSelectExplicitly, $this->selectFactory->getSelects(
+      ['*', 'fieldA'],
+      $entityFields,
+      $remoteFields,
+      fn() => FALSE,
+    ));
+  }
+
   public function testGetSelectsImplicitJoinNotInRemote(): void {
     $entityFields = [
       'fieldA' => [

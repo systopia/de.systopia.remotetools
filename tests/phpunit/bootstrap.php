@@ -1,7 +1,7 @@
 <?php
 
-use Civi\RemoteTools\EntityProfile\TestRemoteProductReadOnlyEntityProfile;
-use Civi\RemoteTools\EntityProfile\TestRemoteProductReadWriteEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadOnlyEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadWriteEntityProfile;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -31,11 +31,11 @@ $loader->register();
 \CRM_Core_I18n::singleton();
 
 function _remotetools_test_civicrm_container(ContainerBuilder $container): void {
-  $container->autowire(TestRemoteProductReadOnlyEntityProfile::class)
-    ->addTag(TestRemoteProductReadOnlyEntityProfile::SERVICE_TAG);
+  $container->autowire(TestRemoteGroupReadOnlyEntityProfile::class)
+    ->addTag(TestRemoteGroupReadOnlyEntityProfile::SERVICE_TAG);
 
-  $container->autowire(TestRemoteProductReadWriteEntityProfile::class)
-    ->addTag(TestRemoteProductReadWriteEntityProfile::SERVICE_TAG);
+  $container->autowire(TestRemoteGroupReadWriteEntityProfile::class)
+    ->addTag(TestRemoteGroupReadWriteEntityProfile::SERVICE_TAG);
 }
 
 /**
