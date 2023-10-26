@@ -26,11 +26,14 @@ final class GrantResult {
 
   public bool $granted;
 
+  public bool $showForm;
+
   public ?string $message;
 
-  private function __construct(bool $granted, ?string $message) {
+  private function __construct(bool $granted, ?string $message, ?bool $showForm = NULL) {
     $this->granted = $granted;
     $this->message = $message;
+    $this->showForm = $showForm ?? $granted;
   }
 
   public static function newPermitted(): self {
@@ -43,6 +46,18 @@ final class GrantResult {
    */
   public static function newDenied(?string $message = NULL): self {
     return new self(FALSE, $message);
+  }
+
+  /**
+   * Performing the actual action will be denied, but the form will still be
+   * delivered. This can be used to provide a "form" with only custom markup
+   * (no fields).
+   *
+   * @param string|null $message
+   *   If no message is specified, a generic message might be used.
+   */
+  public static function newDeniedWithForm(?string $message = NULL): self {
+    return new self(FALSE, $message, TRUE);
   }
 
 }

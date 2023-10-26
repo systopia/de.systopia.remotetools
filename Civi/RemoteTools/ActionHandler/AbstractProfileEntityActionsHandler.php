@@ -114,7 +114,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    */
   public function getCreateForm(RemoteGetCreateFormAction $action): array {
     $grantResult = $this->profile->isCreateGranted($action->getArguments(), $action->getResolvedContactId());
-    if (!$grantResult->granted) {
+    if (!$grantResult->showForm) {
       throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to create entity is missing'));
     }
 
@@ -133,7 +133,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   public function getUpdateForm(RemoteGetUpdateFormAction $action): array {
     $entityValues = $this->getEntityById($action->getId(), 'update', $action->getResolvedContactId());
     $grantResult = $this->profile->isUpdateGranted($entityValues, $action->getResolvedContactId());
-    if (NULL === $entityValues || !$grantResult->granted) {
+    if (NULL === $entityValues || !$grantResult->showForm) {
       throw new UnauthorizedException($grantResult->message ?? E::ts('Permission to update entity is missing'));
     }
 
