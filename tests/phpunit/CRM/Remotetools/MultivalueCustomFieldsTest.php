@@ -23,6 +23,8 @@ use CRM_Remotetools_ExtensionUtil as E;
 /**
  * Some very basic tests around RemoteEvents
  *
+ * @covers \civicrm_api3_remote_contact_get
+ *
  * @group headless
  */
 class CRM_Remotetools_MultivalueCustomFieldsTest extends CRM_Remotetools_RemoteContactTestBase
