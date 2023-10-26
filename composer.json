@@ -20,8 +20,8 @@
     ],
     "require": {
         "webmozart/assert": "^1",
-        "systopia/expression-language-ext": "dev-main",
-        "systopia/opis-json-schema-ext": "dev-main",
+        "systopia/expression-language-ext": "~0.1",
+        "systopia/opis-json-schema-ext": "~0.1",
         "psr/log": "<3"
     },
     "scripts": {
