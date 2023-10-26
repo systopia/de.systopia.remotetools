@@ -160,7 +160,41 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     static::assertSame(['form' => 'Test'], $this->handler->getCreateForm($actionMock));
   }
 
-  public function testGetCreateFormNotAllowed(): void {
+  public function testGetCreateFormDeiniedWithForm(): void {
+    $actionMock = $this->createActionMock(RemoteGetCreateFormAction::class);
+    $arguments = ['key' => 'value'];
+    $actionMock->setArguments($arguments);
+
+    $this->profileMock->method('isCreateGranted')
+      ->with($arguments, self::RESOLVED_CONTACT_ID)
+      ->willReturn(GrantResult::newDeniedWithForm());
+    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(FALSE);
+
+    $entityFields = [
+      'foo' => ['name' => 'foo'],
+      'bar' => ['name' => 'bar'],
+    ];
+    $this->api4Mock->method('execute')
+      ->with('Entity', 'getFields', [
+        'loadOptions' => FALSE,
+        'values' => [],
+        'checkPermissions' => FALSE,
+      ])
+      ->willReturn(new Result(array_values($entityFields)));
+
+    $formSpec = new FormSpec('Title');
+    $this->profileMock->method('getCreateFormSpec')
+      ->with($arguments, $entityFields, self::RESOLVED_CONTACT_ID)
+      ->willReturn($formSpec);
+
+    $this->handler->method('convertToGetFormActionResult')
+      ->with($formSpec)
+      ->willReturn(['form' => 'Test']);
+
+    static::assertSame(['form' => 'Test'], $this->handler->getCreateForm($actionMock));
+  }
+
+  public function testGetCreateFormDenied(): void {
     $actionMock = $this->createActionMock(RemoteGetCreateFormAction::class);
     $arguments = ['key' => 'value'];
     $actionMock->setArguments($arguments);
@@ -277,7 +311,62 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     static::assertSame(['form' => 'Test'], $this->handler->getUpdateForm($actionMock));
   }
 
-  public function testGetUpdateFormNotAllowed(): void {
+  public function testGetUpdateFormDeniedWithForm(): void {
+    $actionMock = $this->createActionMock(RemoteGetUpdateFormAction::class);
+    $actionMock->setId(12);
+
+    $entityValues = ['foo' => 'f'];
+    $entityFields = [
+      'foo' => ['name' => 'foo'],
+      'bar' => ['name' => 'bar'],
+    ];
+
+    $this->profileMock->method('getSelectFieldNames')
+      ->with(['*'], 'update', [], self::RESOLVED_CONTACT_ID)
+      ->willReturn(['foo']);
+    $this->profileMock->method('isUpdateGranted')
+      ->with($entityValues, self::RESOLVED_CONTACT_ID)
+      ->willReturn(GrantResult::newDeniedWithForm());
+    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
+
+    $valueMap = [
+      [
+        'Entity',
+        'get',
+        [
+          'select' => ['foo'],
+          'where' => [['id', '=', 12]],
+          'checkPermissions' => FALSE,
+        ],
+        new Result([$entityValues]),
+      ],
+      [
+        'Entity',
+        'getFields',
+        [
+          'loadOptions' => TRUE,
+          'values' => ['id' => 12],
+          'checkPermissions' => FALSE,
+        ],
+        new Result(array_values($entityFields)),
+      ],
+    ];
+    $this->api4Mock->method('execute')
+      ->willReturnMap($valueMap);
+
+    $formSpec = new FormSpec('Title');
+    $this->profileMock->method('getUpdateFormSpec')
+      ->with($entityValues, $entityFields, self::RESOLVED_CONTACT_ID)
+      ->willReturn($formSpec);
+
+    $this->handler->method('convertToGetFormActionResult')
+      ->with($formSpec)
+      ->willReturn(['form' => 'Test']);
+
+    static::assertSame(['form' => 'Test'], $this->handler->getUpdateForm($actionMock));
+  }
+
+  public function testGetUpdateFormDenied(): void {
     $actionMock = $this->createActionMock(RemoteGetUpdateFormAction::class);
     $actionMock->setId(12);
 
