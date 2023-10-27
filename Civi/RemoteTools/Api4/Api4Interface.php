@@ -23,11 +23,18 @@ use Civi\Api4\Generic\AbstractAction;
 use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 
+/**
+ * Gives access to APIv4 without static methods. This makes it possible to mock
+ * it in unit tests.
+ *
+ * "checkPermissions" is FALSE by default, but can be changed through method
+ * arguments.
+ */
 interface Api4Interface {
 
   /**
    * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to TRUE.
+   *   checkPermissions defaults to FALSE.
    *
    * @throws \CRM_Core_Exception
    */
@@ -43,7 +50,7 @@ interface Api4Interface {
   /**
    * @phpstan-param array<string, mixed> $values
    * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to TRUE.
+   *   checkPermissions defaults to FALSE.
    *
    * @throws \CRM_Core_Exception
    */
@@ -60,7 +67,7 @@ interface Api4Interface {
 
   /**
    * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to TRUE.
+   *   checkPermissions defaults to FALSE.
    *
    * @throws \CRM_Core_Exception
    */
@@ -95,7 +102,7 @@ interface Api4Interface {
 
   /**
    * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to TRUE.
+   *   checkPermissions defaults to FALSE.
    *
    * @phpstan-return array<string, mixed>|null
    *
@@ -106,7 +113,7 @@ interface Api4Interface {
   /**
    * @phpstan-param array<string, mixed> $values
    * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to TRUE.
+   *   checkPermissions defaults to FALSE.
    *
    * @throws \CRM_Core_Exception
    */
