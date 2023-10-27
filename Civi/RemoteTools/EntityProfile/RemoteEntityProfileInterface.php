@@ -152,7 +152,7 @@ interface RemoteEntityProfileInterface {
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Entity fields indexed by name.
    *
-   * @see isFormSpecNeedsFieldOptions
+   * @see getFieldLoadOptionsForFormSpec
    */
   public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec;
 
@@ -162,18 +162,21 @@ interface RemoteEntityProfileInterface {
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Entity fields indexed by name.
    *
-   * @see isFormSpecNeedsFieldOptions
+   * @see getFieldLoadOptionsForFormSpec
    */
   public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec;
 
   /**
-   * @return bool
-   *   TRUE if the options for an entity field are required to create form spec.
+   * @phpstan-return bool|array<string>
+   *    Value for the 'loadOptions' parameter when fetching entity fields that
+   *    are passed to the form spec creation methods. FALSE if no options are
+   *    required, TRUE to get options as id-label-pairs, or an array of the
+   *    required option properties.
    *
    * @see getCreateFormSpec
    * @see getUpdateFormSpec
    */
-  public function isFormSpecNeedsFieldOptions(): bool;
+  public function getFieldLoadOptionsForFormSpec();
 
   /**
    * @phpstan-param array<int|string, mixed> $arguments

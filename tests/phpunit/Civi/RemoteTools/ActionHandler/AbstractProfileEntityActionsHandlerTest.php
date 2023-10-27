@@ -134,7 +134,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isCreateGranted')
       ->with($arguments, self::RESOLVED_CONTACT_ID)
       ->willReturn(GrantResult::newPermitted());
-    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
+    $this->profileMock->method('getFieldLoadOptionsForFormSpec')->willReturn(TRUE);
 
     $entityFields = [
       'foo' => ['name' => 'foo'],
@@ -168,7 +168,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isCreateGranted')
       ->with($arguments, self::RESOLVED_CONTACT_ID)
       ->willReturn(GrantResult::newDeniedWithForm());
-    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(FALSE);
+    $this->profileMock->method('getFieldLoadOptionsForFormSpec')->willReturn(FALSE);
 
     $entityFields = [
       'foo' => ['name' => 'foo'],
@@ -219,7 +219,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isCreateGranted')
       ->with($arguments, self::RESOLVED_CONTACT_ID)
       ->willReturn(GrantResult::newPermitted());
-    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
+    $this->profileMock->method('getFieldLoadOptionsForFormSpec')->willReturn(TRUE);
 
     $entityFields = [
       'foo' => ['name' => 'foo'],
@@ -272,7 +272,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isUpdateGranted')
       ->with($entityValues, self::RESOLVED_CONTACT_ID)
       ->willReturn(GrantResult::newPermitted());
-    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(FALSE);
+    $this->profileMock->method('getFieldLoadOptionsForFormSpec')->willReturn(FALSE);
 
     $valueMap = [
       [
@@ -327,7 +327,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->profileMock->method('isUpdateGranted')
       ->with($entityValues, self::RESOLVED_CONTACT_ID)
       ->willReturn(GrantResult::newDeniedWithForm());
-    $this->profileMock->method('isFormSpecNeedsFieldOptions')->willReturn(TRUE);
+    $this->profileMock->method('getFieldLoadOptionsForFormSpec')->willReturn(TRUE);
 
     $valueMap = [
       [
