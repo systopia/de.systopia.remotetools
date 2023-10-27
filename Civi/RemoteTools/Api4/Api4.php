@@ -42,7 +42,7 @@ final class Api4 implements Api4Interface {
 
   public function countEntities(string $entityName, ConditionInterface $where, array $options): int {
     return $this->execute($entityName, 'get', [
-      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'select' => ['row_count'],
       'where' => [$where->toArray()],
     ])->countMatched();
@@ -60,6 +60,7 @@ final class Api4 implements Api4Interface {
     }
 
     $params = array_map(fn ($value) => $value instanceof ApiParameterInterface ? $value->toParam() : $value, $params);
+    $params['checkPermissions'] ??= FALSE;
 
     return Request::create($entityName, $action, $params);
   }
@@ -69,7 +70,7 @@ final class Api4 implements Api4Interface {
    */
   public function createEntity(string $entityName, array $values, array $options = []): Result {
     return $this->execute($entityName, 'create', [
-      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'values' => $values,
     ]);
   }
@@ -84,7 +85,7 @@ final class Api4 implements Api4Interface {
 
   public function deleteEntity(string $entityName, int $id, array $options = []): Result {
     return $this->execute($entityName, 'delete', [
-      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
     ]);
   }
@@ -124,14 +125,14 @@ final class Api4 implements Api4Interface {
 
   public function getEntity(string $entityName, int $id, array $options = []): ?array {
     return $this->execute($entityName, 'get', [
-      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
     ])->first();
   }
 
   public function updateEntity(string $entityName, int $id, array $values, array $options = []): Result {
     return $this->execute($entityName, 'update', [
-      'checkPermissions' => $options['checkPermissions'] ?? TRUE,
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
       'values' => $values,
     ]);

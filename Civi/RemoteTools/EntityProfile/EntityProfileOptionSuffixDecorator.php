@@ -123,7 +123,6 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
         'color',
         'icon',
       ],
-      'checkPermissions' => FALSE,
     ])->indexBy('name')
       ->column('options');
 
