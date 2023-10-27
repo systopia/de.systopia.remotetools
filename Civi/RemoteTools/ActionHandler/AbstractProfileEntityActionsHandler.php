@@ -348,7 +348,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
   protected function getEntityFieldsForFormSpec(?int $contactId, array $values = []): array {
     /** @phpstan-var array<string, array<string, mixed>> $fields */
     $fields = $this->api4->execute($this->profile->getEntityName(), 'getFields', [
-      'loadOptions' => $this->profile->isFormSpecNeedsFieldOptions(),
+      'loadOptions' => $this->profile->getFieldLoadOptionsForFormSpec(),
       'values' => $values,
       'checkPermissions' => $this->profile->isCheckApiPermissions($contactId),
     ])->indexBy('name')->getArrayCopy();

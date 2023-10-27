@@ -132,7 +132,7 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function isFormSpecNeedsFieldOptions(): bool {
+  public function getFieldLoadOptionsForFormSpec() {
     return FALSE;
   }
 
