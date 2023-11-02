@@ -24,9 +24,6 @@ use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
-/**
- * @todo: Filter information not relevant for remote API?
- */
 abstract class AbstractRemoteGetFieldsAction extends BasicGetFieldsAction {
 
   use ActionHandlerRunTrait;
