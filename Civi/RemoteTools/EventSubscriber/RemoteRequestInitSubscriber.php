@@ -66,7 +66,7 @@ class RemoteRequestInitSubscriber implements EventSubscriberInterface {
    * @throws \Civi\RemoteTools\Exception\ResolveContactIdFailedException
    */
   private function resolveContactId(RemoteActionInterface $request): ?int {
-    if (NULL === $request->getRemoteContactId()) {
+    if (NULL === $request->getRemoteContactId() || '' === $request->getRemoteContactId()) {
       return NULL;
     }
 

@@ -93,6 +93,15 @@ final class RemoteRequestInitSubscriberTest extends TestCase {
     static::assertNull($this->requestContext->getResolvedContactId());
   }
 
+  public function testRemoteContactIdEmpty(): void {
+    $this->requestMock->setRemoteContactId('');
+    $this->subscriber->onApiAuthorize($this->eventMock);
+
+    static::assertTrue($this->requestContext->isRemote());
+    static::assertSame('', $this->requestContext->getRemoteContactId());
+    static::assertNull($this->requestContext->getResolvedContactId());
+  }
+
   public function testRemoteContactIdResolved(): void {
     $this->requestMock->setRemoteContactId('test');
 
