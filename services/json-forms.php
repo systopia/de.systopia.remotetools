@@ -30,13 +30,17 @@ use Civi\RemoteTools\JsonSchema\FormSpec\FieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactory;
 use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\Validation\OpisValidatorFactory;
+use Civi\RemoteTools\JsonSchema\Validation\Translation\CiviValidationTranslator;
 use Civi\RemoteTools\JsonSchema\Validation\Validator;
 use Civi\RemoteTools\JsonSchema\Validation\ValidatorInterface;
 use Opis\JsonSchema\Validator as OpisValidator;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
+use Systopia\JsonSchema\Translation\TranslatorInterface;
 
 $container->register(OpisValidator::class)->setFactory([OpisValidatorFactory::class, 'getValidator']);
 $container->autowire(ValidatorInterface::class, Validator::class);
+
+$container->autowire(TranslatorInterface::class, CiviValidationTranslator::class);
 
 $container->autowire(JsonSchemaFactoryInterface::class, JsonSchemaFactory::class)
   ->addArgument(new TaggedIteratorArgument(

@@ -23,12 +23,16 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\Util\JsonConverter;
 use Opis\JsonSchema\Validator as OpisValidator;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Translation\TranslatorInterface;
 
 final class Validator implements ValidatorInterface {
 
+  private TranslatorInterface $translator;
+
   private OpisValidator $validator;
 
-  public function __construct(OpisValidator $validator) {
+  public function __construct(TranslatorInterface $translator, OpisValidator $validator) {
+    $this->translator = $translator;
     $this->validator = $validator;
   }
 
@@ -48,7 +52,7 @@ final class Validator implements ValidatorInterface {
       $this->validator->setMaxErrors($prevMaxErrors);
     }
 
-    return new ValidationResult(JsonConverter::toArray($validationData), $errorCollector);
+    return new ValidationResult(JsonConverter::toArray($validationData), $errorCollector, $this->translator);
   }
 
 }

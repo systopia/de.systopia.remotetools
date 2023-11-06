@@ -19,9 +19,11 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema\Validation;
 
-use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Errors\ValidationError;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Translation\ErrorTranslator;
+use Systopia\JsonSchema\Translation\NullTranslator;
+use Systopia\JsonSchema\Translation\TranslatorInterface;
 
 final class ValidationResult {
 
@@ -32,20 +34,16 @@ final class ValidationResult {
 
   private ErrorCollector $errorCollector;
 
-  private static function getErrorFormatter(): ErrorFormatter {
-    static $errorFormatter;
-    $errorFormatter ??= new ErrorFormatter();
-
-    return $errorFormatter;
-  }
+  private ErrorTranslator $errorTranslator;
 
   /**
    * @param array<string, mixed> $data
    * @param \Systopia\JsonSchema\Errors\ErrorCollector $errorCollector
    */
-  public function __construct(array $data, ErrorCollector $errorCollector) {
+  public function __construct(array $data, ErrorCollector $errorCollector, ?TranslatorInterface $translator = NULL) {
     $this->data = $data;
     $this->errorCollector = $errorCollector;
+    $this->errorTranslator = new ErrorTranslator($translator ?? new NullTranslator());
   }
 
   /**
@@ -59,14 +57,14 @@ final class ValidationResult {
    * @return array<string, non-empty-array<string>>
    */
   public function getErrorMessages(): array {
-    return static::mapErrorsToMessages($this->errorCollector->getErrors());
+    return $this->mapErrorsToMessages($this->errorCollector->getErrors());
   }
 
   /**
    * @return array<string, non-empty-array<string>>
    */
   public function getLeafErrorMessages(): array {
-    return static::mapErrorsToMessages($this->errorCollector->getLeafErrors());
+    return $this->mapErrorsToMessages($this->errorCollector->getLeafErrors());
   }
 
   public function hasErrors(): bool {
@@ -82,11 +80,10 @@ final class ValidationResult {
    *
    * @return array<string, non-empty-array<string>>
    */
-  private static function mapErrorsToMessages(array $errors): array {
-    $errorFormatter = static::getErrorFormatter();
+  private function mapErrorsToMessages(array $errors): array {
     return array_map(
       fn (array $errors): array => array_map(
-        fn (ValidationError $error): string => $errorFormatter->formatErrorMessage($error),
+        fn (ValidationError $error): string => $this->errorTranslator->trans($error),
         $errors
       ), $errors
     );
