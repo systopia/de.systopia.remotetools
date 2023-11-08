@@ -19,7 +19,6 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema\Validation;
 
-use CRM_Remotetools_ExtensionUtil as E;
 use Opis\JsonSchema\Validator;
 use Systopia\ExpressionLanguage\SystopiaExpressionLanguage;
 use Systopia\JsonSchema\Expression\SymfonyExpressionHandler;
