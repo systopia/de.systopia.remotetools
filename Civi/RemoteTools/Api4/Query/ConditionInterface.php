@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\Api4\Query;
 
 /**
  * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
- * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, so that is not possible
+ * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, though that is not possible.
  * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
  */
 interface ConditionInterface {
