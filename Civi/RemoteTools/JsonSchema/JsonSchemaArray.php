@@ -26,7 +26,6 @@ class JsonSchemaArray extends JsonSchema {
 
   /**
    * @param \Civi\RemoteTools\JsonSchema\JsonSchema $items
-   * @param array<string, scalar|JsonSchema|null> $keywords
    */
   public function __construct(JsonSchema $items, array $keywords = []) {
     parent::__construct([
