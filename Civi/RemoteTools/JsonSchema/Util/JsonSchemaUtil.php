@@ -38,4 +38,32 @@ final class JsonSchemaUtil {
     return $oneOf;
   }
 
+  /**
+   * @phpstan-param array<int|string> $path
+   */
+  public static function getPropertySchemaAt(JsonSchema $jsonSchema, array $path): ?JsonSchema {
+    foreach ($path as $pathElement) {
+      if (is_int($pathElement)
+        || ('array' === $jsonSchema->getKeywordValueOrDefault('type', NULL)
+          && 1 === preg_match('/^[1-9]*[0-9]$/', $pathElement))
+      ) {
+        $jsonSchema = $jsonSchema->getKeywordValueOrDefault('items', NULL);
+      }
+      else {
+        $properties = $jsonSchema->getKeywordValueOrDefault('properties', NULL);
+        if (!$properties instanceof JsonSchema) {
+          return NULL;
+        }
+
+        $jsonSchema = $properties->getKeywordValueOrDefault($pathElement, NULL);
+      }
+
+      if (!$jsonSchema instanceof JsonSchema) {
+        return NULL;
+      }
+    }
+
+    return $jsonSchema;
+  }
+
 }
