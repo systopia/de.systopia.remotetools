@@ -16,6 +16,7 @@ The following modules rely on this extension:
 
 * [Event Messages Extension](https://github.com/systopia/de.systopia.eventmessages)
 * [Remote Events Extension](https://github.com/systopia/de.systopia.remoteevent)
+* [Remote Activity Extension](https://github.com/systopia/de.systopia.remoteactivity)
 * (more to follow) 
 
 ## Requirements
