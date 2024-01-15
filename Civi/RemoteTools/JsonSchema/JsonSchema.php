@@ -19,17 +19,24 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema;
 
-class JsonSchema implements \JsonSerializable {
+use Webmozart\Assert\Assert;
+
+/**
+ * @phpstan-type TValue scalar|self|null|list<scalar|self|null>
+ *
+ * @implements \ArrayAccess<string, TValue>
+ */
+class JsonSchema implements \ArrayAccess, \JsonSerializable {
 
   /**
-   * @var array<string, scalar|self|null|array<int, scalar|self|null>>
+   * @var array<string, TValue>
    */
   protected array $keywords;
 
   /**
-   * @param array<int, mixed> $array
+   * @param list<mixed> $array
    *
-   * @return array<int, scalar|self|null>
+   * @return list<scalar|self|null>
    */
   public static function convertToJsonSchemaArray(array $array): array {
     return \array_values(\array_map(function ($value) {
@@ -69,7 +76,7 @@ class JsonSchema implements \JsonSerializable {
       }
     }
 
-    /** @var array<string, scalar|self|null|array<int, scalar|self|null>> $array */
+    /** @var array<string, TValue> $array */
     return new self($array);
   }
 
@@ -111,7 +118,7 @@ class JsonSchema implements \JsonSerializable {
   }
 
   /**
-   * @param array<string, scalar|self|null|array<int, scalar|self|null>> $keywords
+   * @param array<string, TValue> $keywords
    */
   public function __construct(array $keywords) {
     $this->keywords = $keywords;
@@ -119,7 +126,7 @@ class JsonSchema implements \JsonSerializable {
 
   /**
    * @param string $keyword
-   * @param scalar|self|null|array<int, scalar|self|null> $value
+   * @param TValue $value
    *
    * @return $this
    */
@@ -134,7 +141,7 @@ class JsonSchema implements \JsonSerializable {
   }
 
   /**
-   * @return array<string, scalar|self|null|array<int, scalar|self|null>>
+   * @return array<string, TValue>
    */
   public function getKeywords(): array {
     return $this->keywords;
@@ -147,7 +154,7 @@ class JsonSchema implements \JsonSerializable {
   /**
    * @param string $keyword
    *
-   * @return scalar|self|null|array<int, scalar|self|null>
+   * @return TValue
    */
   public function getKeywordValue(string $keyword) {
     if (!$this->hasKeyword($keyword)) {
@@ -164,6 +171,57 @@ class JsonSchema implements \JsonSerializable {
    */
   public function getKeywordValueOrDefault(string $keyword, $default) {
     return $this->hasKeyword($keyword) ? $this->keywords[$keyword] : $default;
+  }
+
+  /**
+   * @phpstan-param string|array<string> $path
+   *
+   * @return TValue
+   */
+  public function getKeywordValueAt($path) {
+    if (is_string($path)) {
+      $path = explode('/', ltrim($path, '/'));
+    }
+    else {
+      Assert::isArray($path);
+    }
+
+    $keywordValue = $this;
+    foreach ($path as $pathElement) {
+      if (!$keywordValue instanceof JsonSchema || !$keywordValue->hasKeyword($pathElement)) {
+        throw new \InvalidArgumentException(\sprintf('No keyword at "%s"', implode('/', $path)));
+      }
+
+      $keywordValue = $keywordValue->getKeywordValue($pathElement);
+    }
+
+    return $keywordValue;
+  }
+
+  /**
+   * @phpstan-param string|array<string> $path
+   * @param mixed $default
+   *
+   * @return mixed
+   */
+  public function getKeywordValueAtOrDefault($path, $default) {
+    if (is_string($path)) {
+      $path = explode('/', ltrim($path, '/'));
+    }
+    else {
+      Assert::isArray($path);
+    }
+
+    $keywordValue = $this;
+    foreach ($path as $pathElement) {
+      if (!$keywordValue instanceof JsonSchema || !$keywordValue->hasKeyword($pathElement)) {
+        return $default;
+      }
+
+      $keywordValue = $keywordValue->getKeywordValue($pathElement);
+    }
+
+    return $keywordValue;
   }
 
   /**
@@ -206,6 +264,57 @@ class JsonSchema implements \JsonSerializable {
   #[\ReturnTypeWillChange]
   public function jsonSerialize() {
     return $this->toArray();
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function offsetExists($keyword): bool {
+    return $this->hasKeyword($keyword);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  #[\ReturnTypeWillChange]
+  public function offsetGet($keyword) {
+    return $this->keywords[$keyword] ?? NULL;
+  }
+
+  /**
+   * @inheritDoc
+   *
+   * @param scalar|self|null|list<mixed>|array<string, mixed> $value
+   *   Array values can be scalars, NULL, or JsonSchema objects, and arrays
+   *   containing values of these three types.
+   */
+  public function offsetSet($keyword, $value): void {
+    if (!is_string($keyword)) {
+      throw new \InvalidArgumentException(sprintf('Offset must be of type string, got %s', gettype($keyword)));
+    }
+
+    if (\is_array($value)) {
+      if (\is_string(key($value))) {
+        // @phpstan-ignore-next-line
+        $value = self::fromArray($value);
+      }
+      else {
+        // @phpstan-ignore-next-line
+        $value = self::convertToJsonSchemaArray($value);
+      }
+    }
+    else {
+      static::assertAllowedValue($value);
+    }
+
+    $this->keywords[$keyword] = $value;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function offsetUnset($keyword): void {
+    unset($this->keywords[$keyword]);
   }
 
 }

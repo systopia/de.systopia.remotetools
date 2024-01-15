@@ -23,6 +23,46 @@ final class JsonSchemaTest extends TestCase {
     $schema->addKeyword('foo', 'bar2');
   }
 
+  public function testGetKeywordValueAt(): void {
+    $schemaB = new JsonSchema([
+      'c' => 'd',
+    ]);
+
+    $schema = new JsonSchema([
+      'a' => new JsonSchema([
+        'b' => $schemaB,
+      ]),
+    ]);
+
+    static::assertSame('d', $schema->getKeywordValueAt('a/b/c'));
+    static::assertSame('d', $schema->getKeywordValueAt('/a/b/c'));
+    static::assertSame('d', $schema->getKeywordValueAt(['a', 'b', 'c']));
+    static::assertSame($schemaB, $schema->getKeywordValueAt('a/b'));
+
+    static::expectException(\InvalidArgumentException::class);
+    static::expectExceptionMessage('No keyword at "a/c"');
+    $schema->getKeywordValueAt('/a/c');
+  }
+
+  public function testGetKeywordValueAtOrDefault(): void {
+    $schemaB = new JsonSchema([
+      'c' => 'd',
+    ]);
+
+    $schema = new JsonSchema([
+      'a' => new JsonSchema([
+        'b' => $schemaB,
+      ]),
+    ]);
+
+    static::assertSame('d', $schema->getKeywordValueAtOrDefault('a/b/c', 'X'));
+    static::assertSame('d', $schema->getKeywordValueAtOrDefault('/a/b/c', 'X'));
+    static::assertSame('d', $schema->getKeywordValueAtOrDefault(['a', 'b', 'c'], 'X'));
+    static::assertSame($schemaB, $schema->getKeywordValueAtOrDefault('a/b', 'X'));
+
+    static::assertSame('X', $schema->getKeywordValueAtOrDefault('/a/c', 'X'));
+  }
+
   public function testGetMissingKeyword(): void {
     $schema = new JsonSchema([]);
     static::expectException(\InvalidArgumentException::class);
@@ -113,6 +153,30 @@ final class JsonSchemaTest extends TestCase {
     static::expectException(\InvalidArgumentException::class);
     static::expectExceptionMessage('Expected associative array got non-associative array');
     JsonSchema::convertToJsonSchemaArray([['invalid']]);
+  }
+
+  public function testArrayAccess(): void {
+    $schema = new JsonSchema([]);
+
+    static::assertArrayNotHasKey('test', $schema);
+    static::assertNull($schema['test']);
+
+    $schema['test'] = 'x';
+    // @phpstan-ignore-next-line
+    static::assertArrayHasKey('test', $schema);
+    static::assertSame('x', $schema['test']);
+
+    $schema['test'] = ['x', 'y'];
+    static::assertSame(['x', 'y'], $schema['test']);
+
+    $test = ['x' => 'y', 'y' => new JsonSchema([])];
+    $schema['test'] = $test;
+    static::assertEquals(JsonSchema::fromArray($test), $schema['test']);
+
+    $schema['test'] = NULL;
+    // @phpstan-ignore-next-line
+    static::assertArrayHasKey('test', $schema);
+    static::assertNull($schema['test']);
   }
 
 }
