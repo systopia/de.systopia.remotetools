@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\JsonForms\Layout;
 use Civi\RemoteTools\JsonForms\JsonFormsLayout;
 
 /**
+ * Non-standard JSON Forms layout.
+ *
  * @codeCoverageIgnore
  */
 class JsonFormsCloseableGroup extends JsonFormsLayout {
