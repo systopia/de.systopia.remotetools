@@ -24,21 +24,20 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 class JsonFormsLayout extends JsonFormsElement {
 
   /**
-   * @param string $type
-   * @param string $label
    * @param array<int, JsonFormsElement> $elements
-   * @param string|null $description
    * @param array<string, mixed>|null $options
    */
   public function __construct(
     string $type,
-    string $label,
+    ?string $label,
     array $elements,
     ?string $description = NULL,
     ?array $options = NULL,
     array $keywords = []
   ) {
-    $keywords['label'] = $label;
+    if (NULL !== $label) {
+      $keywords['label'] = $label;
+    }
     $keywords['elements'] = JsonSchema::convertToJsonSchemaArray($elements);
 
     if (NULL !== $description) {

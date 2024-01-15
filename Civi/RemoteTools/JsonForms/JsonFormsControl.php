@@ -33,15 +33,15 @@ class JsonFormsControl extends JsonFormsElement {
    */
   public function __construct(
     string $scope,
-    string $label,
+    ?string $label,
     ?string $description = NULL,
     ?array $options = NULL,
     array $keywords = []
   ) {
-    $keywords += [
-      'scope' => $scope,
-      'label' => $label,
-    ];
+    $keywords += ['scope' => $scope];
+    if (NULL !== $label) {
+      $keywords['label'] = $label;
+    }
     if (NULL !== $description) {
       $keywords['description'] = $description;
     }

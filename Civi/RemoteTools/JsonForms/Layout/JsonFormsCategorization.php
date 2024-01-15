@@ -33,7 +33,7 @@ class JsonFormsCategorization extends JsonFormsLayout {
   ) {
     parent::__construct(
       'Categorization',
-      '',
+      NULL,
       $elements,
       NULL,
       $options,
