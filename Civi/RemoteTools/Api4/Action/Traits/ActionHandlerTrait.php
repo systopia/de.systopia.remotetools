@@ -24,7 +24,7 @@ use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
 trait ActionHandlerTrait {
 
-  protected ActionHandlerInterface $_actionHandler;
+  private ActionHandlerInterface $actionHandler;
 
   /**
    * @var bool
@@ -43,8 +43,19 @@ trait ActionHandlerTrait {
   }
 
   protected function initActionHandler(?ActionHandlerInterface $actionHandler): void {
-    // @phpstan-ignore-next-line
-    $this->_actionHandler = $actionHandler ?? \Civi::service(ActionHandlerInterface::class);
+    if (NULL !== $actionHandler) {
+      $this->actionHandler = $actionHandler;
+    }
+  }
+
+  protected function getActionHandler(): ActionHandlerInterface {
+    if (!isset($this->actionHandler)) {
+      /** @var \Civi\RemoteTools\ActionHandler\ActionHandlerInterface $actionHandler */
+      $actionHandler = \Civi::service(ActionHandlerInterface::class);
+      $this->actionHandler = $actionHandler;
+    }
+
+    return $this->actionHandler;
   }
 
   /**
@@ -55,19 +66,14 @@ trait ActionHandlerTrait {
    *   _ignoreMissingActionHandler is FALSE.
    */
   protected function getHandlerResult() {
-    if (!isset($this->_actionHandler)) {
-      // @phpstan-ignore-next-line
-      $this->_actionHandler = \Civi::service(ActionHandlerInterface::class);
-    }
-
     if (!$this->_ignoreMissingActionHandler) {
       // @phpstan-ignore-next-line
-      return $this->_actionHandler->{$this->getActionName()}($this);
+      return $this->getActionHandler()->{$this->getActionName()}($this);
     }
 
     try {
       // @phpstan-ignore-next-line
-      return $this->_actionHandler->{$this->getActionName()}($this);
+      return $this->getActionHandler()->{$this->getActionName()}($this);
     }
     catch (ActionHandlerNotFoundException $e) {
       return [];
