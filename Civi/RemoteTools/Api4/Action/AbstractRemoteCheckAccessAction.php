@@ -19,17 +19,26 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
-use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
-use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
+use Civi\Api4\Generic\CheckAccessAction;
+use Civi\Api4\Generic\Result;
+use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
+use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-final class RemoteCheckAccessAction extends AbstractRemoteCheckAccessAction implements ProfileAwareRemoteActionInterface {
-// phpcs:enable
-  use ProfileParameterTrait;
+abstract class AbstractRemoteCheckAccessAction extends CheckAccessAction implements RemoteActionInterface {
 
-  use RemoteContactIdParameterOptionalTrait;
+  use ActionHandlerRunTrait;
 
-  use ResolvedContactIdOptionalTrait;
+  public function _run(Result $result): void {
+    parent::_run($result);
+    if (($result->first()['access'] ?? NULL) === TRUE) {
+      try {
+        $this->doRun($result);
+      }
+      // @phpstan-ignore-next-line
+      catch (ActionHandlerNotFoundException $e) {
+        // @ignoreException Allow access if there's no action handler.
+      }
+    }
+  }
 
 }
