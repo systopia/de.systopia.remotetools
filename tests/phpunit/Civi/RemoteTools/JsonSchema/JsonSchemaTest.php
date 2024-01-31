@@ -162,7 +162,6 @@ final class JsonSchemaTest extends TestCase {
     static::assertNull($schema['test']);
 
     $schema['test'] = 'x';
-    // @phpstan-ignore-next-line
     static::assertArrayHasKey('test', $schema);
     static::assertSame('x', $schema['test']);
 
@@ -174,7 +173,6 @@ final class JsonSchemaTest extends TestCase {
     static::assertEquals(JsonSchema::fromArray($test), $schema['test']);
 
     $schema['test'] = NULL;
-    // @phpstan-ignore-next-line
     static::assertArrayHasKey('test', $schema);
     static::assertNull($schema['test']);
   }

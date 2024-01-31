@@ -24,7 +24,7 @@ use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
 trait ActionHandlerTrait {
 
-  private ActionHandlerInterface $actionHandler;
+  private ?ActionHandlerInterface $actionHandler = NULL;
 
   /**
    * @var bool
@@ -39,23 +39,27 @@ trait ActionHandlerTrait {
           ActionHandlerInterface $actionHandler = NULL
   ) {
     parent::__construct($entityName, $actionName);
-    $this->initActionHandler($actionHandler);
+    $this->actionHandler = $actionHandler;
   }
 
+  /**
+   * @deprecated Use setActionHandler() instead.
+   */
   protected function initActionHandler(?ActionHandlerInterface $actionHandler): void {
-    if (NULL !== $actionHandler) {
-      $this->actionHandler = $actionHandler;
-    }
+    $this->setActionHandler($actionHandler);
   }
 
   protected function getActionHandler(): ActionHandlerInterface {
-    if (!isset($this->actionHandler)) {
-      /** @var \Civi\RemoteTools\ActionHandler\ActionHandlerInterface $actionHandler */
-      $actionHandler = \Civi::service(ActionHandlerInterface::class);
-      $this->actionHandler = $actionHandler;
-    }
+    // @phpstan-ignore-next-line
+    return $this->actionHandler ??= \Civi::service(ActionHandlerInterface::class);
+  }
 
-    return $this->actionHandler;
+  /**
+   * @param \Civi\RemoteTools\ActionHandler\ActionHandlerInterface|null $actionHandler
+   *   If NULL, the default will be used.
+   */
+  protected function setActionHandler(?ActionHandlerInterface $actionHandler): void {
+    $this->actionHandler = $actionHandler;
   }
 
   /**
