@@ -13,6 +13,7 @@ final class FormSpec extends AbstractFormElementContainer {
   private array $validators = [];
 
   public function getDataTransformer(): DataTransformerInterface {
+    // @phpstan-ignore-next-line
     return $this->dataTransformer ??= new IdentityDataTransformer();
   }
 
