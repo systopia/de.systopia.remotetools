@@ -32,8 +32,16 @@ final class OptionFieldFactory extends AbstractFieldJsonSchemaFactory {
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\AbstractOptionField $field */
     $keywords = [
       'type' => ['string', 'integer'],
-      'oneOf' => JsonSchemaUtil::buildTitledOneOf($field->getOptions()),
     ];
+
+    // 'oneOf' must not be empty.
+    if ($field->getOptions() !== []) {
+      $keywords['oneOf'] = JsonSchemaUtil::buildTitledOneOf($field->getOptions());
+    }
+    elseif (!$field->isNullable()) {
+      $keywords['oneOf'] = JsonSchema::fromArray(['const' => NULL]);
+    }
+
     if ($field->isNullable()) {
       $keywords['type'][] = 'null';
       $keywords['oneOf'][] = JsonSchema::fromArray(['const' => NULL]);

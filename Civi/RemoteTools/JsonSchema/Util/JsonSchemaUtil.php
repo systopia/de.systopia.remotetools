@@ -24,10 +24,12 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 final class JsonSchemaUtil {
 
   /**
-   * @phpstan-param array<int|string, string> $titles
+   * The 'oneOf' keyword must not be empty.
+   *
+   * @phpstan-param non-empty-array<int|string, string> $titles
    *   Allowed values mapped to titles.
    *
-   * @phpstan-return array<JsonSchema> To be used as value of "oneOf" keyword.
+   * @phpstan-return non-empty-array<JsonSchema> To be used as value of "oneOf" keyword.
    */
   public static function buildTitledOneOf(array $titles): array {
     $oneOf = [];
