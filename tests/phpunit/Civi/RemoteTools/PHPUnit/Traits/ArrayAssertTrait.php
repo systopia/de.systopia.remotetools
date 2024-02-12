@@ -25,6 +25,18 @@ use SebastianBergmann\Exporter\Exporter;
 trait ArrayAssertTrait {
 
   /**
+   * @phpstan-param array<mixed> $expected
+   * @phpstan-param array<mixed> $actual
+   */
+  public static function assertArrayHasAllValues(array $expected, array $actual): void {
+    $missingValues = array_diff($expected, $actual);
+    Assert::assertEmpty($missingValues, sprintf(
+      'Actual array is missing these values: %s',
+      self::getExporter()->export($missingValues)
+    ));
+  }
+
+  /**
    * @phpstan-param array<int|string> $expectedKeys
    * @param mixed[] $actual
    */
