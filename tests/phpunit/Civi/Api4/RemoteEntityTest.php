@@ -25,6 +25,7 @@ use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadOnlyEntityProfile;
 use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadWriteEntityProfile;
 use Civi\RemoteTools\Exception\ValidationFailedException;
 use Civi\RemoteTools\Fixture\GroupFixture;
+use Civi\RemoteTools\PHPUnit\Traits\ArrayAssertTrait;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
 /**
@@ -35,6 +36,8 @@ use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
 
   use ArraySubsetAsserts;
+
+  use ArrayAssertTrait;
 
   protected function setUp(): void {
     parent::setUp();
@@ -130,7 +133,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
    */
   public function testGetActions(): void {
     $result = TestRemoteGroup::getActions()->execute();
-    static::assertEquals([
+    static::assertArrayHasAllValues([
       'checkAccess',
       'delete',
       'get',
