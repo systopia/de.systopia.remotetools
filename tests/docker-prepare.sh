@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail
 
-XCM_VERSION=1.10.0
-IDENTITYTRACKER_VERSION=1.3
+XCM_VERSION=1.12.0
+IDENTITYTRACKER_VERSION=1.4-aplha4
 
 EXT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 EXT_NAME=$(basename "$EXT_DIR")
@@ -31,7 +31,7 @@ else
   civicrm-docker-install
 
   cv ext:download "de.systopia.xcm@https://github.com/systopia/de.systopia.xcm/releases/download/$XCM_VERSION/de.systopia.xcm-$XCM_VERSION.zip"
-  cv ext:download "de.systopia.identitytracker@https://github.com/systopia/de.systopia.identitytracker/releases/download/$IDENTITYTRACKER_VERSION/de.systopia.identitytracker-$IDENTITYTRACKER_VERSION.zip"
+  cv ext:download "de.systopia.identitytracker@https://github.com/systopia/de.systopia.identitytracker/archive/refs/tags/$IDENTITYTRACKER_VERSION.zip"
   cv ext:enable "$EXT_NAME"
 
   # For headless tests these files need to exist.
