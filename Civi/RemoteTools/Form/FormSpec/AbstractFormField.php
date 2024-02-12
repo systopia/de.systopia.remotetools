@@ -7,6 +7,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
  * @template T of scalar
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 abstract class AbstractFormField extends AbstractFormInput {
 

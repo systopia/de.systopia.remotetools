@@ -29,6 +29,8 @@ use Civi\Api4\Generic\AbstractAction;
  *
  * Optionally a priority can be defined with the tag attribute "priority".
  * (Default is 0.)
+ *
+ * @api
  */
 interface ActionHandlerProviderInterface {
 

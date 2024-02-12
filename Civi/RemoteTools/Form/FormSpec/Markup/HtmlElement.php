@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Form\FormSpec\Markup;
 
 use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 
+/**
+ * @api
+ */
 final class HtmlElement implements FormElementInterface {
 
   private string $content;

@@ -26,6 +26,8 @@ use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfileInterface {
 

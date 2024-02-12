@@ -5,6 +5,9 @@ namespace Civi\RemoteTools\Form\FormSpec;
 
 use Civi\RemoteTools\Form\FormSpec\Button\SubmitButton;
 
+/**
+ * @api
+ */
 abstract class AbstractFormElementContainer {
 
   private string $title;

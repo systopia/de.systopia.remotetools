@@ -22,6 +22,9 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Util\ResultUtil;
 
+/**
+ * @api
+ */
 trait ActionHandlerRunTrait {
 
   use ActionHandlerTrait;

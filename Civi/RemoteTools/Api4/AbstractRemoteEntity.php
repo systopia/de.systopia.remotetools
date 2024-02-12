@@ -32,6 +32,9 @@ use Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction;
 
+/**
+ * @api
+ */
 class AbstractRemoteEntity extends AbstractEntity {
 
   /**

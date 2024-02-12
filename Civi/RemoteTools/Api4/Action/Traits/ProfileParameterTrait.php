@@ -26,6 +26,8 @@ use Webmozart\Assert\Assert;
  * @method $this setProfile(string $profile)
  *
  * @see \Civi\RemoteTools\Api4\Action\ProfileAwareActionInterface
+ *
+ * @api
  */
 trait ProfileParameterTrait {
 

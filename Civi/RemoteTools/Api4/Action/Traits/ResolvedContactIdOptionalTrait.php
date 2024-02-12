@@ -23,6 +23,8 @@ use Civi\RemoteTools\RequestContext\RequestContextInterface;
 
 /**
  * @see \Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait
+ *
+ * @api
  */
 trait ResolvedContactIdOptionalTrait {
 

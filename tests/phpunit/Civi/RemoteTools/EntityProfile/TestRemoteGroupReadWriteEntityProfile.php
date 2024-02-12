@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
+use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\Form\FormSpec\Field\TextField;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
@@ -40,6 +41,10 @@ final class TestRemoteGroupReadWriteEntityProfile extends AbstractRemoteEntityPr
 
   public function getRemoteEntityName(): string {
     return self::REMOTE_ENTITY_NAME;
+  }
+
+  public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
+    return NULL;
   }
 
   public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec {

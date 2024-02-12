@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Form\FormSpec\Button;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormInput;
 
+/**
+ * @api
+ */
 final class SubmitButton extends AbstractFormInput {
 
   private string $value;

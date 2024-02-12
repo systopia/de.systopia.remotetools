@@ -20,20 +20,22 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Api4\Query;
 
 /**
- * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, so that is not possible
- * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
+ * Actually this should be: array{string, list<comparisonT|compositeConditionT>}, though that is not possible.
+ * @phpstan-type compositeConditionT array{string, list<array<int, mixed>>}
+ *
+ * @api
  */
 final class CompositeCondition implements ConditionInterface {
 
   private string $operator;
 
   /**
-   * @var array<ConditionInterface>
+   * @var list<ConditionInterface>
    */
   private array $conditions;
 
   /**
-   * @param array<string, scalar|non-empty-array<int, scalar>|null> $fieldValuePairs
+   * @param array<string, scalar|non-empty-list<scalar>|null> $fieldValuePairs
    *
    * @return static
    */
@@ -62,11 +64,12 @@ final class CompositeCondition implements ConditionInterface {
 
   public function __construct(string $operation, ConditionInterface ...$conditions) {
     $this->operator = $operation;
+    /** @phpstan-var list<ConditionInterface> $conditions */
     $this->conditions = $conditions;
   }
 
   /**
-   * @return array<ConditionInterface>
+   * @return list<ConditionInterface>
    */
   public function getConditions(): array {
     return $this->conditions;

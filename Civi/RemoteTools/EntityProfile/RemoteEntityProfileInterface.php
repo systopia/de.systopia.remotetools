@@ -35,9 +35,12 @@ use Civi\RemoteTools\Form\FormSpec\FormSpec;
  * Instead of the constants mentioned above the values can be provided as tag
  * attributes with lower cased constant name as key.
  *
- * Additionally a custom handler class might be specified with the constant
+ * Additionally, a custom handler class might be specified with the constant
  * HANDLER_CLASS (or lower cased as tag attribute). The constructor must have an
  * argument named $profile. All other arguments have to be autowireable.
+ *
+ * This class shall not be implemented directly, but AbstractRemoteEntityProfile
+ * or AbstractRemoteEntityProfileDecorator should be extended instead.
  *
  * Please note: With special where conditions it is possible to find out values
  * of not exposed fields. (Via implicit joins even of referenced entities.)
@@ -51,16 +54,22 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @return string The name of the internal entity.
+   *
+   * @api
    */
   public function getEntityName(): string;
 
   /**
    * @return string The name of the profile.
+   *
+   * @api
    */
   public function getName(): string;
 
   /**
    * @return string The name of the remote entity.
+   *
+   * @api
    */
   public function getRemoteEntityName(): string;
 
@@ -70,6 +79,8 @@ interface RemoteEntityProfileInterface {
    *   API user not to the resolved remote contact. For this reason FALSE is
    *   recommended in most cases, so the API user just needs permission to
    *   access the remote API.
+   *
+   * @api
    */
   public function isCheckApiPermissions(?int $contactId): bool;
 
@@ -85,6 +96,8 @@ interface RemoteEntityProfileInterface {
    *   Fields indexed by field name.
    *
    * @see convertRemoteFieldComparison()
+   *
+   * @api
    */
   public function getRemoteFields(array $entityFields, ?int $contactId): array;
 
@@ -93,6 +106,8 @@ interface RemoteEntityProfileInterface {
    * is returned, no condition will be applied.
    *
    * @param \Civi\RemoteTools\Api4\Query\Comparison $comparison
+   *
+   * @api
    */
   public function convertRemoteFieldComparison(Comparison $comparison, ?int $contactId): ?ConditionInterface;
 
@@ -106,6 +121,8 @@ interface RemoteEntityProfileInterface {
    * @return bool TRUE if the implicit join is allowed.
    *
    * @see getRemoteFields()
+   *
+   * @api
    */
   public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool;
 
@@ -120,13 +137,15 @@ interface RemoteEntityProfileInterface {
    *
    * @phpstan-return array<string>
    *   The field names to select. In most cases just $select or $select with
-   *   additional field names, e.g. if required to decide if update is allowed,
-   *   or if there's no 1:1 mapping between entity fields and remote fields.
-   *   If fields are added it is ensured that the records returned on "get"
-   *   only contain remote fields or allowed implicit joins.
+   *   additional field names, e.g. if required to decide if update/delete is
+   *   allowed, or if there's no 1:1 mapping between entity fields and remote
+   *   fields. If fields are added it is ensured that the records returned on
+   *   "get" only contain remote fields or allowed implicit joins.
    *
    * @see getRemoteFields()
    * @see isImplicitJoinAllowed()
+   *
+   * @api
    */
   public function getSelectFieldNames(array $select, string $actionName, array $remoteSelect, ?int $contactId): array;
 
@@ -135,6 +154,8 @@ interface RemoteEntityProfileInterface {
    *
    * @return \Civi\RemoteTools\Api4\Query\ConditionInterface
    *   Conditions applied to "where".
+   *
+   * @api
    */
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface;
 
@@ -144,25 +165,39 @@ interface RemoteEntityProfileInterface {
    *   Selected field names. Maybe empty on create or update.
    *
    * @phpstan-return array<string, mixed>
+   *
+   * @api
    */
   public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array;
 
   /**
+   * If isCreateGranted() always returns deny, this method won't be called and
+   * might throw a \BadMethodCallException.
+   *
    * @phpstan-param array<int|string, mixed> $arguments
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Entity fields indexed by name.
    *
-   * @see getFieldLoadOptionsForFormSpec
+   * @see getFieldLoadOptionsForFormSpec()
+   * @see isCreateGranted()
+   *
+   * @api
    */
   public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec;
 
   /**
+   * If isUpdateGranted() always returns deny, this method won't be called and
+   * might throw a \BadMethodCallException.
+   *
    * @phpstan-param array<string, mixed> $entityValues
    *   Should be used for default values in form spec.
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    *   Entity fields indexed by name.
    *
-   * @see getFieldLoadOptionsForFormSpec
+   * @see getFieldLoadOptionsForFormSpec()
+   * @see isUpdateGranted()
+   *
+   * @api
    */
   public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec;
 
@@ -173,18 +208,24 @@ interface RemoteEntityProfileInterface {
    *    required, TRUE to get options as id-label-pairs, or an array of the
    *    required option properties.
    *
-   * @see getCreateFormSpec
-   * @see getUpdateFormSpec
+   * @see getCreateFormSpec()
+   * @see getUpdateFormSpec()
+   *
+   * @api
    */
   public function getFieldLoadOptionsForFormSpec();
 
   /**
    * @phpstan-param array<int|string, mixed> $arguments
+   *
+   * @api
    */
   public function isCreateGranted(array $arguments, ?int $contactId): GrantResult;
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
+   *
+   * @api
    */
   public function isDeleteGranted(array $entityValues, ?int $contactId): GrantResult;
 
@@ -193,6 +234,8 @@ interface RemoteEntityProfileInterface {
    *   If NULL, entity to update was not found. The update won't be granted in
    *   that case, anyway, but the implementation might want to override the
    *   message in that case.
+   *
+   * @api
    */
   public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult;
 
@@ -205,6 +248,8 @@ interface RemoteEntityProfileInterface {
    * @return string
    *   The message that is shown when an entity was successfully inserted or
    *   updated.
+   *
+   * @api
    */
   public function getSaveSuccessMessage(
     array $newValues,

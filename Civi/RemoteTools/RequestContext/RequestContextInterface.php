@@ -19,6 +19,9 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\RequestContext;
 
+/**
+ * @api
+ */
 interface RequestContextInterface {
 
   /**

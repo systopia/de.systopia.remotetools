@@ -24,6 +24,9 @@ use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
+/**
+ * @api
+ */
 abstract class AbstractRemoteCheckAccessAction extends CheckAccessAction implements RemoteActionInterface {
 
   use ActionHandlerRunTrait;

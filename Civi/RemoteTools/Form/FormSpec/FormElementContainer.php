@@ -5,6 +5,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 class FormElementContainer extends AbstractFormElementContainer implements FormElementInterface {
 

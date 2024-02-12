@@ -9,6 +9,8 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  * @extends AbstractFormField<bool>
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class CheckboxField extends AbstractFormField {
 

@@ -7,6 +7,8 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
  * @extends AbstractNumberField<int>
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class IntegerField extends AbstractNumberField {
 

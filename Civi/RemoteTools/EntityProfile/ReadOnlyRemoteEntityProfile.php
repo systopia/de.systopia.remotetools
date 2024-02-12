@@ -19,15 +19,16 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\EntityProfile;
 
-use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
-class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
+class ReadOnlyRemoteEntityProfile extends AbstractRemoteEntityProfile {
 
   private string $entityName;
 
@@ -69,50 +70,8 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
   /**
    * @inheritDoc
    */
-  public function isCheckApiPermissions(?int $contactId): bool {
-    return FALSE;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getRemoteFields(array $entityFields, ?int $contactId): array {
-    return $entityFields;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getSelectFieldNames(array $select, string $actionName, array $remoteSelect, ?int $contactId): array {
-    return $select;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
-    return FALSE;
-  }
-
-  /**
-   * @inheritDoc
-   */
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
     return NULL;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertRemoteFieldComparison(Comparison $comparison, ?int $contactId): ?ConditionInterface {
-    return NULL;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function convertToRemoteValues(array $entityValues, array $select, ?int $contactId): array {
-    return $entityValues;
   }
 
   /**
@@ -127,13 +86,6 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
    */
   public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec {
     throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getFieldLoadOptionsForFormSpec() {
-    return FALSE;
   }
 
   /**
@@ -155,18 +107,6 @@ class ReadOnlyRemoteEntityProfile implements RemoteEntityProfileInterface {
    */
   public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult {
     return GrantResult::newDenied();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getSaveSuccessMessage(
-    array $newValues,
-    ?array $oldValues,
-    array $formData,
-    ?int $contactId
-  ): string {
-    throw new \BadMethodCallException(sprintf('Creating and updating entities is not supported'));
   }
 
 }

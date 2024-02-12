@@ -11,6 +11,8 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  * @extends AbstractFormField<T>
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 abstract class AbstractNumberField extends AbstractFormField {
 

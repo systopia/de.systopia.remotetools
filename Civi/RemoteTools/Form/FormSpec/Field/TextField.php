@@ -5,6 +5,8 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class TextField extends AbstractTextField {
 

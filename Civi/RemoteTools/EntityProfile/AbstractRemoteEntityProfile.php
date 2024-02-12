@@ -26,9 +26,12 @@ use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * Abstract implementation that assumes that internal and external fields are
- * the same. Create, delete, and update are allowed by default.
+ * the same. Create, delete, and update are allowed by default. (Delete and
+ * update is limited to those entities that are not filtered via getFilter()).
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterface {
 
@@ -58,13 +61,6 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
    */
   public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
     return FALSE;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
-    return NULL;
   }
 
   /**

@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 /**
  * @method int getId()
  * @method $this setId(int $id)
+ *
+ * @api
  */
 trait IdParameterTrait {
 
