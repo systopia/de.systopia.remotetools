@@ -19,9 +19,8 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
+use Civi\Api4\Generic\AbstractAction;
 use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
-use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
-use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
 /**
  * @api
@@ -32,8 +31,15 @@ final class RemoteCheckAccessAction extends AbstractRemoteCheckAccessAction impl
 // phpcs:enable
   use ProfileParameterTrait;
 
-  use RemoteContactIdParameterOptionalTrait;
+  protected function createApiActionToCheck(): AbstractAction {
+    $apiAction = parent::createApiActionToCheck();
 
-  use ResolvedContactIdOptionalTrait;
+    if ($apiAction->paramExists('profile')) {
+      // @phpstan-ignore-next-line
+      $apiAction->setProfile($this->profile);
+    }
+
+    return $apiAction;
+  }
 
 }

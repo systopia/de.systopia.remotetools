@@ -19,9 +19,14 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
+use Civi\API\Exception\UnauthorizedException;
+use Civi\API\Request;
+use Civi\Api4\Generic\AbstractAction;
 use Civi\Api4\Generic\CheckAccessAction;
 use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
+use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
+use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
 /**
@@ -31,9 +36,15 @@ abstract class AbstractRemoteCheckAccessAction extends CheckAccessAction impleme
 
   use ActionHandlerRunTrait;
 
+  use RemoteContactIdParameterOptionalTrait;
+
+  use ResolvedContactIdOptionalTrait;
+
   public function _run(Result $result): void {
-    parent::_run($result);
-    if (($result->first()['access'] ?? NULL) === TRUE) {
+    $authorized = $this->isActionAuthorized();
+    $result->exchangeArray([['access' => $authorized]]);
+
+    if ($authorized) {
       try {
         $this->doRun($result);
       }
@@ -42,6 +53,40 @@ abstract class AbstractRemoteCheckAccessAction extends CheckAccessAction impleme
         // @ignoreException Allow access if there's no action handler.
       }
     }
+  }
+
+  protected function isActionAuthorized(): bool {
+    // Prevent circular checks
+    if ($this->action === 'checkAccess') {
+      return TRUE;
+    }
+
+    $apiAction = $this->createApiActionToCheck();
+    /** @var \Civi\API\Kernel $kernel */
+    $kernel = \Civi::service('civi_api_kernel');
+    try {
+      // @phpstan-ignore-next-line resolve() has AbstractAction missing in type hint.
+      [$actionObjectProvider] = $kernel->resolve($apiAction);
+      // @phpstan-ignore-next-line authorize() has AbstractAction missing in type hint.
+      $kernel->authorize($actionObjectProvider, $apiAction);
+    }
+    catch (UnauthorizedException $e) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  protected function createApiActionToCheck(): AbstractAction {
+    /** @var \Civi\Api4\Generic\AbstractAction $apiAction */
+    $apiAction = Request::create($this->getEntityName(), $this->action, ['version' => 4]);
+
+    if (NULL !== $this->remoteContactId && $apiAction->paramExists('remoteContactId')) {
+      // @phpstan-ignore-next-line
+      $apiAction->setRemoteContactId($this->remoteContactId);
+    }
+
+    return $apiAction;
   }
 
 }
