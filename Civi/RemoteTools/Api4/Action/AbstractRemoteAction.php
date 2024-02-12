@@ -24,6 +24,9 @@ use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
+/**
+ * @api
+ */
 abstract class AbstractRemoteAction extends AbstractAction implements RemoteActionInterface {
 
   use ActionHandlerRunTrait;

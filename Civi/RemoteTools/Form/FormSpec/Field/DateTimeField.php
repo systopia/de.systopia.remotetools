@@ -9,6 +9,8 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  * @extends AbstractFormField<string>
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class DateTimeField extends AbstractFormField {
 

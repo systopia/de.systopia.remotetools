@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 /**
  * @method array<int|string, mixed> getArguments()
  * @method $this setArguments(array $arguments)
+ *
+ * @api
  */
 trait ArgumentsParameterOptionalTrait {
 

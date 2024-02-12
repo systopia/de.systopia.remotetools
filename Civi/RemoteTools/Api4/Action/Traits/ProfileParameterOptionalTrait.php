@@ -24,6 +24,8 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
  * @method $this setProfile(string|null $profile)
  *
  * @see \Civi\RemoteTools\Api4\Action\ProfileAwareActionInterface
+ *
+ * @api
  */
 trait ProfileParameterOptionalTrait {
 

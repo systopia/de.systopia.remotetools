@@ -21,6 +21,8 @@ namespace Civi\RemoteTools\EntityProfile\Authorization;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class GrantResult {
 

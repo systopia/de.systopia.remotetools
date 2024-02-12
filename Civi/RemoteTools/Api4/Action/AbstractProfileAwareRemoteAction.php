@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Api4\Action;
 
 use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
 
+/**
+ * @api
+ */
 abstract class AbstractProfileAwareRemoteAction extends AbstractRemoteAction implements ProfileAwareActionInterface {
 
   use ProfileParameterTrait;

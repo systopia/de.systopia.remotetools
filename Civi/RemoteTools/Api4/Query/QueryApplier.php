@@ -24,6 +24,8 @@ use Civi\Api4\Generic\Traits\ArrayQueryActionTrait;
 
 /**
  * Allows to apply the query properties from an action to an array.
+ *
+ * @api
  */
 final class QueryApplier {
 

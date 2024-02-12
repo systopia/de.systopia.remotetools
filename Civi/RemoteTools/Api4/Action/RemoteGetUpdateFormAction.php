@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Api4\Action;
 
 use Civi\RemoteTools\Api4\Action\Traits\IdParameterTrait;
 
+/**
+ * @api
+ */
 class RemoteGetUpdateFormAction extends AbstractProfileAwareRemoteAction {
 
   use IdParameterTrait;

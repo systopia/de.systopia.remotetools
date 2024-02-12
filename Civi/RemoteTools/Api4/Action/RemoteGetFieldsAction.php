@@ -31,6 +31,8 @@ use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
  * CiviCRM <5.62.
  *
  * @see https://github.com/civicrm/civicrm-core/pull/26045
+ *
+ * @api
  */
 class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements ProfileAwareRemoteActionInterface {
 

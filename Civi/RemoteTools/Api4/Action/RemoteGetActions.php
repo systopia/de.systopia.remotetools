@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Api4\Action;
 
 use Civi\Api4\Action\GetActions;
 
+/**
+ * @api
+ */
 final class RemoteGetActions extends GetActions {
 
   /**

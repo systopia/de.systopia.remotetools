@@ -25,6 +25,9 @@ use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
+/**
+ * @api
+ */
 class RemoteDeleteAction extends AbstractQueryAction implements ProfileAwareRemoteActionInterface {
 
   use ActionHandlerRunTrait;

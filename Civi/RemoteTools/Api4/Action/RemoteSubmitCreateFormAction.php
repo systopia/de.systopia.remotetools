@@ -22,6 +22,9 @@ namespace Civi\RemoteTools\Api4\Action;
 use Civi\RemoteTools\Api4\Action\Traits\ArgumentsParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\DataParameterTrait;
 
+/**
+ * @api
+ */
 final class RemoteSubmitCreateFormAction extends AbstractProfileAwareRemoteAction {
 
   use ArgumentsParameterOptionalTrait;

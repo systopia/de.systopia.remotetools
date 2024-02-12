@@ -22,6 +22,9 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
+/**
+ * @api
+ */
 trait ActionHandlerTrait {
 
   private ?ActionHandlerInterface $actionHandler = NULL;

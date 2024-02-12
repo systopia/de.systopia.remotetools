@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec;
 
+/**
+ * @api
+ */
 final class FormSpec extends AbstractFormElementContainer {
 
   private ?DataTransformerInterface $dataTransformer = NULL;

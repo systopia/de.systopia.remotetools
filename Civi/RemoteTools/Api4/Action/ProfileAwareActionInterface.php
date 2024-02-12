@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\Api4\Action;
 /**
  * @see \Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait
  * @see \Civi\RemoteTools\Api4\Action\Traits\ProfileParameterOptionalTrait
+ *
+ * @api
  */
 interface ProfileAwareActionInterface {
 

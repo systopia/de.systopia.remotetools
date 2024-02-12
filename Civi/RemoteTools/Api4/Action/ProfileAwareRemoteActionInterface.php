@@ -19,5 +19,8 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
+/**
+ * @api
+ */
 interface ProfileAwareRemoteActionInterface extends ProfileAwareActionInterface, RemoteActionInterface {
 }

@@ -21,6 +21,9 @@ namespace Civi\RemoteTools\Form\FormSpec;
 
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 
+/**
+ * @api
+ */
 interface ValidatorInterface {
 
   /**

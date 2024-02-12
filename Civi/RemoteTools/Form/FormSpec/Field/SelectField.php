@@ -7,6 +7,8 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
  * @extends AbstractOptionField<int|string>
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 class SelectField extends AbstractOptionField {
 

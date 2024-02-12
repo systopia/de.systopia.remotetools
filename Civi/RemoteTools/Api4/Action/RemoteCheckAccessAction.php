@@ -23,7 +23,11 @@ use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
 
-// phpcs:disable Generic.Files.LineLength.TooLong
+/**
+ * @api
+ *
+ * phpcs:disable Generic.Files.LineLength.TooLong
+ */
 final class RemoteCheckAccessAction extends AbstractRemoteCheckAccessAction implements ProfileAwareRemoteActionInterface {
 // phpcs:enable
   use ProfileParameterTrait;

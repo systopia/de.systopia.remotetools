@@ -21,6 +21,8 @@ namespace Civi\RemoteTools\Api4\Query;
 
 /**
  * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
+ *
+ * @api
  */
 final class Comparison implements ConditionInterface {
 
