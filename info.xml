@@ -18,7 +18,7 @@
   <version>0.6-dev</version>
   <develStage>dev</develStage>
   <compatibility>
-    <ver>5.0</ver>
+    <ver>5.57</ver>
   </compatibility>
   <comments>This is a collection of tools for secure remote access. It contains RemoteContact profiles, but also provides infrastructure for other extensions, like RemoteEvent.</comments>
   <classloader>
