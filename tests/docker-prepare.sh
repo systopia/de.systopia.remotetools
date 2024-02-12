@@ -2,7 +2,7 @@
 set -eu -o pipefail
 
 XCM_VERSION=1.12.0
-IDENTITYTRACKER_VERSION=1.4-aplha4
+IDENTITYTRACKER_VERSION=1.4-alpha4
 
 EXT_DIR=$(dirname "$(dirname "$(realpath "$0")")")
 EXT_NAME=$(basename "$EXT_DIR")
