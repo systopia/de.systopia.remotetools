@@ -26,7 +26,8 @@ use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * Abstract implementation that assumes that internal and external fields are
- * the same. Create, delete, and update are allowed by default. (Delete and
+ * the same. (getRemoteFields() and convertToRemoteValues() can be reimplemented
+ * if necessary.) Create, delete, and update are allowed by default. (Delete and
  * update is limited to those entities that are not filtered via getFilter()).
  *
  * @codeCoverageIgnore

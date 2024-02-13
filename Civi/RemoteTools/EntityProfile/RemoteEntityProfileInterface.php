@@ -33,20 +33,24 @@ use Civi\RemoteTools\Form\FormSpec\FormSpec;
  *   ->addTag(MyRemoteEntityProfile::SERVICE_TAG);
  *
  * Instead of the constants mentioned above the values can be provided as tag
- * attributes with lower cased constant name as key.
+ * attributes of the service with lower cased constant name as key.
  *
  * Additionally, a custom handler class might be specified with the constant
  * HANDLER_CLASS (or lower cased as tag attribute). The constructor must have an
  * argument named $profile. All other arguments have to be autowireable.
  *
- * This class shall not be implemented directly, but AbstractRemoteEntityProfile
- * or AbstractRemoteEntityProfileDecorator should be extended instead.
+ * This class shall not be implemented directly, but AbstractRemoteEntityProfile,
+ * AbstractReadOnlyRemoteEntityProfile, or AbstractRemoteEntityProfileDecorator
+ * should be extended instead.
  *
- * Please note: With special where conditions it is possible to find out values
- * of not exposed fields. (Via implicit joins even of referenced entities.)
+ * Most methods have a parameter named $contactId. This contains the remote
+ * contact ID resolved to a CiviCRM contact ID or NULL if no remote contact ID
+ * was given.
  *
  * @see \Civi\RemoteTools\Api4\AbstractRemoteEntity
  * @see \Civi\RemoteTools\EntityProfile\AbstractRemoteEntityProfile
+ * @see \Civi\RemoteTools\EntityProfile\AbstractReadOnlyRemoteEntityProfile
+ * @see \Civi\RemoteTools\EntityProfile\Traits\ConstProfileMetadataTrait
  */
 interface RemoteEntityProfileInterface {
 
