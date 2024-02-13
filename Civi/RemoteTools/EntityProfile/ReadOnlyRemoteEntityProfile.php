@@ -20,15 +20,13 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
-use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
-use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
 /**
  * @codeCoverageIgnore
  *
  * @api
  */
-class ReadOnlyRemoteEntityProfile extends AbstractRemoteEntityProfile {
+class ReadOnlyRemoteEntityProfile extends AbstractReadOnlyRemoteEntityProfile {
 
   private string $entityName;
 
@@ -72,41 +70,6 @@ class ReadOnlyRemoteEntityProfile extends AbstractRemoteEntityProfile {
    */
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
     return NULL;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getCreateFormSpec(array $arguments, array $entityFields, ?int $contactId): FormSpec {
-    throw new \BadMethodCallException(sprintf('Creating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec {
-    throw new \BadMethodCallException(sprintf('Updating entities is not supported'));
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function isCreateGranted(array $arguments, ?int $contactId): GrantResult {
-    return GrantResult::newDenied();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function isDeleteGranted(array $entityValues, ?int $contactId): GrantResult {
-    return GrantResult::newDenied();
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function isUpdateGranted(?array $entityValues, ?int $contactId): GrantResult {
-    return GrantResult::newDenied();
   }
 
 }

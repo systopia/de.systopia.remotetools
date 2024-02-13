@@ -20,28 +20,19 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\EntityProfile;
 
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
+use Civi\RemoteTools\EntityProfile\Traits\ConstProfileMetadataTrait;
 use Civi\RemoteTools\Form\FormSpec\Field\TextField;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
 
 final class TestRemoteGroupReadWriteEntityProfile extends AbstractRemoteEntityProfile {
+
+  use ConstProfileMetadataTrait;
 
   public const NAME = 'readWriteTest';
 
   public const ENTITY_NAME = 'Group';
 
   public const REMOTE_ENTITY_NAME = 'TestRemoteGroup';
-
-  public function getEntityName(): string {
-    return self::ENTITY_NAME;
-  }
-
-  public function getName(): string {
-    return self::NAME;
-  }
-
-  public function getRemoteEntityName(): string {
-    return self::REMOTE_ENTITY_NAME;
-  }
 
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface {
     return NULL;
