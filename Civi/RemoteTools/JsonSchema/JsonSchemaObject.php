@@ -22,7 +22,10 @@ namespace Civi\RemoteTools\JsonSchema;
 class JsonSchemaObject extends JsonSchema {
 
   /**
-   * @phpstan-param array<string, JsonSchema> $properties
+   * @phpstan-param array<int|string, JsonSchema> $properties
+   *   Integers are allowed as keys because PHP automatically converts
+   *   integerish string to integers when used as key. The keys must not be
+   *   strictly increasing starting at 0.
    */
   public function __construct(array $properties, array $keywords = []) {
     parent::__construct([
