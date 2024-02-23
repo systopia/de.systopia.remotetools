@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema;
 
+use Civi\RemoteTools\Util\ArrayUtil;
 use Webmozart\Assert\Assert;
 
 /**
@@ -29,7 +30,9 @@ use Webmozart\Assert\Assert;
 class JsonSchema implements \ArrayAccess, \JsonSerializable {
 
   /**
-   * @var array<string, TValue>
+   * @phpstan-var array<int|string, TValue>
+   *   The array keys are not strictly increasing starting at 0, i.e. in JSON it
+   *   is encoded as object, not as array. (Empty array is allowed, though.)
    */
   protected array $keywords;
 
@@ -41,8 +44,8 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
   public static function convertToJsonSchemaArray(array $array): array {
     return \array_values(\array_map(function ($value) {
       if (\is_array($value)) {
-        if (!\is_string(key($value))) {
-          throw new \InvalidArgumentException('Expected associative array got non-associative array');
+        if ([] !== $value && ArrayUtil::isJsonArray($value)) {
+          throw new \InvalidArgumentException('Expected an empty array, or an array that encodes to a JSON object');
         }
 
         return self::fromArray($value);
@@ -56,19 +59,21 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
   }
 
   /**
-   * @param array<string, mixed> $array Array containing scalars, NULL, or
+   * @param array<int|string, mixed> $array Array containing scalars, NULL, or
    *   JsonSchema objects, and arrays containing values of these three types.
+   *   The array keys must not be strictly increasing starting at 0, i.e. in
+   *   JSON it is encoded as object, not as array.
    *
    * @return self
    */
   public static function fromArray(array $array): self {
     foreach ($array as $key => $value) {
       if (\is_array($value)) {
-        if (\is_string(key($value))) {
-          $array[$key] = self::fromArray($value);
+        if (ArrayUtil::isJsonArray($value)) {
+          $array[$key] = self::convertToJsonSchemaArray($value);
         }
         else {
-          $array[$key] = self::convertToJsonSchemaArray($value);
+          $array[$key] = self::fromArray($value);
         }
       }
       else {
@@ -76,20 +81,21 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
       }
     }
 
-    /** @var array<string, TValue> $array */
+    /** @phpstan-var array<int|string, TValue> $array */
     return new self($array);
   }
 
   /**
    * @param mixed $value
    *
-   * @return void
+   * @phpstan-assert TValue $value
    */
   protected static function assertAllowedValue($value): void {
     if (!static::isAllowedValue($value)) {
       throw new \InvalidArgumentException(
         \sprintf(
-          'Expected scalar, %s, NULL, or non-associative array containing those three types, got "%s"',
+          'Expected scalar, %s, NULL, an empty array, or an array that encodes to a JSON ' .
+          'object containing those three types, got "%s"',
           self::class,
           \is_object($value) ? \get_class($value) : \gettype($value),
         )
@@ -100,27 +106,36 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
   /**
    * @param mixed $value
    *
-   * @return bool
-   *   True if value is scalar|self|null|array<int, scalar|self|null>.
+   * @phpstan-assert-if-true TValue $value
    */
   protected static function isAllowedValue($value): bool {
     if (!\is_array($value)) {
       $value = [$value];
     }
 
+    $expectedKey = 0;
     foreach ($value as $k => $v) {
-      if (!\is_int($k) || (!\is_scalar($v) && !$v instanceof self && NULL !== $v)) {
+      if ($k !== $expectedKey || (!\is_scalar($v) && !$v instanceof self && NULL !== $v)) {
         return FALSE;
       }
+
+      ++$expectedKey;
     }
 
     return TRUE;
   }
 
   /**
-   * @param array<string, TValue> $keywords
+   * @param array<int|string, TValue> $keywords
+   *   The array keys must not be strictly increasing starting at 0, i.e. in
+   *   JSON it is encoded as object, not as array. (Empty array is allowed,
+   *   though.)
    */
   public function __construct(array $keywords) {
+    if ([] !== $keywords && ArrayUtil::isJsonArray($keywords)) {
+      throw new \InvalidArgumentException('Array keys must not be strictly increasing starting at 0');
+    }
+
     $this->keywords = $keywords;
   }
 
@@ -141,7 +156,9 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
   }
 
   /**
-   * @return array<string, TValue>
+   * @phpstan-return array<int|string, TValue>
+   *   The array keys are not strictly increasing starting at 0, i.e. in JSON it
+   *   is encoded as object, not as array. (Or the array is empty.)
    */
   public function getKeywords(): array {
     return $this->keywords;
@@ -225,7 +242,10 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
   }
 
   /**
-   * @return array<string, mixed> Values are of type array|scalar|null with leaves of type array{}|scalar|null.
+   * @phpstan-return array<int|string, mixed>
+   *   Values are of type array|scalar|null with leaves of type
+   *   array{}|scalar|null. If keys are only integers they are not strictly
+   *   increasing starting at 0.
    */
   public function toArray(): array {
     return \array_map(function ($value) {
@@ -263,7 +283,7 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
    */
   #[\ReturnTypeWillChange]
   public function jsonSerialize() {
-    return $this->toArray();
+    return (object) $this->toArray();
   }
 
   /**
@@ -294,13 +314,11 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
     }
 
     if (\is_array($value)) {
-      if (\is_string(key($value))) {
-        // @phpstan-ignore-next-line
-        $value = self::fromArray($value);
+      if (ArrayUtil::isJsonArray($value)) {
+        $value = self::convertToJsonSchemaArray($value);
       }
       else {
-        // @phpstan-ignore-next-line
-        $value = self::convertToJsonSchemaArray($value);
+        $value = self::fromArray($value);
       }
     }
     else {

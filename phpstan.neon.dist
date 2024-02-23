@@ -52,4 +52,7 @@ parameters:
 			message: '#caught "Exception" must be rethrown.#'
 			path: */tests/phpunit/Civi/*
 
+		-
+			message: '#^Call to static method Civi\\RemoteTools\\Util\\ArrayUtil::isJsonArray\(\) with .+ will always evaluate to (true|false).$#'
+			path: */tests/phpunit/Civi/RemoteTools/Util/ArrayUtilTest.php
 	tmpDir: .phpstan

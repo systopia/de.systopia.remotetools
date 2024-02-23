@@ -87,14 +87,15 @@ final class JsonSchemaTest extends TestCase {
 
   public function testFromArrayInvalid01(): void {
     static::expectException(\InvalidArgumentException::class);
-    static::expectExceptionMessage('Expected associative array got non-associative array');
+    static::expectExceptionMessage('Expected an empty array, or an array that encodes to a JSON object');
     JsonSchema::fromArray(['foo' => [['invalid']]]);
   }
 
   public function testFromArrayInvalid02(): void {
     static::expectException(\InvalidArgumentException::class);
     static::expectExceptionMessage(sprintf(
-      'Expected scalar, %s, NULL, or non-associative array containing those three types, got "stdClass"',
+      'Expected scalar, %s, NULL, an empty array, or an array that encodes to a ' .
+      'JSON object containing those three types, got "stdClass"',
       JsonSchema::class
     ));
     JsonSchema::fromArray(['foo' => new \stdClass()]);
@@ -140,6 +141,8 @@ final class JsonSchemaTest extends TestCase {
       'f00' => NULL,
     ]);
     static::assertSame($expected, json_encode($schema));
+
+    static::assertSame('{}', json_encode(new JsonSchema([])));
   }
 
   public function testConvertToJsonSchemaArray(): void {
@@ -151,7 +154,7 @@ final class JsonSchemaTest extends TestCase {
 
   public function testConvertToJsonSchemaArrayInvalid(): void {
     static::expectException(\InvalidArgumentException::class);
-    static::expectExceptionMessage('Expected associative array got non-associative array');
+    static::expectExceptionMessage('Expected an empty array, or an array that encodes to a JSON object');
     JsonSchema::convertToJsonSchemaArray([['invalid']]);
   }
 
@@ -175,6 +178,20 @@ final class JsonSchemaTest extends TestCase {
     $schema['test'] = NULL;
     static::assertArrayHasKey('test', $schema);
     static::assertNull($schema['test']);
+  }
+
+  public function testStrictlyIncreasingArray(): void {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Array keys must not be strictly increasing starting at 0');
+    new JsonSchema(['a', 1]);
+  }
+
+  public function testIntegerArray(): void {
+    $keywords = [1 => 'a', 2 => 'b'];
+    $schema = new JsonSchema($keywords);
+    static::assertSame($keywords, $schema->getKeywords());
+    static::assertSame('b', $schema['2']);
+    static::assertSame($keywords, JsonSchema::fromArray($keywords)->getKeywords());
   }
 
 }
