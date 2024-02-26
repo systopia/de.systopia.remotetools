@@ -40,7 +40,7 @@ final class Api4 implements Api4Interface {
     self::$instance = $this;
   }
 
-  public function countEntities(string $entityName, ConditionInterface $where, array $options): int {
+  public function countEntities(string $entityName, ConditionInterface $where, array $options = []): int {
     return $this->execute($entityName, 'get', [
       'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'select' => ['row_count'],
