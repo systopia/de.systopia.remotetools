@@ -38,7 +38,7 @@ interface Api4Interface {
    *
    * @throws \CRM_Core_Exception
    */
-  public function countEntities(string $entityName, ConditionInterface $where, array $options): int;
+  public function countEntities(string $entityName, ConditionInterface $where, array $options = []): int;
 
   /**
    * @param array<string, mixed|ApiParameterInterface> $params
