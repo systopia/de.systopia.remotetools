@@ -13,11 +13,26 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-
 require_once 'remotetools.civix.php';
 
 use CRM_Remotetools_ExtensionUtil as E;
 use Civi\RemoteContact\RemoteContactGetRequest as RemoteContactGetRequest;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Config\Resource\GlobResource;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+function _remotetools_composer_autoload(): void {
+    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+        $classLoader = require_once __DIR__ . '/vendor/autoload.php';
+        if ($classLoader instanceof \Composer\Autoload\ClassLoader) {
+            // Re-register class loader to append it. (It's automatically prepended.)
+            $classLoader->unregister();
+            $classLoader->register();
+        }
+    }
+}
+
 /**
  * Implements hook_civicrm_config().
  *
@@ -25,9 +40,10 @@ use Civi\RemoteContact\RemoteContactGetRequest as RemoteContactGetRequest;
  */
 function remotetools_civicrm_config(&$config)
 {
+    _remotetools_composer_autoload();
     _remotetools_civix_civicrm_config($config);
 
-    // register events (with our own wrapper to avoid duplicate registrations)
+   // register events (with our own wrapper to avoid duplicate registrations)
     $dispatcher = new \Civi\RemoteToolsDispatcher();
 
     // EVENT REMOTECONTAT GETPROFILES
@@ -60,6 +76,29 @@ function remotetools_civicrm_config(&$config)
         'civi.remotecontact.get',
         ['Civi\RemoteContact\RemoteContactGetRequest', 'filterResult'], RemoteContactGetRequest::AFTER_EXECUTE_REQUEST);
 
+}
+
+function remotetools_civicrm_container(ContainerBuilder $container): void {
+    _remotetools_composer_autoload();
+
+    // Allow lazy service instantiation (requires symfony/proxy-manager-bridge)
+    if (class_exists(\ProxyManager\Configuration::class) && class_exists(RuntimeInstantiator::class)) {
+        $container->setProxyInstantiator(new RuntimeInstantiator());
+    }
+
+    $globResource = new GlobResource(__DIR__ . '/services', '/*.php', FALSE);
+    // Container will be rebuilt if a *.php file is added to services.
+    $container->addResource($globResource);
+    foreach ($globResource->getIterator() as $path => $info) {
+        // Container will be rebuilt if file changes.
+        $container->addResource(new FileResource($path));
+        require $path;
+    }
+
+  if (function_exists('_remotetools_test_civicrm_container')) {
+    // Allow to use different services in tests.
+    _remotetools_test_civicrm_container($container);
+  }
 }
 
 /**

@@ -1,17 +1,42 @@
 <?php
 
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadOnlyEntityProfile;
+use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadWriteEntityProfile;
+use Composer\Autoload\ClassLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 ini_set('memory_limit', '2G');
 ini_set('safe_mode', 0);
-// phpcs:ignore
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+// Make CRM_Remotetools_ExtensionUtil available.
+require_once __DIR__ . '/../../remotetools.civix.php';
+
+// phpcs:disable
 eval(cv('php:boot --level=classloader', 'phpcode'));
+// phpcs:enable
+
+// phpcs:disable PSR1.Files.SideEffects
 
 // Allow autoloading of PHPUnit helper classes in this extension.
-$loader = new \Composer\Autoload\ClassLoader();
-$loader->add('CRM_', __DIR__);
-$loader->add('Civi\\', __DIR__);
-$loader->add('api_', __DIR__);
-$loader->add('api\\', __DIR__);
+$loader = new ClassLoader();
+$loader->add('CRM_', [__DIR__ . '/../..', __DIR__]);
+$loader->addPsr4('Civi\\', [__DIR__ . '/../../Civi', __DIR__ . '/Civi']);
+$loader->add('api_', [__DIR__ . '/../..', __DIR__]);
+$loader->addPsr4('api\\', [__DIR__ . '/../../api', __DIR__ . '/api']);
 $loader->register();
+
+// Ensure function ts() is available - it's declared in the same file as CRM_Core_I18n
+\CRM_Core_I18n::singleton();
+
+function _remotetools_test_civicrm_container(ContainerBuilder $container): void {
+  $container->autowire(TestRemoteGroupReadOnlyEntityProfile::class)
+    ->addTag(TestRemoteGroupReadOnlyEntityProfile::SERVICE_TAG);
+
+  $container->autowire(TestRemoteGroupReadWriteEntityProfile::class)
+    ->addTag(TestRemoteGroupReadWriteEntityProfile::SERVICE_TAG);
+}
 
 /**
  * Call the "cv" command.
