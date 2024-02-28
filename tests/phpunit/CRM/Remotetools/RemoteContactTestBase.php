@@ -13,14 +13,12 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-
-use CRM_Remotetools_ExtensionUtil as E;
 use Civi\RemoteContact\GetRemoteContactProfiles;
 use Civi\Test\Api3TestTrait;
 use Civi\Test\HeadlessInterface;
 use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
-
+use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * This is the test base class with lots of utility functions
@@ -43,24 +41,20 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
      * @param array $query
      *   the query parameters
      */
-    public function remoteContactQuery($profile, $query = [])
+    public function remoteContactQuery(string $profile, array $query = []): array
     {
         $query['profile'] = $profile;
         $result = $this->traitCallAPISuccess('RemoteContact', 'get', $query);
         return $result['values'];
     }
 
-
-
     /** @var array list of known profiles to be used with registerRemoteContactProfile */
-    private static $known_profiles = [];
+    private static array $known_profiles = [];
 
     /**
      * Register the profiles provided by this module itself.
-     *
-     * @param GetRemoteContactProfiles $profiles
      */
-    public static function registerKnownProfiles($profiles)
+    public static function registerKnownProfiles(GetRemoteContactProfiles $profiles): void
     {
         foreach (self::$known_profiles as $name => $profile) {
             if ($profiles->matchesName($name)) {
@@ -78,7 +72,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
      * @param CRM_Remotetools_RemoteContactProfile $profile
      *   the profile instance
      */
-    public function registerRemoteContactProfile($name, $profile)
+    public function registerRemoteContactProfile(string $name, CRM_Remotetools_RemoteContactProfile $profile): void
     {
         // record profile
         self::$known_profiles[$name] = $profile;
@@ -94,11 +88,12 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
      ***                TEST PROFILES               ***
      **************************************************/
 
-    const MULTI_VALUE_CUSTOM_PROFILE = 'testMultiValueCustomProfile';
+    protected const MULTI_VALUE_CUSTOM_PROFILE = 'testMultiValueCustomProfile';
+
     /**
      * Provide a test profile for multi-value custom fields
      */
-    protected function registerMultiValueCustomProfile()
+    protected function registerMultiValueCustomProfile(): void
     {
         static $already_registered = false;
         if ($already_registered) return;
@@ -155,24 +150,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
                     );
                 }
 
-                /**
-                 * Return a mapping
-                 *  of custom_xx to fully qualified custom field name
-                 *  of all fields shown by this field
-                 */
-                protected function getRequestedFieldMapping()
-                {
-                    static $field_mapping = null;
-                    if ($field_mapping === null) {
-                        $field_mapping = [];
-                        foreach (self::PROFILE_FIELDS as $full_field_name) {
-                            $field_mapping[$full_field_name] = $full_field_name;
-                        }
-                        CRM_Remotetools_CustomData::resolveCustomFields($field_mapping);
-                    }
-                    return $field_mapping;
-                }
-                public function getExternalToInternalFieldMapping()
+              public function getExternalToInternalFieldMapping(): array
                 {
                     $ex2int_mapping = [
                         'id'                  => 'id',
