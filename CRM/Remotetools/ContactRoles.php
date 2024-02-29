@@ -13,7 +13,7 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-use CRM_Remotetools_ExtensionUtil as E;
+use Civi\Api4\Contact;
 
 /**
  * RemoteContact function
@@ -60,35 +60,28 @@ class CRM_Remotetools_ContactRoles
      * @param integer $contact_id
      *   (internal) contact ID
      *
-     * @return array
-     *  roles list [[name => label]]
+     * @phpstan-return array<string, string>
+     *  roles list [name => label]
      */
-    public static function getRoles($contact_id)
+    public static function getRoles($contact_id): array
     {
         $contact_id = (int) $contact_id;
         if (!isset(self::$contact_roles_cache[$contact_id])) {
-            self::$contact_roles_cache[$contact_id] = [];
+            $roles = Contact::get(FALSE)
+              ->addSelect(
+                  'remote_contact_data.remote_contact_roles:name',
+                  'remote_contact_data.remote_contact_roles:label',
+              )
+              ->addWhere('id', '=', $contact_id)
+              ->execute()
+              ->single();
 
-            // load contact roles
-            $roles_field = CRM_Remotetools_CustomData::getCustomFieldKey('remote_contact_data', 'remote_contact_roles');
-            $query = [];
-            CRM_Remotetools_CustomData::resolveCustomFields($query);
-            $roles = civicrm_api3('Contact', 'getvalue', [
-                'id'     => $contact_id,
-                'return' => $roles_field
-            ]);
-
-            // map to the proper form
-            $all_roles = self::getAllRoles();
-            foreach ($roles as $role_value) {
-                foreach ($all_roles as $role) {
-                    if ($role['value'] == $role_value) {
-                        self::$contact_roles_cache[$contact_id][$role['name']] = $role['label'];
-                        break;
-                    }
-                }
-            }
+            self::$contact_roles_cache[$contact_id] = array_combine(
+                $roles['remote_contact_data.remote_contact_roles:name'],
+                $roles['remote_contact_data.remote_contact_roles:label']
+            );
         }
+
         return self::$contact_roles_cache[$contact_id];
     }
 
