@@ -22,13 +22,15 @@ namespace Civi\RemoteTools\JsonSchema;
 /**
  * Non-standard element that points to another element.
  *
+ * @phpstan-import-type TValue from JsonSchema
+ *
  * @codeCoverageIgnore
  */
 class JsonSchemaDataPointer extends JsonSchema {
 
   /**
    * @param string $path JSON pointer
-   * @param scalar|null|JsonSchema $fallback
+   * @phpstan-param TValue $fallback
    *   Fallback is used if the pointed element does not exist or has no value.
    */
   public function __construct(string $path, $fallback = NULL) {
