@@ -29,11 +29,35 @@ final class JsonSchemaUtil {
    * @phpstan-param non-empty-array<int|string, string> $titles
    *   Allowed values mapped to titles.
    *
-   * @phpstan-return non-empty-array<JsonSchema> To be used as value of "oneOf" keyword.
+   * @phpstan-return non-empty-array<JsonSchema>
+   *   To be used as value of "oneOf" keyword.
+   *
+   * @see buildTitledOneOf2()
+   *   To be used for values that are not of type integer or string.
    */
   public static function buildTitledOneOf(array $titles): array {
     $oneOf = [];
     foreach ($titles as $value => $title) {
+      $oneOf[] = JsonSchema::fromArray(['const' => $value, 'title' => $title]);
+    }
+
+    return $oneOf;
+  }
+
+  /**
+   * The 'oneOf' keyword must not be empty.
+   *
+   * @phpstan-param non-empty-array<string, scalar|null> $values
+   *   Titles mapped to values. Every value should only appear once.
+   *
+   * @phpstan-return non-empty-array<JsonSchema>
+   *   To be used as value of "oneOf" keyword.
+   *
+   * @see buildTitledOneOf()
+   */
+  public static function buildTitledOneOf2(array $values): array {
+    $oneOf = [];
+    foreach ($values as $title => $value) {
       $oneOf[] = JsonSchema::fromArray(['const' => $value, 'title' => $title]);
     }
 
