@@ -24,14 +24,18 @@ use Civi\RemoteTools\JsonForms\JsonFormsControl;
 /**
  * Custom control that creates a hidden field.
  *
+ * With the option 'internal' set to TRUE, the field should not be added to the
+ * HTML code, but only be available in the data for validation and submission.
+ * It might not be available for rules then.
+ *
  * @codeCoverageIgnore
  */
 class JsonFormsHidden extends JsonFormsControl {
 
-  public function __construct(string $scope, array $keywords = []) {
+  public function __construct(string $scope, ?array $options = NULL, array $keywords = []) {
     parent::__construct($scope, '', NULL, [
       'type' => 'hidden',
-    ], $keywords);
+    ] + ($options ?? []), $keywords);
   }
 
 }
