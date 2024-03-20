@@ -346,9 +346,12 @@ class RemoteToolsRequest extends Event
      */
     public function getOriginalReturnFields()
     {
-        $return_string = \CRM_Utils_Array::value('return', $this->original_request, '');
-        if ($return_string) {
-            return explode(',', $return_string);
+        $return = $this->original_request['return'] ?? [];
+        if (is_array($return)) {
+            return $return;
+        }
+        if (is_string($return)) {
+            return explode(',', $return);
         } else {
             return [];
         }
