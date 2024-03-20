@@ -101,6 +101,20 @@ final class JsonSchemaTest extends TestCase {
     JsonSchema::fromArray(['foo' => new \stdClass()]);
   }
 
+  public function testClone(): void {
+    $schema = new JsonSchema([
+      'foo' => new JsonSchema(['bar' => 'baz']),
+      'fuu' => [1, 2, new JsonSchemaString(['keyword' => 'value']), TRUE],
+      'f00' => NULL,
+    ]);
+
+    $clone = clone $schema;
+
+    static::assertEquals($schema, $clone);
+    static::assertNotSame($schema, $clone);
+    static::assertNotSame($schema->getKeywords(), $clone->getKeywords());
+  }
+
   public function testToArray(): void {
     $schema = new JsonSchema([
       'foo' => new JsonSchema(['bar' => 'baz']),

@@ -139,6 +139,19 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
     $this->keywords = $keywords;
   }
 
+  public function __clone() {
+    $this->keywords = array_map(function ($value) {
+      if (is_object($value)) {
+        return clone $value;
+      }
+      elseif (is_array($value)) {
+        return array_values(array_map(fn ($value) => is_object($value) ? clone $value : $value, $value));
+      }
+
+      return $value;
+    }, $this->keywords);
+  }
+
   /**
    * @param string $keyword
    * @param TValue $value
