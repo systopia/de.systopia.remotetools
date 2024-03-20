@@ -178,10 +178,18 @@ function remotetools_civicrm_entityTypes(&$entityTypes)
  */
 function remotetools_civicrm_permission(&$permissions) {
     // remote contacts
-    $permissions['match remote contacts'] = E::ts('RemoteContacts: match and link');
-    $permissions['retrieve remote contact information'] = E::ts('RemoteContacts: retrieve');
-    $permissions['retrieve own contact information'] = E::ts('RemoteContacts: retrieve self');
-    $permissions['update remote contact information'] = E::ts('RemoteContacts: update');
+    $permissions['match remote contacts'] = [
+        'label' => E::ts('RemoteContacts: match and link'),
+    ];
+    $permissions['retrieve remote contact information'] = [
+        'label' => E::ts('RemoteContacts: retrieve'),
+    ];
+    $permissions['retrieve own contact information'] = [
+        'label' => E::ts('RemoteContacts: retrieve self'),
+    ];
+    $permissions['update remote contact information'] = [
+        'label' => E::ts('RemoteContacts: update'),
+    ];
 }
 
 /**
