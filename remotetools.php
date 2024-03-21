@@ -176,12 +176,24 @@ function remotetools_civicrm_entityTypes(&$entityTypes)
 /**
  * Define custom (Drupal) permissions
  */
-function remotetools_civicrm_permission(&$permissions) {
+function remotetools_civicrm_permission(array &$permissions): void {
     // remote contacts
-    $permissions['match remote contacts'] = E::ts('RemoteContacts: match and link');
-    $permissions['retrieve remote contact information'] = E::ts('RemoteContacts: retrieve');
-    $permissions['retrieve own contact information'] = E::ts('RemoteContacts: retrieve self');
-    $permissions['update remote contact information'] = E::ts('RemoteContacts: update');
+    $permissions['match remote contacts'] = [
+        'label' => E::ts('CiviRemote: Match and link contacts'),
+        'description' => E::ts('Match and link contacts via remote contact ID.')
+    ];
+    $permissions['retrieve remote contact information'] = [
+        'label' => E::ts('CiviRemote: Retrieve contacts'),
+        'description' => E::ts('Retrieve information of remote contacts.')
+    ];
+    $permissions['retrieve own contact information'] = [
+        'label' => E::ts('CiviRemote: Retrieve own contact'),
+        'description' => E::ts('Retrieve information of requesting remote contact.'),
+    ];
+    $permissions['update remote contact information'] = [
+        'label' => E::ts('CiviRemote: Update contacts'),
+        'description' => E::ts('Update information of remote contacts.'),
+    ];
 }
 
 /**
