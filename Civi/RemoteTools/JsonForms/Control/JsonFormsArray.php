@@ -37,7 +37,7 @@ class JsonFormsArray extends JsonFormsControl {
    */
   public function __construct(
     string $scope,
-    string $label,
+    ?string $label,
     ?string $description = NULL,
     ?array $elements = NULL,
     ?array $options = NULL,
