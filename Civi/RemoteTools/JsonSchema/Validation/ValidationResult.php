@@ -21,6 +21,7 @@ namespace Civi\RemoteTools\JsonSchema\Validation;
 
 use Opis\JsonSchema\Errors\ValidationError;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Tags\TaggedDataContainerInterface;
 use Systopia\JsonSchema\Translation\ErrorTranslator;
 use Systopia\JsonSchema\Translation\NullTranslator;
 use Systopia\JsonSchema\Translation\TranslatorInterface;
@@ -32,6 +33,8 @@ final class ValidationResult {
    */
   private array $data;
 
+  private TaggedDataContainerInterface $taggedData;
+
   private ErrorCollector $errorCollector;
 
   private ErrorTranslator $errorTranslator;
@@ -40,8 +43,14 @@ final class ValidationResult {
    * @param array<string, mixed> $data
    * @param \Systopia\JsonSchema\Errors\ErrorCollector $errorCollector
    */
-  public function __construct(array $data, ErrorCollector $errorCollector, ?TranslatorInterface $translator = NULL) {
+  public function __construct(
+    array $data,
+    TaggedDataContainerInterface $taggedData,
+    ErrorCollector $errorCollector,
+    ?TranslatorInterface $translator = NULL
+  ) {
     $this->data = $data;
+    $this->taggedData = $taggedData;
     $this->errorCollector = $errorCollector;
     $this->errorTranslator = new ErrorTranslator($translator ?? new NullTranslator());
   }
@@ -51,6 +60,10 @@ final class ValidationResult {
    */
   public function getData(): array {
     return $this->data;
+  }
+
+  public function getTaggedData(): TaggedDataContainerInterface {
+    return $this->taggedData;
   }
 
   /**

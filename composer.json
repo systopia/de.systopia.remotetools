@@ -9,7 +9,7 @@
     },
     "require": {
         "systopia/expression-language-ext": "~0.1",
-        "systopia/opis-json-schema-ext": "~0.3",
+        "systopia/opis-json-schema-ext": "~0.4",
         "webmozart/assert": "^1"
     },
     "scripts": {

@@ -23,6 +23,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\Util\JsonConverter;
 use Opis\JsonSchema\Validator as OpisValidator;
 use Systopia\JsonSchema\Errors\ErrorCollector;
+use Systopia\JsonSchema\Tags\TaggedDataContainer;
 use Systopia\JsonSchema\Translation\TranslatorInterface;
 
 final class Validator implements ValidatorInterface {
@@ -43,16 +44,25 @@ final class Validator implements ValidatorInterface {
   public function validate(JsonSchema $jsonSchema, array $data, int $maxErrors = 1): ValidationResult {
     $validationData = JsonConverter::toStdClass($data);
     $errorCollector = new ErrorCollector();
+    $taggedDataContainer = new TaggedDataContainer();
     $prevMaxErrors = $this->validator->getMaxErrors();
     try {
       $this->validator->setMaxErrors($maxErrors);
-      $this->validator->validate($validationData, $jsonSchema->toStdClass(), ['errorCollector' => $errorCollector]);
+      $this->validator->validate($validationData, $jsonSchema->toStdClass(), [
+        'errorCollector' => $errorCollector,
+        'taggedDataContainer' => $taggedDataContainer,
+      ]);
     }
     finally {
       $this->validator->setMaxErrors($prevMaxErrors);
     }
 
-    return new ValidationResult(JsonConverter::toArray($validationData), $errorCollector, $this->translator);
+    return new ValidationResult(
+      JsonConverter::toArray($validationData),
+      $taggedDataContainer,
+      $errorCollector,
+      $this->translator
+    );
   }
 
 }
