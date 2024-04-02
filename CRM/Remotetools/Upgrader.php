@@ -18,7 +18,7 @@ use CRM_Remotetools_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_Remotetools_Upgrader extends CRM_Remotetools_Upgrader_Base
+class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base
 {
 
     /**
