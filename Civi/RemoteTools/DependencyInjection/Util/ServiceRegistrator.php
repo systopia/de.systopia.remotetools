@@ -107,7 +107,7 @@ final class ServiceRegistrator {
           /** @phpstan-var class-string $class */
           $definition = $container->autowire($class);
           $definition->setLazy($options['lazy'] ?? FALSE);
-          $definition->setShared($options['shared'] ?? FALSE);
+          $definition->setShared($options['shared'] ?? TRUE);
           $definition->setPublic($options['public'] ?? FALSE);
           foreach ($tags as $tagName => $tagAttributes) {
             $definition->addTag($tagName, $tagAttributes);
