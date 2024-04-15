@@ -208,4 +208,15 @@ final class JsonSchemaTest extends TestCase {
     static::assertSame($keywords, JsonSchema::fromArray($keywords)->getKeywords());
   }
 
+  public function testIterable(): void {
+    $keywords = ['foo' => 'bar', 'bar' => 'baz'];
+    $schema = new JsonSchema($keywords);
+    $iteratedKeywords = [];
+    foreach ($schema as $keywordName => $keyword) {
+      $iteratedKeywords[$keywordName] = $keyword;
+    }
+
+    static::assertSame($keywords, $iteratedKeywords);
+  }
+
 }
