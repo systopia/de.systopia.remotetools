@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
  *
  * @implements \ArrayAccess<string, TValue>
  */
-class JsonSchema implements \ArrayAccess, \JsonSerializable {
+class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable {
 
   /**
    * @phpstan-var array<int|string, TValue>
@@ -289,6 +289,13 @@ class JsonSchema implements \ArrayAccess, \JsonSerializable {
 
       return $value;
     }, $this->keywords);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getIterator(): \Traversable {
+    return new \ArrayIterator($this->keywords);
   }
 
   /**
