@@ -77,8 +77,8 @@ class CRM_Remotetools_ContactRoles
               ->single();
 
             self::$contact_roles_cache[$contact_id] = array_combine(
-                $roles['remote_contact_data.remote_contact_roles:name'],
-                $roles['remote_contact_data.remote_contact_roles:label']
+                $roles['remote_contact_data.remote_contact_roles:name'] ?? [],
+                $roles['remote_contact_data.remote_contact_roles:label'] ?? []
             );
         }
 
