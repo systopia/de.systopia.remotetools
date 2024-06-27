@@ -40,5 +40,8 @@ else
 fi
 
 cd "$EXT_DIR"
+# In the container used for tests there seems to be psr/cache 1 installed somewhere.
+# This conflicts with symfony/cache >=6, thus we use version 5 here.
+composer require --no-update 'symfony/cache:^5'
 composer update --no-progress --prefer-dist --optimize-autoloader --no-dev
 composer composer-phpunit -- update --no-progress --prefer-dist
