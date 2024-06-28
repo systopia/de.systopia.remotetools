@@ -6,36 +6,52 @@ use Composer\Autoload\ClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 ini_set('memory_limit', '2G');
-ini_set('safe_mode', 0);
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+// phpcs:disable Drupal.Functions.DiscouragedFunctions.Discouraged
+eval(cv('php:boot --level=classloader', 'phpcode'));
+// phpcs:enable
 
 // Make CRM_Remotetools_ExtensionUtil available.
 require_once __DIR__ . '/../../remotetools.civix.php';
 
-// phpcs:disable
-eval(cv('php:boot --level=classloader', 'phpcode'));
-// phpcs:enable
-
 // phpcs:disable PSR1.Files.SideEffects
 
-// Allow autoloading of PHPUnit helper classes in this extension.
-$loader = new ClassLoader();
-$loader->add('CRM_', [__DIR__ . '/../..', __DIR__]);
-$loader->addPsr4('Civi\\', [__DIR__ . '/../../Civi', __DIR__ . '/Civi']);
-$loader->add('api_', [__DIR__ . '/../..', __DIR__]);
-$loader->addPsr4('api\\', [__DIR__ . '/../../api', __DIR__ . '/api']);
-$loader->register();
+// Add test classes to class loader.
+addExtensionDirToClassLoader(__DIR__);
+addExtensionToClassLoader('de.systopia.remotetools');
 
-// Ensure function ts() is available - it's declared in the same file as CRM_Core_I18n
-\CRM_Core_I18n::singleton();
+if (!function_exists('ts')) {
+  // Ensure function ts() is available - it's declared in the same file as CRM_Core_I18n in CiviCRM < 5.74.
+  // In later versions the function is registered following the composer conventions.
+  \CRM_Core_I18n::singleton();
+}
 
+/**
+ * Modify DI container for tests.
+ */
 function _remotetools_test_civicrm_container(ContainerBuilder $container): void {
   $container->autowire(TestRemoteGroupReadOnlyEntityProfile::class)
     ->addTag(TestRemoteGroupReadOnlyEntityProfile::SERVICE_TAG);
 
   $container->autowire(TestRemoteGroupReadWriteEntityProfile::class)
     ->addTag(TestRemoteGroupReadWriteEntityProfile::SERVICE_TAG);
+}
+
+function addExtensionToClassLoader(string $extension): void {
+  addExtensionDirToClassLoader(__DIR__ . '/../../../' . $extension);
+}
+
+function addExtensionDirToClassLoader(string $extensionDir): void {
+  $loader = new ClassLoader();
+  $loader->add('CRM_', [$extensionDir]);
+  $loader->addPsr4('Civi\\', [$extensionDir . '/Civi']);
+  $loader->add('api_', [$extensionDir]);
+  $loader->addPsr4('api\\', [$extensionDir . '/api']);
+  $loader->register();
+
+  if (file_exists($extensionDir . '/autoload.php')) {
+    require_once $extensionDir . '/autoload.php';
+  }
 }
 
 /**
@@ -45,16 +61,17 @@ function _remotetools_test_civicrm_container(ContainerBuilder $container): void 
  *   The rest of the command to send.
  * @param string $decode
  *   Ex: 'json' or 'phpcode'.
- * @return string
+ * @return mixed
  *   Response output (if the command executed normally).
+ *   For 'raw' or 'phpcode', this will be a string. For 'json', it could be any JSON value.
  * @throws \RuntimeException
  *   If the command terminates abnormally.
  */
-function cv($cmd, $decode = 'json') {
+function cv(string $cmd, string $decode = 'json') {
   $cmd = 'cv ' . $cmd;
-  $descriptorSpec = array(0 => array("pipe", "r"), 1 => array("pipe", "w"), 2 => STDERR);
+  $descriptorSpec = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => STDERR];
   $oldOutput = getenv('CV_OUTPUT');
-  putenv("CV_OUTPUT=json");
+  putenv('CV_OUTPUT=json');
 
   // Execute `cv` in the original folder. This is a work-around for
   // phpunit/codeception, which seem to manipulate PWD.
@@ -74,13 +91,13 @@ function cv($cmd, $decode = 'json') {
 
     case 'phpcode':
       // If the last output is /*PHPCODE*/, then we managed to complete execution.
-      if (substr(trim($result), 0, 12) !== "/*BEGINPHP*/" || substr(trim($result), -10) !== "/*ENDPHP*/") {
-        throw new \RuntimeException("Command failed ($cmd):\n$result");
+      if (substr(trim($result), 0, 12) !== '/*BEGINPHP*/' || substr(trim($result), -10) !== '/*ENDPHP*/') {
+        throw new RuntimeException("Command failed ($cmd):\n$result");
       }
       return $result;
 
     case 'json':
-      return json_decode($result, 1);
+      return json_decode($result, TRUE);
 
     default:
       throw new RuntimeException("Bad decoder format ($decode)");
