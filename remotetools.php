@@ -24,12 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 function _remotetools_composer_autoload(): void {
     if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-        $classLoader = require_once __DIR__ . '/vendor/autoload.php';
-        if ($classLoader instanceof \Composer\Autoload\ClassLoader) {
-            // Re-register class loader to append it. (It's automatically prepended.)
-            $classLoader->unregister();
-            $classLoader->register();
-        }
+        require_once __DIR__ . '/vendor/autoload.php';
     }
 }
 

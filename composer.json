@@ -2,10 +2,18 @@
     "name": "systopia/de.systopia.remotetools",
     "type": "civicrm-ext",
     "license": "AGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "SYSTOPIA GmbH",
+            "email": "info@systopia.de",
+            "homepage": "https://www.systopia.de"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-      "sort-packages": true
+        "prepend-autoloader": false,
+        "sort-packages": true
     },
     "require": {
         "systopia/expression-language-ext": "~0.1",
