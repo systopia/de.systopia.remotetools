@@ -29,7 +29,7 @@ final class JsonConverter {
    * @throws \JsonException
    */
   public static function toArray(\stdClass $data): array {
-    $result = \json_decode(\json_encode($data, JSON_THROW_ON_ERROR), TRUE);
+    $result = \json_decode(\json_encode($data, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION), TRUE);
     Assert::isArray($result);
 
     return $result;
@@ -45,7 +45,7 @@ final class JsonConverter {
       return new \stdClass();
     }
 
-    $result = \json_decode(\json_encode($data, JSON_THROW_ON_ERROR));
+    $result = \json_decode(\json_encode($data, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION));
     Assert::isInstanceOf($result, \stdClass::class);
 
     return $result;
