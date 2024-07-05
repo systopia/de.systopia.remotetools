@@ -41,7 +41,7 @@ final class Validator implements ValidatorInterface {
    * @inheritDoc
    * @throws \JsonException
    */
-  public function validate(JsonSchema $jsonSchema, array $data, int $maxErrors = 1): ValidationResult {
+  public function validate(JsonSchema $jsonSchema, array $data, int $maxErrors = 1): ValidationResultInterface {
     $validationData = JsonConverter::toStdClass($data);
     $errorCollector = new ErrorCollector();
     $taggedDataContainer = new TaggedDataContainer();
