@@ -26,7 +26,7 @@ use Systopia\JsonSchema\Translation\ErrorTranslator;
 use Systopia\JsonSchema\Translation\NullTranslator;
 use Systopia\JsonSchema\Translation\TranslatorInterface;
 
-final class ValidationResult {
+final class ValidationResult implements ValidationResultInterface {
 
   /**
    * @var array<string, mixed>
@@ -67,14 +67,14 @@ final class ValidationResult {
   }
 
   /**
-   * @return array<string, non-empty-array<string>>
+   * @return array<string, non-empty-list<string>>
    */
   public function getErrorMessages(): array {
     return $this->mapErrorsToMessages($this->errorCollector->getErrors());
   }
 
   /**
-   * @return array<string, non-empty-array<string>>
+   * @return array<string, non-empty-list<string>>
    */
   public function getLeafErrorMessages(): array {
     return $this->mapErrorsToMessages($this->errorCollector->getLeafErrors());
@@ -89,9 +89,9 @@ final class ValidationResult {
   }
 
   /**
-   * @param array<string, non-empty-array<ValidationError>> $errors
+   * @param array<string, non-empty-list<ValidationError>> $errors
    *
-   * @return array<string, non-empty-array<string>>
+   * @return array<string, non-empty-list<string>>
    */
   private function mapErrorsToMessages(array $errors): array {
     return array_map(

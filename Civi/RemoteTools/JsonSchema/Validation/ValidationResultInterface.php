@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2022 SYSTOPIA GmbH
+ * Copyright (C) 2024 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -19,13 +19,29 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema\Validation;
 
-use Civi\RemoteTools\JsonSchema\JsonSchema;
+use Systopia\JsonSchema\Tags\TaggedDataContainerInterface;
 
-interface ValidatorInterface {
+interface ValidationResultInterface {
 
   /**
-   * @phpstan-param array<string, mixed> $data JSON serializable.
+   * @return array<string, mixed>
    */
-  public function validate(JsonSchema $jsonSchema, array $data, int $maxErrors = 1): ValidationResultInterface;
+  public function getData(): array;
+
+  public function getTaggedData(): TaggedDataContainerInterface;
+
+  /**
+   * @return array<string, non-empty-list<string>>
+   */
+  public function getErrorMessages(): array;
+
+  /**
+   * @return array<string, non-empty-list<string>>
+   */
+  public function getLeafErrorMessages(): array;
+
+  public function hasErrors(): bool;
+
+  public function isValid(): bool;
 
 }
