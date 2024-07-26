@@ -14,6 +14,8 @@ abstract class AbstractFormField extends AbstractFormInput {
 
   private bool $required = FALSE;
 
+  private bool $readOnly = FALSE;
+
   private ?bool $nullable = NULL;
 
   private bool $hasDefaultValue = FALSE;
@@ -37,6 +39,19 @@ abstract class AbstractFormField extends AbstractFormInput {
    */
   public function setRequired(bool $required): self {
     $this->required = $required;
+
+    return $this;
+  }
+
+  public function isReadOnly(): bool {
+    return $this->readOnly;
+  }
+
+  /**
+   * @return $this
+   */
+  public function setReadOnly(bool $readOnly): self {
+    $this->readOnly = $readOnly;
 
     return $this;
   }

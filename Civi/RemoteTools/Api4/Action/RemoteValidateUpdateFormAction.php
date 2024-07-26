@@ -25,7 +25,7 @@ use Civi\RemoteTools\Api4\Action\Traits\IdParameterTrait;
 /**
  * @api
  */
-final class RemoteValidateUpdateFormAction extends AbstractProfileAwareRemoteAction {
+class RemoteValidateUpdateFormAction extends AbstractProfileAwareRemoteAction {
 
   use DataParameterTrait;
 

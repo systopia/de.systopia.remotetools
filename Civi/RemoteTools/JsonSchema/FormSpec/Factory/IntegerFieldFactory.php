@@ -31,6 +31,9 @@ final class IntegerFieldFactory extends AbstractFieldJsonSchemaFactory {
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
     }
+    if ($field->isReadOnly()) {
+      $keywords['readOnly'] = TRUE;
+    }
     if ($field instanceof AbstractNumberField) {
       if (NULL !== $field->getMaximum()) {
         $keywords['maximum'] = $field->getMaximum();

@@ -49,6 +49,9 @@ final class OptionFieldFactory extends AbstractFieldJsonSchemaFactory {
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
     }
+    if ($field->isReadOnly()) {
+      $keywords['readOnly'] = TRUE;
+    }
 
     return new JsonSchema($keywords);
   }
