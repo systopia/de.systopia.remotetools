@@ -32,6 +32,7 @@ final class BooleanFieldFactory extends AbstractFieldJsonSchemaFactory {
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
+      $keywords['const'] = $field->getDefaultValue();
     }
 
     return new JsonSchemaBoolean($keywords, $field->isNullable());

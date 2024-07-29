@@ -37,6 +37,7 @@ final class StringFieldFactory extends AbstractFieldJsonSchemaFactory {
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
+      $keywords['const'] = $field->getDefaultValue();
     }
     if ($field instanceof AbstractTextField) {
       if (NULL !== $field->getMaxLength()) {
