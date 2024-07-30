@@ -33,6 +33,7 @@ use Civi\RemoteTools\Contact\IdentityTrackerRemoteContactIdResolver;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverInterface;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProvider;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProviderInterface;
+use Civi\RemoteTools\Database\TransactionFactory;
 use Civi\RemoteTools\DependencyInjection\Compiler\ActionHandlerPass;
 use Civi\RemoteTools\DependencyInjection\Compiler\RemoteEntityProfilePass;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleter;
@@ -57,6 +58,8 @@ $container->register(Api3Interface::class, Api3::class);
 
 $container->autowire(RequestContextInterface::class, RequestContext::class)
   ->setPublic(TRUE);
+
+$container->autowire(TransactionFactory::class);
 
 $container->autowire(ActionHandlerProviderInterface::class, ActionHandlerProviderCollection::class)
   ->addArgument(new TaggedIteratorArgument(ActionHandlerProviderInterface::SERVICE_TAG));

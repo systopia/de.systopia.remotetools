@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\DependencyInjection\Compiler;
 use Civi\Api4\Generic\AbstractAction;
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\ActionHandler\ActionHandlerProvider;
+use Civi\RemoteTools\ActionHandler\RemoteActionsHandlerTransactionDecorator;
+use Civi\RemoteTools\DependencyInjection\Compiler\Traits\DecorateServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +34,8 @@ use Webmozart\Assert\Assert;
  * @codeCoverageIgnore
  */
 final class ActionHandlerPass implements CompilerPassInterface {
+
+  use DecorateServiceTrait;
 
   public static function buildHandlerKey(string $entityName, string $actionName, ?string $profileName): string {
     if (NULL === $profileName) {
@@ -77,6 +81,15 @@ final class ActionHandlerPass implements CompilerPassInterface {
           $handlerServices[$handlerKey] = new Reference($id);
         }
       }
+    }
+
+    foreach ($handlerServices as $handlerKey => $handlerService) {
+      $this->decorateService(
+        $container,
+        $handlerService->__toString(),
+        RemoteActionsHandlerTransactionDecorator::class,
+        $handlerKey
+      );
     }
 
     $container->getDefinition(ActionHandlerProvider::class)
