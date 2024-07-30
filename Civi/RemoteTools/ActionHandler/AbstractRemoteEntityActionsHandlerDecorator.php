@@ -63,7 +63,7 @@ abstract class AbstractRemoteEntityActionsHandlerDecorator implements RemoteEnti
   }
 
   public function validateUpdateForm(RemoteValidateUpdateFormAction $action): array {
-    return $this->validateUpdateForm($action);
+    return $this->handler->validateUpdateForm($action);
   }
 
   public function submitCreateForm(RemoteSubmitCreateFormAction $action): array {
@@ -71,7 +71,7 @@ abstract class AbstractRemoteEntityActionsHandlerDecorator implements RemoteEnti
   }
 
   public function submitUpdateForm(RemoteSubmitUpdateFormAction $action): array {
-    return $this->submitUpdateForm($action);
+    return $this->handler->submitUpdateForm($action);
   }
 
 }
