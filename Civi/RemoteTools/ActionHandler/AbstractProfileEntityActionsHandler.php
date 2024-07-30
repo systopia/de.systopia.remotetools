@@ -38,6 +38,7 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Form\FormSpec\FormSpec;
+use Civi\RemoteTools\Form\FormSpec\Util\ReadOnlyFieldsRemover;
 use Civi\RemoteTools\Form\Validation\ValidationResult;
 use CRM_Remotetools_ExtensionUtil as E;
 
@@ -219,7 +220,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     $createdValues = $this->api4->createEntity(
       $this->profile->getEntityName(),
       $formSpec->getDataTransformer()->toEntityValues(
-        $action->getData(),
+        ReadOnlyFieldsRemover::removeReadOnlyFields($formSpec, $action->getData()),
         NULL,
         $action->getResolvedContactId()
       ),
@@ -259,7 +260,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     }
 
     $newEntityValues = $formSpec->getDataTransformer()->toEntityValues(
-      $action->getData(),
+      ReadOnlyFieldsRemover::removeReadOnlyFields($formSpec, $action->getData()),
       $entityValues,
       $action->getResolvedContactId()
     );

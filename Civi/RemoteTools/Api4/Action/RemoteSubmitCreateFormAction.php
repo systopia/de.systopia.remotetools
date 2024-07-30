@@ -25,7 +25,7 @@ use Civi\RemoteTools\Api4\Action\Traits\DataParameterTrait;
 /**
  * @api
  */
-final class RemoteSubmitCreateFormAction extends AbstractProfileAwareRemoteAction {
+class RemoteSubmitCreateFormAction extends AbstractProfileAwareRemoteAction {
 
   use ArgumentsParameterOptionalTrait;
 
