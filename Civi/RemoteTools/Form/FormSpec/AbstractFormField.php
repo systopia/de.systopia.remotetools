@@ -73,6 +73,10 @@ abstract class AbstractFormField extends AbstractFormInput {
   }
 
   public function isNullable(): bool {
+    if ($this->isReadOnly() && $this->hasDefaultValue()) {
+      return $this->getDefaultValue() === NULL && FALSE !== $this->nullable;
+    }
+
     return NULL === $this->nullable ? !$this->isRequired() : $this->nullable;
   }
 
