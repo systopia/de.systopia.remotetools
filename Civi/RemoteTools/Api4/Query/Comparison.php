@@ -20,7 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Api4\Query;
 
 /**
- * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
+ * @phpstan-type comparisonT array{string, string, 2?: scalar|non-empty-array<scalar>}
  *
  * @api
  */
