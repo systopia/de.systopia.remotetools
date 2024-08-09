@@ -26,8 +26,20 @@ namespace Civi\RemoteTools\Form\FormSpec;
  */
 class FormElementContainer extends AbstractFormElementContainer implements FormElementInterface {
 
+  private bool $collapsible = FALSE;
+
   public function getType(): string {
     return 'container';
+  }
+
+  public function isCollapsible(): bool {
+    return $this->collapsible;
+  }
+
+  public function setCollapsible(bool $collapsible): self {
+    $this->collapsible = $collapsible;
+
+    return $this;
   }
 
 }

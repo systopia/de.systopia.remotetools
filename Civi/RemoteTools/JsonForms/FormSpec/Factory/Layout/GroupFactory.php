@@ -24,6 +24,7 @@ use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\Factory\AbstractConcreteElementUiSchemaFactory;
 use Civi\RemoteTools\JsonForms\JsonFormsElement;
+use Civi\RemoteTools\JsonForms\Layout\JsonFormsCloseableGroup;
 use Civi\RemoteTools\JsonForms\Layout\JsonFormsGroup;
 use Webmozart\Assert\Assert;
 
@@ -36,6 +37,10 @@ final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
     Assert::isInstanceOf($element, FormElementContainer::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\FormElementContainer $element */
     $elements = array_map([$factory, 'createSchema'], $element->getElements());
+
+    if ($element->isCollapsible()) {
+      return new JsonFormsCloseableGroup($element->getTitle(), $elements);
+    }
 
     return new JsonFormsGroup($element->getTitle(), $elements);
   }
