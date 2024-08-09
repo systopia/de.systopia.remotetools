@@ -20,6 +20,7 @@ declare(strict_types = 1);
 // phpcs:disable Drupal.Commenting.DocComment.ContentAfterOpen
 /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $container */
 
+use Civi\Core\Transaction\Manager as TransactionManager;
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\ActionHandler\ActionHandlerProvider;
 use Civi\RemoteTools\ActionHandler\ActionHandlerProviderCollection;
@@ -41,6 +42,8 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoader;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EventSubscriber\RemoteRequestInitSubscriber;
+use Civi\RemoteTools\Helper\FilePersister;
+use Civi\RemoteTools\Helper\FilePersisterInterface;
 use Civi\RemoteTools\Helper\SelectFactory;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\Helper\WhereFactory;
@@ -49,6 +52,23 @@ use Civi\RemoteTools\RequestContext\RequestContext;
 use Civi\RemoteTools\RequestContext\RequestContextInterface;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\Mime\MimeTypeGuesserInterface;
+use Symfony\Component\Mime\MimeTypes;
+
+if (!$container->has(\CRM_Core_Config::class)) {
+  $container->register(\CRM_Core_Config::class, \CRM_Core_Config::class)
+    ->setFactory([\CRM_Core_Config::class, 'singleton']);
+}
+
+if (!$container->has(TransactionManager::class)) {
+  $container->register(TransactionManager::class, TransactionManager::class)
+    ->setFactory([TransactionManager::class, 'singleton']);
+}
+
+if (!$container->has(MimeTypeGuesserInterface::class)) {
+  $container->register(MimeTypeGuesserInterface::class, MimeTypes::class)
+    ->setFactory([MimeTypes::class, 'getDefault']);
+}
 
 $container->addCompilerPass(new RemoteEntityProfilePass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1);
 $container->addCompilerPass(new ActionHandlerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -2);
@@ -60,6 +80,7 @@ $container->autowire(RequestContextInterface::class, RequestContext::class)
   ->setPublic(TRUE);
 
 $container->autowire(TransactionFactory::class);
+$container->autowire(FilePersisterInterface::class, FilePersister::class);
 
 $container->autowire(ActionHandlerProviderInterface::class, ActionHandlerProviderCollection::class)
   ->addArgument(new TaggedIteratorArgument(ActionHandlerProviderInterface::SERVICE_TAG));

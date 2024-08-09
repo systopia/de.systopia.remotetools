@@ -21,6 +21,8 @@ namespace Civi\RemoteTools\DependencyInjection\Compiler;
 
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\ActionHandler\JsonFormsRemoteActionsHandler;
+use Civi\RemoteTools\DependencyInjection\Compiler\Traits\DecorateServiceTrait;
+use Civi\RemoteTools\EntityProfile\EntityProfileFileDecorator;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,6 +33,8 @@ use Webmozart\Assert\Assert;
  * @codeCoverageIgnore
  */
 final class RemoteEntityProfilePass implements CompilerPassInterface {
+
+  use DecorateServiceTrait;
 
   private const DEFAULT_HANDLER_CLASS = JsonFormsRemoteActionsHandler::class;
 
@@ -70,9 +74,10 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
             'profile_name' => $profileName,
             'priority' => -1000,
           ]);
+
+        $this->decorateService($container, $id, EntityProfileFileDecorator::class, $profileId);
       }
     }
-
   }
 
   /**

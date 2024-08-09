@@ -44,9 +44,7 @@ abstract class AbstractRemoteToolsHeadlessTestCase extends TestCase implements H
 
   protected function setUp(): void {
     parent::setUp();
-    // @phpstan-ignore-next-line
     \CRM_Core_Config::singleton()->userFrameworkBaseURL = 'http://localhost/';
-    // @phpstan-ignore-next-line
     \CRM_Core_Config::singleton()->cleanURL = 1;
     $this->setUserPermissions([]);
   }
