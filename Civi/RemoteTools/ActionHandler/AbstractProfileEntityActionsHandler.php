@@ -217,15 +217,35 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       throw $validationResult->toException();
     }
 
+    $entityValues = $formSpec->getDataTransformer()->toEntityValues(
+      ReadOnlyFieldsRemover::removeReadOnlyFields($formSpec, $action->getData()),
+      NULL,
+      $action->getResolvedContactId()
+    );
+
+    $this->profile->onPreCreate(
+      $action->getArguments(),
+      $entityValues,
+      $entityFields,
+      $formSpec,
+      $action->getResolvedContactId()
+    );
+
     $createdValues = $this->api4->createEntity(
       $this->profile->getEntityName(),
-      $formSpec->getDataTransformer()->toEntityValues(
-        ReadOnlyFieldsRemover::removeReadOnlyFields($formSpec, $action->getData()),
-        NULL,
-        $action->getResolvedContactId()
-      ),
+      $entityValues,
       ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
     )->single();
+    // Custom field values might not be part of $createdValues, so we add $entityValues
+    $createdValues += $entityValues;
+
+    $this->profile->onPostCreate(
+      $action->getArguments(),
+      $createdValues,
+      $entityFields,
+      $formSpec,
+      $action->getResolvedContactId()
+    );
 
     return $this->convertToSubmitFormActionResult(
       $createdValues,
@@ -264,6 +284,15 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       $entityValues,
       $action->getResolvedContactId()
     );
+
+    $this->profile->onPreUpdate(
+      $newEntityValues,
+      $entityValues,
+      $entityFields,
+      $formSpec,
+      $action->getResolvedContactId()
+    );
+
     $updatedValues = $this->api4->updateEntity(
       $this->profile->getEntityName(),
       $action->getId(),
@@ -273,6 +302,14 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     // For values that are not part of $newEntityValues we use the previous
     // ones. Fields updated by triggers might be outdated, though.
     $updatedValues += $entityValues;
+
+    $this->profile->onPostUpdate(
+      $updatedValues,
+      $entityValues,
+      $entityFields,
+      $formSpec,
+      $action->getResolvedContactId()
+    );
 
     return $this->convertToSubmitFormActionResult(
       $updatedValues,

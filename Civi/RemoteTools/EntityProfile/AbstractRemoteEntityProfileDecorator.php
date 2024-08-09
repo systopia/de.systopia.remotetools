@@ -166,4 +166,56 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
     return $this->profile->getSaveSuccessMessage($newValues, $oldValues, $formData, $contactId);
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function onPreCreate(
+    array $arguments,
+    array &$entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+    $this->profile->onPreCreate($arguments, $entityValues, $entityFields, $formSpec, $contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPostCreate(
+    array $arguments,
+    array $entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+    $this->profile->onPostCreate($arguments, $entityValues, $entityFields, $formSpec, $contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPreUpdate(
+    array &$newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+    $this->profile->onPreUpdate($newValues, $oldValues, $entityFields, $formSpec, $contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPostUpdate(
+    array $newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+    $this->profile->onPostUpdate($newValues, $oldValues, $entityFields, $formSpec, $contactId);
+  }
+
 }

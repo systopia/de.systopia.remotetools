@@ -302,10 +302,17 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->willReturn(['foo' => 'bar2']);
     $formSpec->setDataTransformer($dataTransformerMock);
 
-    $createdValues = ['id' => 12, 'foo' => 'bar2'];
+    $this->profileMock->expects(static::once())->method('onPreCreate')
+      ->with($arguments, ['foo' => 'bar2'], $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
+
+    $createdValues = ['id' => 12];
     $this->api4Mock->expects(static::once())->method('createEntity')
       ->with('Entity', ['foo' => 'bar2'], ['checkPermissions' => FALSE])
       ->willReturn(new Result([$createdValues]));
+    $createdValues += ['foo' => 'bar2'];
+
+    $this->profileMock->expects(static::once())->method('onPostCreate')
+      ->with($arguments, $createdValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
 
     $this->profileMock->method('getSaveSuccessMessage')
       ->with($createdValues, NULL, $formData, self::RESOLVED_CONTACT_ID)
@@ -514,11 +521,17 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->willReturn(['foo' => 'bar2']);
     $formSpec->setDataTransformer($dataTransformerMock);
 
+    $this->profileMock->expects(static::once())->method('onPreUpdate')
+      ->with(['foo' => 'bar2'], $entityValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
+
     $this->api4Mock->expects(static::once())->method('updateEntity')
       ->with('Entity', 12, ['foo' => 'bar2'])
       ->willReturn(new Result([['foo' => 'bar2']]));
-
     $newEntityValues = ['foo' => 'bar2'] + $entityValues;
+
+    $this->profileMock->expects(static::once())->method('onPostUpdate')
+      ->with($newEntityValues, $entityValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
+
     $this->profileMock->method('getSaveSuccessMessage')
       ->with($newEntityValues, $entityValues, $formData, self::RESOLVED_CONTACT_ID)
       ->willReturn('Ok');

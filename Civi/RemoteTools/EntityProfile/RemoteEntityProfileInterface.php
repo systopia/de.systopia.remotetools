@@ -262,4 +262,78 @@ interface RemoteEntityProfileInterface {
     ?int $contactId
   ): string;
 
+  /**
+   * Called before the entity is created.
+   *
+   * @phpstan-param array<int|string, mixed> $arguments
+   * @phpstan-param array<string, mixed> $entityValues
+   *    The values going to be inserted. Can be modified.
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *    Entity fields indexed by name.
+   * @param \Civi\RemoteTools\Form\FormSpec\FormSpec $formSpec
+   * @param int|null $contactId
+   */
+  public function onPreCreate(
+    array $arguments,
+    array &$entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void;
+
+  /**
+   * Called after the entity was created.
+   *
+   * @phpstan-param array<int|string, mixed> $arguments
+   * @phpstan-param array<string, mixed> $entityValues
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *    Entity fields indexed by name.
+   * @param \Civi\RemoteTools\Form\FormSpec\FormSpec $formSpec
+   * @param int|null $contactId
+   */
+  public function onPostCreate(
+    array $arguments,
+    array $entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void;
+
+  /**
+   * Called before the entity is created.
+   *
+   * @phpstan-param array<string, mixed> $newValues
+   *    The values going to be updated. Can be modified.
+   * @phpstan-param array<string, mixed> $oldValues
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *    Entity fields indexed by name.
+   * @param \Civi\RemoteTools\Form\FormSpec\FormSpec $formSpec
+   * @param int|null $contactId
+   */
+  public function onPreUpdate(
+    array &$newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void;
+
+  /**
+   * Called after the entity was created.
+   *
+   * @phpstan-param array<string, mixed> $newValues
+   * @phpstan-param array<string, mixed> $oldValues
+   * @phpstan-param array<string, array<string, mixed>> $entityFields
+   *    Entity fields indexed by name.
+   * @param \Civi\RemoteTools\Form\FormSpec\FormSpec $formSpec
+   * @param int|null $contactId
+   */
+  public function onPostUpdate(
+    array $newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void;
+
 }
