@@ -40,6 +40,7 @@ final class RemoteActionsHandlerTransactionDecorator extends AbstractRemoteEntit
     }
     // @phpstan-ignore-next-line Dead catch clause.
     catch (\Throwable $e) {
+      // This just sets a flag. Rollback is actually performed on commit() method call in finally block.
       $transaction->rollback();
 
       throw $e;
