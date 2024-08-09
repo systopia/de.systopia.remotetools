@@ -55,8 +55,8 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
       $contentKeywords['$validations'] = [
         JsonSchema::fromArray([
           'keyword' => 'maxLength',
-          // The file might need up to 36 % more space through Base64 encoding.
-          'value' => (int) ceil($field->getMaxFileSize() * 1.36),
+          // The file might need up to 37 % more space through Base64 encoding.
+          'value' => (int) ceil($field->getMaxFileSize() * 1.37),
           'message' => E::ts('The file must not be larger than %1.',
             [1 => FormatUtil::toHumanReadableBytes($field->getMaxFileSize())]
           ),
