@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\EntityProfile;
 use Civi\RemoteTools\Api4\Query\Comparison;
 use Civi\RemoteTools\Api4\Query\ConditionInterface;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
+use Civi\RemoteTools\Form\FormSpec\FormSpec;
 use CRM_Remotetools_ExtensionUtil as E;
 
 /**
@@ -116,6 +117,54 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
     ?int $contactId
   ): string {
     return E::ts('Saved successfully');
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPreCreate(
+    array $arguments,
+    array &$entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPostCreate(
+    array $arguments,
+    array $entityValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPreUpdate(
+    array &$newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function onPostUpdate(
+    array $newValues,
+    array $oldValues,
+    array $entityFields,
+    FormSpec $formSpec,
+    ?int $contactId
+  ): void {
   }
 
 }
