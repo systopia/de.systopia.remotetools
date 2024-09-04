@@ -70,6 +70,10 @@ abstract class AbstractFormElementContainer {
     return $this->elements;
   }
 
+  public function hasElements(): bool {
+    return [] !== $this->getElements();
+  }
+
   /**
    * @return $this
    */
