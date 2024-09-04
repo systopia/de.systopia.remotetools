@@ -63,7 +63,10 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
       $contactId
     );
 
-    // @todo What to do with previous files?
+    // If an existing file is replaced by a new one, the file on the filesystem
+    // and the File entity of the previous file is kept. This corresponds with
+    // the behavior of CiviCRM with custom file fields. (A file can only be
+    // removed explicitly.)
     $this->handleFiles($newValues, $oldValues, $entityFields, $contactId);
   }
 
@@ -97,7 +100,8 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
       // decorated profile.
       // (The validation prevents invalid values at this point.)
       // @todo It's not possible to set a custom file field to NULL. (The previous value is unchanged.)
-      // Can we accept this or should we perform this another way?
+      // This should be fixed in CiviCRM itself. However, at the time of writing
+      // the corresponding Drupal module has no remove option.
       if (!$this->containsNewFile($value)) {
         continue;
       }
