@@ -13,3 +13,5 @@ parameters:
 		# Errors we get when using "prefer-lowest"
 		- '#::getSubscribedEvents\(\) return type has no value type specified in iterable type array.$#'
 		- '#Call to deprecated method assertArraySubset\(\)#'
+		# Can be dropped once CiviCRM 5.68 is minimum requirement.
+		- '#^Static method CRM_Utils_File::makeFileName\(\) invoked with 2 parameters, 1 required.$#'

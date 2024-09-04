@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2022 SYSTOPIA GmbH
+ * Copyright (C) 2024 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,25 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\JsonSchema;
+namespace Civi\RemoteTools\Helper;
 
-class JsonSchemaObject extends JsonSchema {
+interface FilePersisterInterface {
 
   /**
-   * @phpstan-param array<int|string, JsonSchema> $properties
-   *   Integers are allowed as keys because PHP automatically converts
-   *   integerish string to integers when used as key. The keys must not be
-   *   strictly increasing starting at 0.
+   * @returns int ID of File entity.
+   *
+   * @throws \CRM_Core_Exception
    */
-  public function __construct(array $properties, array $keywords = [], bool $nullable = FALSE) {
-    $type = $nullable ? ['object', 'null'] : 'object';
+  public function persistFile(string $filename, string $content, ?string $description, ?int $contactId): int;
 
-    parent::__construct([
-      'type' => $type,
-      'properties' => new JsonSchema($properties),
-    ] + $keywords);
-  }
+  /**
+   * @phpstan-param array{filename: string, content: string} $file
+   *   The property 'content' contains the Base64 encoded file.
+   *
+   * @returns int ID of File entity.
+   *
+   * @throws \CRM_Core_Exception
+   */
+  public function persistFileFromForm(array $file, ?string $description, ?int $contactId): int;
 
 }
