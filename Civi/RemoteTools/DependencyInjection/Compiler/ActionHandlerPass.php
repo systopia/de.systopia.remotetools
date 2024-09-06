@@ -23,6 +23,7 @@ use Civi\Api4\Generic\AbstractAction;
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\ActionHandler\ActionHandlerProvider;
 use Civi\RemoteTools\ActionHandler\RemoteActionsHandlerTransactionDecorator;
+use Civi\RemoteTools\ActionHandler\RemoteEntityActionsHandlerInterface;
 use Civi\RemoteTools\DependencyInjection\Compiler\Traits\DecorateServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -84,12 +85,7 @@ final class ActionHandlerPass implements CompilerPassInterface {
     }
 
     foreach ($handlerServices as $handlerKey => $handlerService) {
-      $this->decorateService(
-        $container,
-        $handlerService->__toString(),
-        RemoteActionsHandlerTransactionDecorator::class,
-        $handlerKey
-      );
+      $this->decorateWithTransactionDecorator($container, $handlerService->__toString(), $handlerKey);
     }
 
     $container->getDefinition(ActionHandlerProvider::class)
@@ -198,6 +194,18 @@ final class ActionHandlerPass implements CompilerPassInterface {
     }
 
     return NULL;
+  }
+
+  private function decorateWithTransactionDecorator(ContainerBuilder $container, string $id, string $handlerKey): void {
+    $handlerClass = $this->getServiceClass($container, $id);
+    if (is_a($handlerClass, RemoteEntityActionsHandlerInterface::class, TRUE)) {
+      $this->decorateService(
+        $container,
+        $id,
+        RemoteActionsHandlerTransactionDecorator::class,
+        $handlerKey
+      );
+    }
   }
 
 }
