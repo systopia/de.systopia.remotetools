@@ -80,6 +80,13 @@ with `@api` then this applies to all methods within it. If you'd like to use
 code that is not labeled as API, yet, please open an issue, so we can consider
 to add it to the API.
 
+Additionally, interfaces marked with `@apiService`, have a corresponding service
+in the DI container that can be safely used by third parties. Though in contrast
+to `@api` those interfaces should not be implemented.
+
+Services are private by default. If you need a service of this extension as
+public service, just make a public alias.
+
 #### Forms
 
 Forms for creation and update are specified in a
