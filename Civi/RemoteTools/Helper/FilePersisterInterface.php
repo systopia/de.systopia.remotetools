@@ -19,9 +19,14 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Helper;
 
+/**
+ * @apiService
+ */
 interface FilePersisterInterface {
 
   /**
+   * Requires an open database transaction.
+   *
    * @returns int ID of File entity.
    *
    * @throws \CRM_Core_Exception
@@ -29,6 +34,8 @@ interface FilePersisterInterface {
   public function persistFile(string $filename, string $content, ?string $description, ?int $contactId): int;
 
   /**
+   * Requires an open database transaction.
+   *
    * @phpstan-param array{filename: string, content: string} $file
    *   The property 'content' contains the Base64 encoded file.
    *
