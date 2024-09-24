@@ -19,7 +19,7 @@
         "symfony/mime": ">=4.4",
         "systopia/expression-language-ext": "~0.1",
         "systopia/opis-json-schema-ext": "~0.4",
-        "webmozart/assert": "^1"
+        "webmozart/assert": "^1.5"
     },
     "scripts": {
         "composer-phpcs": [
