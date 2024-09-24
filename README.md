@@ -97,6 +97,66 @@ module [civiremote_entity](https://github.com/systopia/civiremote) provides the
 corresponding part that accesses the remote entity API and renders the forms as
 Drupal forms.
 
+#### Contact Search Forms
+
+Custom forms for contact searches can be inherited from class [CRM_Remotetools_RemoteContactProfile](CRM/Remotetools/RemoteContactProfile.php).
+Your profile class needs to implement the following methods:
+
+* `getProfileID()` 
+  * return the profile id, ie. `'my-profile'`
+* `getProfileName()`
+  * return the human readable form of the profile id, .ie `'This is my profile'`
+* `getReturnFields()`
+  * return an array of names for those fields that are part of the custom search form
+* `addFields($fields_collection)`
+  * provides a type specification for those fields that are part of the custom search form
+  * call `$fields_collection->setFieldSpec(...)` for specifying each field
+  * field names should match the names that are being returned by `getReturnFields()`
+
+In addition, take a look and implement the following methods:
+
+* `applyRestrictions()`
+  * restrict the custom search query
+  * explore possible request parameters in api explorer
+  * ie. `contact_type`, `limit`, `return` `sequential`
+* `filterResult()`
+  * apply customization to the result of a search query
+* `isOwnDataProfile`
+  * see method comments and either return `true` or `false` 
+
+##### Field specification
+
+**Define a field that holds array data**
+
+Such a field specification is of type `T_ENUM` and needs an `options` field in the data
+passed on to `setFieldSpec()` in `addFields()`:
+
+```php
+$fields_collection->setFieldSpec(
+  'a_list', 
+  [
+    'name' => 'a_list'
+    'type' => CRM_Utils_Type::T_ENUM,
+    'options': ["dummy"]
+  ]
+);
+```
+
+The `options` field is manadatory if data is supposed to be rendered in a Drupal View.
+Otherwise the settings menu of the field in the corresponding Drupal View won't show
+the menu entry *Multiple field settings*.
+
+The `options` field must at least hold a single array entry. an empty array is not
+sufficient. The option name can be arbitrary as the options are not used any further
+by the Drupal View.
+
+In order to show the array entries for that field in a Drupal View as a simple list
+without bullets or indices, do:
+
+* open the *Multiple field settings* of the field in the Drupal View
+* select *Simple Separator* as *Display type*
+* as *Separator* insert the html linebreak tag `<br/>`
+
 # License
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
