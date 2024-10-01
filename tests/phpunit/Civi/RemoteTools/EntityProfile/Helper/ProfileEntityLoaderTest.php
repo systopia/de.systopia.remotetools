@@ -7,6 +7,7 @@ use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\RemoteGetAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\Comparison;
+use Civi\RemoteTools\Api4\Query\Join;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\Helper\WhereFactoryInterface;
@@ -100,6 +101,12 @@ final class ProfileEntityLoaderTest extends TestCase {
       ->with($entitySelect, 'get', $remoteSelect, $resolvedContactId)
       ->willReturn($profileEntitySelect);
 
+    $profileJoin = Join::newWithBridge('JoinedEntity', 'j', 'INNER', 'bridge');
+    $profileMock->method('getJoins')
+      ->with('get', $resolvedContactId)
+      ->willReturn([$profileJoin]);
+    $entityJoin = [['JoinedEntity AS j', 'INNER', 'bridge']];
+
     $profileFilter = Comparison::new('extra', '!=', 'abc');
     $profileMock->method('getFilter')
       ->with('get', $resolvedContactId)
@@ -135,6 +142,7 @@ final class ProfileEntityLoaderTest extends TestCase {
           'get',
           [
             'select' => $profileEntitySelect,
+            'join' => $entityJoin,
             'where' => $entityWhereWithFilter,
             'orderBy' => ['foo' => 'DESC'],
             'limit' => 10,

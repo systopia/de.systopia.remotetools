@@ -15,6 +15,8 @@ use Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
+use Civi\RemoteTools\Api4\Query\Comparison;
+use Civi\RemoteTools\Api4\Query\Join;
 use Civi\RemoteTools\EntityProfile\Authorization\GrantResult;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
@@ -92,7 +94,6 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
   public function testDelete(): void {
     $actionMock = $this->createMock(RemoteDeleteAction::class);
 
-    $result = new Result();
     $this->entityDeleterMock->method('delete')
       ->with(static::isInstanceOf(EntityProfilePermissionDecorator::class), $actionMock)
       ->willReturn([['id' => 1]]);
@@ -338,6 +339,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
 
     $this->mockApi4Execute('Entity', 'get', [
       'select' => ['foo'],
+      'join' => [],
       'where' => [['id', '=', 12]],
       'checkPermissions' => FALSE,
     ], new Result([$entityValues]));
@@ -361,6 +363,16 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
   }
 
   public function testGetUpdateFormDeniedWithForm(): void {
+    $profileJoin = Join::newWithBridge('JoinedEntity', 'j', 'INNER', 'bridge');
+    $this->profileMock->method('getJoins')
+      ->with('update', self::RESOLVED_CONTACT_ID)
+      ->willReturn([$profileJoin]);
+
+    $profileFilter = Comparison::new('extra', '!=', 'abc');
+    $this->profileMock->method('getFilter')
+      ->with('update', self::RESOLVED_CONTACT_ID)
+      ->willReturn($profileFilter);
+
     $actionMock = $this->createActionMock(RemoteGetUpdateFormAction::class);
     $actionMock->setId(12);
 
@@ -376,7 +388,8 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
 
     $this->mockApi4Execute('Entity', 'get', [
       'select' => ['foo'],
-      'where' => [['id', '=', 12]],
+      'join' => [['JoinedEntity AS j', 'INNER', 'bridge']],
+      'where' => [['id', '=', 12], ['extra', '!=', 'abc']],
       'checkPermissions' => FALSE,
     ], new Result([$entityValues]));
 
@@ -410,6 +423,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
     $this->api4Mock->method('execute')
       ->with('Entity', 'get', [
         'select' => ['foo'],
+        'join' => [],
         'where' => [['id', '=', 12]],
         'checkPermissions' => FALSE,
       ])
@@ -439,6 +453,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
 
     $this->mockApi4Execute('Entity', 'get', [
       'select' => ['foo', 'bar'],
+      'join' => [],
       'where' => [['id', '=', 12]],
       'checkPermissions' => FALSE,
     ], new Result([$entityValues]));
@@ -490,6 +505,7 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
 
     $this->mockApi4Execute('Entity', 'get', [
       'select' => ['foo', 'bar'],
+      'join' => [],
       'where' => [['id', '=', 12]],
       'checkPermissions' => FALSE,
     ], new Result([$entityValues]));

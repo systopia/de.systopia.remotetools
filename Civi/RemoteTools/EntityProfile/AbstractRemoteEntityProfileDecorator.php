@@ -101,6 +101,13 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
+  public function getJoins(string $actionName, ?int $contactId): array {
+    return $this->profile->getJoins($actionName, $contactId);
+  }
+
+  /**
+   * @inheritDoc
+   */
   public function convertRemoteFieldComparison(Comparison $comparison, ?int $contactId): ?ConditionInterface {
     return $this->profile->convertRemoteFieldComparison($comparison, $contactId);
   }

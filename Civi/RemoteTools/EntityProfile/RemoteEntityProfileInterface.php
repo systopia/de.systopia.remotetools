@@ -164,6 +164,18 @@ interface RemoteEntityProfileInterface {
   public function getFilter(string $actionName, ?int $contactId): ?ConditionInterface;
 
   /**
+   * Might be used to restrict access using related entities.
+   *
+   * @phpstan-param 'delete'|'get'|'update' $actionName
+   *
+   * @phpstan-return list<\Civi\RemoteTools\Api4\Query\Join>
+   *   Joins added to the query.
+   *
+   * @api
+   */
+  public function getJoins(string $actionName, ?int $contactId): array;
+
+  /**
    * @phpstan-param array<string, mixed> $entityValues
    * @phpstan-param array<string> $select
    *   Selected field names. Maybe empty on create or update.
