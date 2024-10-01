@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\EntityProfile\Helper;
 use Civi\RemoteTools\Api4\Action\RemoteDeleteAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\Comparison;
+use Civi\RemoteTools\Api4\Query\Join;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Helper\WhereFactoryInterface;
 use Webmozart\Assert\Assert;
@@ -55,10 +56,15 @@ final class ProfileEntityDeleter implements ProfileEntityDeleterInterface {
     ])->indexBy('name')->getArrayCopy();
     $remoteFields = $profile->getRemoteFields($entityFields, $action->getResolvedContactId());
 
+    $join = array_map(
+      fn (Join $join) => $join->toArray(),
+      $profile->getJoins('delete', $action->getResolvedContactId())
+    );
     $where = $this->createWhereForDelete($profile, $action, $entityFields, $remoteFields);
 
     $getResult = $this->api4->execute($profile->getEntityName(), 'get', [
       'select' => $profile->getSelectFieldNames(['*'], 'delete', [], $action->getResolvedContactId()),
+      'join' => $join,
       'where' => $where,
       'checkPermissions' => $profile->isCheckApiPermissions($action->getResolvedContactId()),
     ]);

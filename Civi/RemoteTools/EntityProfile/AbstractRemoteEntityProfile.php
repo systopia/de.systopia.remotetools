@@ -61,6 +61,13 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
+  public function getJoins(string $actionName, ?int $contactId): array {
+    return [];
+  }
+
+  /**
+   * @inheritDoc
+   */
   public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool {
     return FALSE;
   }

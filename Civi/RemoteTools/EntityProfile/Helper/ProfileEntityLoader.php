@@ -23,6 +23,7 @@ use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\RemoteGetAction;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Api4\Query\Comparison;
+use Civi\RemoteTools\Api4\Query\Join;
 use Civi\RemoteTools\Api4\Query\QueryApplier;
 use Civi\RemoteTools\EntityProfile\RemoteEntityProfileInterface;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
@@ -60,6 +61,10 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
     $remoteFields = $profile->getRemoteFields($entityFields, $action->getResolvedContactId());
 
     $selects = $this->createSelectsForGet($profile, $action, $entityFields, $remoteFields);
+    $join = array_map(
+      fn (Join $join) => $join->toArray(),
+      $profile->getJoins('get', $action->getResolvedContactId())
+    );
     $where = $this->createWhereForGet($profile, $action, $entityFields, $remoteFields);
 
     $entityOrderBy = [];
@@ -74,6 +79,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
 
     $result = $this->api4->execute($profile->getEntityName(), 'get', [
       'select' => $selects['entity'],
+      'join' => $join,
       'where' => $where,
       'orderBy' => $entityOrderBy,
       'limit' => $action->getLimit(),

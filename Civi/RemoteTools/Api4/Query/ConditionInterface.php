@@ -23,6 +23,8 @@ namespace Civi\RemoteTools\Api4\Query;
  * @phpstan-import-type comparisonT from Comparison
  * @phpstan-import-type compositeConditionT from CompositeCondition
  *
+ * @phpstan-type conditionT comparisonT|compositeConditionT
+ *
  * @api
  */
 interface ConditionInterface {
@@ -30,8 +32,7 @@ interface ConditionInterface {
   public function getOperator(): string;
 
   /**
-   * @return array
-   * @phpstan-return comparisonT|compositeConditionT
+   * @phpstan-return conditionT
    */
   public function toArray(): array;
 

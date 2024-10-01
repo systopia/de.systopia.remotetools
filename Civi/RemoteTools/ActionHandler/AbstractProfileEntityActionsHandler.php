@@ -31,6 +31,7 @@ use Civi\RemoteTools\Api4\Action\RemoteSubmitUpdateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateCreateFormAction;
 use Civi\RemoteTools\Api4\Action\RemoteValidateUpdateFormAction;
 use Civi\RemoteTools\Api4\Api4Interface;
+use Civi\RemoteTools\Api4\Query\Join;
 use Civi\RemoteTools\Api4\Query\QueryApplier;
 use Civi\RemoteTools\EntityProfile\EntityProfileOptionSuffixDecorator;
 use Civi\RemoteTools\EntityProfile\EntityProfilePermissionDecorator;
@@ -363,6 +364,11 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
    * @throws \CRM_Core_Exception
    */
   protected function getEntityById(int $id, string $actionName, ?int $contactId): ?array {
+    $join = array_map(
+      fn (Join $join) => $join->toArray(),
+      $this->profile->getJoins($actionName, $contactId)
+    );
+
     $where = [['id', '=', $id]];
     $filter = $this->profile->getFilter($actionName, $contactId);
     if (NULL !== $filter) {
@@ -371,6 +377,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
 
     return $this->api4->execute($this->profile->getEntityName(), 'get', [
       'select' => $this->profile->getSelectFieldNames(['*'], $actionName, [], $contactId),
+      'join' => $join,
       'where' => $where,
       'checkPermissions' => $this->profile->isCheckApiPermissions($contactId),
     ])->first();

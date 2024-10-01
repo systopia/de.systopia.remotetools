@@ -22,10 +22,19 @@ namespace Civi\RemoteTools\Api4\Query;
 use Webmozart\Assert\Assert;
 
 /**
- * @phpstan-type ComparisonT array{string, string, 2?: scalar|array<scalar>}
- * Actually this should be: array{string, array<int, ComparisonT|CompositeConditionT>}, so that is not possible
- * @phpstan-type CompositeConditionT array{string, array<int, array>}
- * @phpstan-type ConditionT ComparisonT|CompositeConditionT
+ * @phpstan-import-type conditionT from \Civi\RemoteTools\Api4\Query\ConditionInterface
+ *
+ * @phpstan-type joinTypeT 'INNER'|'LEFT'|'EXCLUDE'
+ *
+ * @phpstan-type joinT list<string|conditionT>
+ *   The above type hint is required because of the workaround used. Otherwise,
+ *   the type hint would be:
+ *   array{string, joinTypeT, conditionT}|array{string, joinTypeT, string, 3?: conditionT}
+ *   The second option is when using a bridge.
+ *
+ * @see self::generateConditionsWorkaround()
+ *
+ * @api
  */
 final class Join {
 
@@ -33,22 +42,43 @@ final class Join {
 
   private string $alias;
 
+  /**
+   * @phpstan-var joinTypeT
+   */
   private string $type;
 
   private ?string $bridge;
 
   private ?ConditionInterface $condition;
 
+  /**
+   * @phpstan-param joinTypeT $type
+   *
+   * If a value in a condition is not a field name, it must be enclosed by '"',
+   * e.g. '"my_string"'.
+   */
   public static function new(string $entityName, string $alias, string $type, ConditionInterface $condition): self {
     return new self($entityName, $alias, $type, NULL, $condition);
   }
 
+  /**
+   * @phpstan-param joinTypeT $type
+   *
+   *  If a value in a condition is not a field name, it must be enclosed by '"',
+   *  e.g. '"my_string"'.
+   */
   public static function newWithBridge(string $entityName, string $alias, string $type, string $bridge,
     ?ConditionInterface $condition = NULL
   ): self {
     return new self($entityName, $alias, $type, $bridge, $condition);
   }
 
+  /**
+   * @phpstan-param joinTypeT $type
+   *
+   *  If a value in a condition is not a field name, it must be enclosed by '"',
+   *  e.g. '"my_string"'.
+   */
   public function __construct(string $entityName, string $alias, string $type, ?string $bridge,
     ?ConditionInterface $condition
   ) {
@@ -69,6 +99,9 @@ final class Join {
     return $this->alias;
   }
 
+  /**
+   * @phpstan-return joinTypeT
+   */
   public function getType(): string {
     return $this->type;
   }
@@ -82,21 +115,36 @@ final class Join {
   }
 
   /**
-   * Actually this should be array{string, string, string|ConditionT, ...ConditionT}, so this is not possible
-   * @phpstan-return array<int, string|ConditionT>
-   *
-   * @return array
+   * @phpstan-return joinT
    */
   public function toArray(): array {
     $join = [$this->entityName . ' AS ' . $this->alias, $this->type];
     if (NULL !== $this->bridge) {
       $join[] = $this->bridge;
+      if (NULL !== $this->condition) {
+        $join = array_merge($join, self::generateConditionsWorkaround($this->condition));
+      }
     }
-    if (NULL !== $this->condition) {
-      $join[] = $this->condition->toArray();
+    else {
+      // @phpstan-ignore argument.type
+      $join = array_merge($join, self::generateConditionsWorkaround($this->condition));
     }
 
     return $join;
+  }
+
+  /**
+   * This is a workaround and (in some cases) necessary because of
+   * https://lab.civicrm.org/dev/core/-/issues/5500
+   *
+   * @phpstan-return list<conditionT>
+   */
+  private static function generateConditionsWorkaround(ConditionInterface $condition): array {
+    if ($condition instanceof CompositeCondition && 'AND' === $condition->getOperator()) {
+      return array_map(fn (ConditionInterface $subCondition) => $subCondition->toArray(), $condition->getConditions());
+    }
+
+    return [$condition->toArray()];
   }
 
 }
