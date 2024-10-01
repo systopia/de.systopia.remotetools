@@ -27,7 +27,6 @@ parameters:
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
-	checkGenericClassInNonGenericObjectType: false
 	treatPhpDocTypesAsCertain: false
 	exceptions:
 		check:
@@ -39,6 +38,8 @@ parameters:
 	ignoreErrors:
 		# Note paths are prefixed with "*/" to work with inspections in PHPStorm because of:
 		# https://youtrack.jetbrains.com/issue/WI-63891/PHPStan-ignoreErrors-configuration-isnt-working-with-inspections
+		-
+			identifier: missingType.generics
 
 		- '#^Method Civi\\RemoteTools\\Api4\\Action\\[^\s]+Action::getHandlerResult\(\) has Civi\\RemoteTools\\Exception\\ActionHandlerNotFoundException in PHPDoc @throws tag but it.s not thrown.$#'
 		- '#^Method Civi\\RemoteTools\\Api4\\Api4::createAction\(\) should return Civi\\Api4\\Generic\\AbstractAction but returns array|Civi\Api4\Generic\AbstractAction.$#'
