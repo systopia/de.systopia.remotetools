@@ -35,19 +35,25 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
     Assert::isInstanceOf($field, FileField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\FileField $field */
 
-    if ($field->hasDefaultValue() && NULL !== $field->getFilename() && NULL !== $field->getUrl()) {
-      $currentFile = [
-        'filename' => $field->getFilename(),
-        'url' => $field->getUrl(),
-      ];
-    }
-    else {
-      $currentFile = NULL;
+    $keywords = [];
+    if ($field->isReadOnly()) {
+      $keywords['readOnly'] = TRUE;
     }
 
-    return new JsonSchemaFile(
-      $currentFile, $field->getMaxFileSize(), ['readOnly' => $field->isReadOnly()], $field->isNullable()
-    );
+    if ($field->hasDefaultValue() && NULL !== $field->getFilename() && NULL !== $field->getUrl()) {
+      $keywords['default'] = JsonSchema::fromArray([
+        'filename' => $field->getFilename(),
+        'url' => $field->getUrl(),
+      ]);
+      // If the field is read only, we cannot use the const keyword, because
+      // the URL might contain a hash that depends on the time. This is at least
+      // true for the /civicrm/file path.
+    }
+    elseif ($field->isReadOnly()) {
+      $keywords['const'] = NULL;
+    }
+
+    return new JsonSchemaFile($field->getMaxFileSize(), $keywords, $field->isNullable());
   }
 
   public function supportsField(AbstractFormField $field): bool {
