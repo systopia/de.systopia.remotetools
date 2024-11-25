@@ -83,6 +83,16 @@ final class Api4 implements Api4Interface {
     return $this->createAction($entityName, 'get');
   }
 
+  /**
+   * @inheritDoc
+   */
+  public function deleteEntities(string $entityName, ConditionInterface $condition, array $options = []): Result {
+    return $this->execute($entityName, 'delete', [
+      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
+      'where' => [$condition->toArray()],
+    ]);
+  }
+
   public function deleteEntity(string $entityName, int $id, array $options = []): Result {
     return $this->execute($entityName, 'delete', [
       'checkPermissions' => $options['checkPermissions'] ?? FALSE,
