@@ -69,7 +69,7 @@ interface Api4Interface {
    * @phpstan-param array{checkPermissions?: bool} $options
    *   checkPermissions defaults to FALSE.
    *
-   * @throws \Civi\API\Exception\NotImplementedException
+   * @throws \CRM_Core_Exception
    */
   public function deleteEntities(string $entityName, ConditionInterface $condition, array $options = []): Result;
 
