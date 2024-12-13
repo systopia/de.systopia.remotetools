@@ -19,7 +19,6 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action;
 
-use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Api4\Action\Traits\ProfileParameterOptionalTrait;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
@@ -39,21 +38,17 @@ class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements Pro
   // Called by API explorer and SearchKit, so parameters need to be optional.
   use ProfileParameterOptionalTrait;
 
-  public function _run(Result $result): void {
+  protected function getRecords(): array {
     try {
-      $this->doRun($result);
+      return parent::getRecords();
     }
-    // @phpstan-ignore-next-line
     catch (ActionHandlerNotFoundException $e) {
       if (NULL !== $this->profile) {
         throw $e;
       }
 
-      if ('getFields' === $this->action) {
-        $result->exchangeArray($this->fields());
-      }
-      elseif ($this->select !== ['row_count']) {
-        $result[] = [
+      return [
+        [
           'default_value' => NULL,
           'type' => 'Field',
           'entity' => $this->getEntityName(),
@@ -65,12 +60,8 @@ class RemoteGetFieldsAction extends AbstractRemoteGetFieldsAction implements Pro
           'data_type' => 'Integer',
           'options' => FALSE,
           'label' => 'ID',
-        ];
-      }
-
-      if (in_array('row_count', $this->select, TRUE)) {
-        $result->setCountMatched($result->count());
-      }
+        ],
+      ];
     }
   }
 
