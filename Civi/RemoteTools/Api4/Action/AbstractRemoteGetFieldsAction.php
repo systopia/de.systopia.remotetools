@@ -20,19 +20,41 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Api4\Action;
 
 use Civi\Api4\Generic\BasicGetFieldsAction;
-use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerRunTrait;
+use Civi\Api4\Generic\Result;
+use Civi\RemoteTools\Api4\Action\Traits\ActionHandlerTrait;
 use Civi\RemoteTools\Api4\Action\Traits\RemoteContactIdParameterOptionalTrait;
 use Civi\RemoteTools\Api4\Action\Traits\ResolvedContactIdOptionalTrait;
+use Civi\RemoteTools\Api4\Util\WhereUtil;
 
 /**
  * @api
  */
-abstract class AbstractRemoteGetFieldsAction extends BasicGetFieldsAction {
+abstract class AbstractRemoteGetFieldsAction extends BasicGetFieldsAction implements RemoteActionInterface {
 
-  use ActionHandlerRunTrait;
+  use ActionHandlerTrait;
 
   use RemoteContactIdParameterOptionalTrait;
 
   use ResolvedContactIdOptionalTrait;
+
+  /**
+   * @phpstan-return array<int|string, mixed>
+   *
+   * @throws \Civi\RemoteTools\Exception\ActionHandlerNotFoundException
+   */
+  protected function getRecords(): array {
+    // Ensure fields required for the filtering done by BasicGetFieldsAction are
+    // available.
+    $originalSelect = $this->getSelect();
+    if ([] !== $this->getSelect()) {
+      $this->setSelect(array_unique(
+        array_merge($this->getSelect(), WhereUtil::getFields($this->getWhere()))
+      ));
+    }
+    $result = $this->getHandlerResult();
+    $this->setSelect($originalSelect);
+
+    return $result instanceof Result ? $result->getArrayCopy() : $result;
+  }
 
 }
