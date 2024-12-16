@@ -22,6 +22,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
 use Civi\RemoteTools\Form\FormSpec\Button\SubmitButton;
 
 /**
+ * @template T of FormElementInterface
+ *
  * @api
  */
 abstract class AbstractFormElementContainer {
@@ -29,12 +31,12 @@ abstract class AbstractFormElementContainer {
   private string $title;
 
   /**
-   * @phpstan-var array<FormElementInterface>
+   * @phpstan-var array<T>
    */
   private array $elements = [];
 
   /**
-   * @phpstan-param array<FormElementInterface> $elements
+   * @phpstan-param array<T> $elements
    */
   public function __construct(string $title, array $elements = []) {
     $this->title = $title;
@@ -55,6 +57,8 @@ abstract class AbstractFormElementContainer {
   }
 
   /**
+   * @phpstan-param T $element
+   *
    * @return $this
    */
   public function addElement(FormElementInterface $element): self {
@@ -64,7 +68,7 @@ abstract class AbstractFormElementContainer {
   }
 
   /**
-   * @phpstan-return array<FormElementInterface>
+   * @phpstan-return array<T>
    */
   public function getElements(): array {
     return $this->elements;
@@ -75,6 +79,8 @@ abstract class AbstractFormElementContainer {
   }
 
   /**
+   * @phpstan-param T $element
+   *
    * @return $this
    */
   public function insertElement(FormElementInterface $element, int $index): self {
@@ -84,7 +90,7 @@ abstract class AbstractFormElementContainer {
   }
 
   /**
-   * @phpstan-param array<FormElementInterface> $elements
+   * @phpstan-param array<T> $elements
    */
   public function setElements(array $elements): self {
     $this->elements = $elements;
@@ -102,7 +108,7 @@ abstract class AbstractFormElementContainer {
       if ($element instanceof AbstractFormField) {
         $fields[$element->getName()] = $element;
       }
-      elseif ($element instanceof FormElementContainer) {
+      elseif ($element instanceof AbstractFormElementContainer) {
         $containerFields = $element->getFields();
         $nonUniqueFields = array_keys(array_intersect_key($fields, $containerFields));
         if ([] !== $nonUniqueFields) {

@@ -20,6 +20,8 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 /**
+ * @extends AbstractFormElementContainer<FormElementInterface>
+ *
  * @api
  */
 final class FormSpec extends AbstractFormElementContainer {

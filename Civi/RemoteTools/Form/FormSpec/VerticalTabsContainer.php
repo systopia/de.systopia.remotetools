@@ -22,26 +22,18 @@ namespace Civi\RemoteTools\Form\FormSpec;
 /**
  * @codeCoverageIgnore
  *
- * @extends AbstractFormElementContainer<FormElementInterface>
+ * @extends AbstractFormElementContainer<FormTab>
  *
  * @api
  */
-class FormElementContainer extends AbstractFormElementContainer implements FormElementInterface {
+class VerticalTabsContainer extends AbstractFormElementContainer implements FormElementInterface {
 
-  private bool $collapsible = FALSE;
+  public function __construct(array $elements = []) {
+    parent::__construct('', $elements);
+  }
 
   public function getType(): string {
-    return 'container';
-  }
-
-  public function isCollapsible(): bool {
-    return $this->collapsible;
-  }
-
-  public function setCollapsible(bool $collapsible): self {
-    $this->collapsible = $collapsible;
-
-    return $this;
+    return 'vertical_tabs';
   }
 
 }
