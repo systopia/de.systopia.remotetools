@@ -71,6 +71,14 @@ interface Api4Interface {
    *
    * @throws \CRM_Core_Exception
    */
+  public function deleteEntities(string $entityName, ConditionInterface $condition, array $options = []): Result;
+
+  /**
+   * @phpstan-param array{checkPermissions?: bool} $options
+   *   checkPermissions defaults to FALSE.
+   *
+   * @throws \CRM_Core_Exception
+   */
   public function deleteEntity(string $entityName, int $id, array $options = []): Result;
 
   /**
