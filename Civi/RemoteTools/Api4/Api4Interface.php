@@ -33,12 +33,11 @@ use Civi\RemoteTools\Api4\Query\ConditionInterface;
 interface Api4Interface {
 
   /**
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @throws \CRM_Core_Exception
    */
-  public function countEntities(string $entityName, ConditionInterface $where, array $options = []): int;
+  public function countEntities(string $entityName, ConditionInterface $where, array $extraParams = []): int;
 
   /**
    * @param array<string, mixed|ApiParameterInterface> $params
@@ -49,12 +48,11 @@ interface Api4Interface {
 
   /**
    * @phpstan-param array<string, mixed> $values
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @throws \CRM_Core_Exception
    */
-  public function createEntity(string $entityName, array $values, array $options = []): Result;
+  public function createEntity(string $entityName, array $values, array $extraParams = []): Result;
 
   /**
    * @return \Civi\Api4\Generic\AbstractGetAction
@@ -66,20 +64,18 @@ interface Api4Interface {
   public function createGetAction(string $entityName): AbstractAction;
 
   /**
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @throws \CRM_Core_Exception
    */
-  public function deleteEntities(string $entityName, ConditionInterface $condition, array $options = []): Result;
+  public function deleteEntities(string $entityName, ConditionInterface $condition, array $extraParams = []): Result;
 
   /**
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @throws \CRM_Core_Exception
    */
-  public function deleteEntity(string $entityName, int $id, array $options = []): Result;
+  public function deleteEntity(string $entityName, int $id, array $extraParams = []): Result;
 
   /**
    * @param array<string, mixed|ApiParameterInterface> $params
@@ -109,22 +105,20 @@ interface Api4Interface {
   ): Result;
 
   /**
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @phpstan-return array<string, mixed>|null
    *
    * @throws \CRM_Core_Exception
    */
-  public function getEntity(string $entityName, int $id, array $options = []): ?array;
+  public function getEntity(string $entityName, int $id, array $extraParams = []): ?array;
 
   /**
    * @phpstan-param array<string, mixed> $values
-   * @phpstan-param array{checkPermissions?: bool} $options
-   *   checkPermissions defaults to FALSE.
+   * @phpstan-param array<string, mixed> $extraParams
    *
    * @throws \CRM_Core_Exception
    */
-  public function updateEntity(string $entityName, int $id, array $values, array $options = []): Result;
+  public function updateEntity(string $entityName, int $id, array $values, array $extraParams = []): Result;
 
 }
