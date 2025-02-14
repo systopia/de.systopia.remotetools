@@ -40,12 +40,11 @@ final class Api4 implements Api4Interface {
     self::$instance = $this;
   }
 
-  public function countEntities(string $entityName, ConditionInterface $where, array $options = []): int {
+  public function countEntities(string $entityName, ConditionInterface $where, array $extraParams = []): int {
     return $this->execute($entityName, 'get', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'select' => ['row_count'],
       'where' => [$where->toArray()],
-    ])->countMatched();
+    ] + $extraParams)->countMatched();
   }
 
   /**
@@ -68,11 +67,10 @@ final class Api4 implements Api4Interface {
   /**
    * @inheritDoc
    */
-  public function createEntity(string $entityName, array $values, array $options = []): Result {
+  public function createEntity(string $entityName, array $values, array $extraParams = []): Result {
     return $this->execute($entityName, 'create', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'values' => $values,
-    ]);
+    ] + $extraParams);
   }
 
   /**
@@ -86,18 +84,19 @@ final class Api4 implements Api4Interface {
   /**
    * @inheritDoc
    */
-  public function deleteEntities(string $entityName, ConditionInterface $condition, array $options = []): Result {
+  public function deleteEntities(string $entityName, ConditionInterface $condition, array $extraParams = []): Result {
     return $this->execute($entityName, 'delete', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [$condition->toArray()],
-    ]);
+    ] + $extraParams);
   }
 
-  public function deleteEntity(string $entityName, int $id, array $options = []): Result {
+  /**
+   * @inheritDoc
+   */
+  public function deleteEntity(string $entityName, int $id, array $extraParams = []): Result {
     return $this->execute($entityName, 'delete', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
-    ]);
+    ] + $extraParams);
   }
 
   /**
@@ -133,19 +132,23 @@ final class Api4 implements Api4Interface {
     ] + $extraParams);
   }
 
-  public function getEntity(string $entityName, int $id, array $options = []): ?array {
+  /**
+   * @inheritDoc
+   */
+  public function getEntity(string $entityName, int $id, array $extraParams = []): ?array {
     return $this->execute($entityName, 'get', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
-    ])->first();
+    ] + $extraParams)->first();
   }
 
-  public function updateEntity(string $entityName, int $id, array $values, array $options = []): Result {
+  /**
+   * @inheritDoc
+   */
+  public function updateEntity(string $entityName, int $id, array $values, array $extraParams = []): Result {
     return $this->execute($entityName, 'update', [
-      'checkPermissions' => $options['checkPermissions'] ?? FALSE,
       'where' => [['id', '=', $id]],
       'values' => $values,
-    ]);
+    ] + $extraParams);
   }
 
 }
