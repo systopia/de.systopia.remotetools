@@ -28,7 +28,7 @@ use Webmozart\Assert\Assert;
 
 final class MultiOptionFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     Assert::isInstanceOf($field, AbstractMultiOptionField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\AbstractMultiOptionField $field */
 

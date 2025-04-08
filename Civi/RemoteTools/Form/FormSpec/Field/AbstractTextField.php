@@ -54,6 +54,10 @@ abstract class AbstractTextField extends AbstractFormField {
   }
 
   public function getMinLength(): ?int {
+    if ($this->isRequired()) {
+      return $this->minLength ?? 1;
+    }
+
     return $this->minLength;
   }
 

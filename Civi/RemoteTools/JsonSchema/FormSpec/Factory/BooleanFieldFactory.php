@@ -25,7 +25,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchemaBoolean;
 
 final class BooleanFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     $keywords = [];
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();

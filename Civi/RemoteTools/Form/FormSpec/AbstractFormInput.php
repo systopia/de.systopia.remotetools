@@ -20,6 +20,8 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 /**
+ * @phpstan-import-type limitValidationT from FormSpec
+ *
  * @api
  */
 abstract class AbstractFormInput implements FormElementInterface {
@@ -29,6 +31,11 @@ abstract class AbstractFormInput implements FormElementInterface {
   private string $label;
 
   private string $description = '';
+
+  /**
+   * @phpstan-var limitValidationT
+   */
+  private $limitValidation = NULL;
 
   public function __construct(string $name, string $label) {
     $this->name = $name;
@@ -74,6 +81,32 @@ abstract class AbstractFormInput implements FormElementInterface {
    */
   public function setDescription(string $description): self {
     $this->description = $description;
+
+    return $this;
+  }
+
+  /**
+   * @phpstan-return limitValidationT
+   *   Condition for usage of limited validation. Limited validation can be used
+   *   to persist forms in an incomplete state. See definition of
+   *   "limitValidationT" for possible values.
+   */
+  public function getLimitValidation() {
+    return $this->limitValidation;
+  }
+
+  /**
+   * @phpstan-param limitValidationT $limitValidation
+   *   Condition for usage of limited validation. Limited validation can be used
+   *   to persist forms in an incomplete state. With limited validation some
+   *   validations are not performed, but it is for example ensured that the
+   *   data type matches if a value is given, and that strings don't exceed a
+   *   possible maximum length. See definition of "limitValidationT" for
+   *   possible values. Might be set to false to enforce normal validation for
+   *   this input if limited validation is configured in FormSpec.
+   */
+  public function setLimitValidation($limitValidation): self {
+    $this->limitValidation = $limitValidation;
 
     return $this;
   }

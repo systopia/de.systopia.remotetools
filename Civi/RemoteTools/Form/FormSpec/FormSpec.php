@@ -22,11 +22,41 @@ namespace Civi\RemoteTools\Form\FormSpec;
 /**
  * @extends AbstractFormElementContainer<FormElementInterface>
  *
+ * @phpstan-type fieldNameT string
+ * @phpstan-type fieldValueT scalar|null
+ * @phpstan-type operatorT '='|'!='|'>'|'>='|'<'|'<='|'=~'|'IN'|'NOT IN'
+ *   "=~" can be used for regex comparison. (Patterns must not be enclosed by a
+ *   character.)
+ * @phpstan-type expressionT string
+ *   Expression in Symfony Expression Language syntax. Form fields can be
+ *   referenced in this form: @{field}
+ * @phpstan-type fieldNameValuePairsT non-empty-array<fieldNameT, fieldValueT|list<fieldValueT>>
+ *   Field must equal the given values or one of the given values.
+ * @phpstan-type conditionListT non-empty-list<array{fieldNameT, operatorT, fieldValueT|list<fieldValueT>}>
+ *   List of conditions with field name, operator, and value. For the operators
+ *   "IN" and "NOT IN" a list of values has to be given.
+ * @phpstan-type limitValidationT null|bool|fieldNameValuePairsT|conditionListT|expressionT
+ *   - null (default): Limited validation is disabled when used in FormSpec.
+ *     Configuration of FormSpec is applied when used in form input.
+ *   - false: Limited validation is disabled. Can be used in form input when
+ *     limited validation is configured in FormSpec to enforce normal validation
+ *     for this input.
+ *   - true: Limited validation is enabled. (Probably not necessary.)
+ *   - fieldNameValuePairsT: Limited validation is used if all given fields
+ *     match.
+ *   - conditionListT: Limited validation is used if all conditions are matched.
+ *   - expressionT: Limited validation is used if expression is matched.
+ *
  * @api
  */
 final class FormSpec extends AbstractFormElementContainer {
 
   private ?DataTransformerInterface $dataTransformer = NULL;
+
+  /**
+   * @phpstan-var limitValidationT
+   */
+  private $limitValidation = NULL;
 
   /**
    * @phpstan-var array<ValidatorInterface>
@@ -40,6 +70,35 @@ final class FormSpec extends AbstractFormElementContainer {
 
   public function setDataTransformer(DataTransformerInterface $dataTransformer): self {
     $this->dataTransformer = $dataTransformer;
+
+    return $this;
+  }
+
+  /**
+   * @phpstan-return limitValidationT
+   *   Condition for usage of limited validation. Limited validation can be used
+   *   to persist forms in an incomplete state. See definition of
+   *   "limitValidationT" for possible values.
+   */
+  public function getLimitValidation() {
+    return $this->limitValidation;
+  }
+
+  /**
+   * @phpstan-param limitValidationT $limitValidation
+   *   Condition for usage of limited validation. Limited validation can be used
+   *   to persist forms in an incomplete state. With limited validation some
+   *   validations are not performed, but it is for example ensured that the
+   *   data type matches if a value is given, and that strings don't exceed a
+   *   possible maximum length. See definition of "limitValidationT" for
+   *   possible values.
+   *
+   *   Example: ['_action' => 'save']
+   *   If "_action" is the name of the submit buttons and the submit button
+   *   with the value "save" is pressed then limited validation is performed.
+   */
+  public function setLimitValidation($limitValidation): self {
+    $this->limitValidation = $limitValidation;
 
     return $this;
   }
