@@ -13,7 +13,9 @@
     "prefer-stable": true,
     "config": {
         "prepend-autoloader": false,
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+        }
     },
     "require": {
         "symfony/mime": ">=4.4",
@@ -57,5 +59,10 @@
     "require-dev": {
         "psr/simple-cache": "^1 || ^2 || ^3",
         "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.13.x"
+        }
     }
 }
