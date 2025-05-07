@@ -50,6 +50,9 @@ final class StringFieldFactory extends AbstractFieldJsonSchemaFactory {
         $keywords['pattern'] = $field->getPattern();
       }
     }
+    if ('html' === $field->getInputType()) {
+      $keywords['contentMediaType'] = 'text/html';
+    }
 
     return new JsonSchemaString($keywords, $field->isNullable());
   }
