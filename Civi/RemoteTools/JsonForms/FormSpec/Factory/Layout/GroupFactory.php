@@ -39,10 +39,10 @@ final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
     $elements = array_map([$factory, 'createSchema'], $element->getElements());
 
     if ($element->isCollapsible()) {
-      return new JsonFormsCloseableGroup($element->getTitle(), $elements);
+      return new JsonFormsCloseableGroup($element->getTitle(), $elements, $element->getDescription());
     }
 
-    return new JsonFormsGroup($element->getTitle(), $elements);
+    return new JsonFormsGroup($element->getTitle(), $elements, $element->getDescription());
   }
 
   public function supportsElement(FormElementInterface $element): bool {
