@@ -30,6 +30,13 @@ class FormElementContainer extends AbstractFormElementContainer implements FormE
 
   private bool $collapsible = FALSE;
 
+  private ?string $description;
+
+  public function __construct(string $title, array $elements = [], ?string $description = NULL) {
+    parent::__construct($title, $elements);
+    $this->description = $description;
+  }
+
   public function getType(): string {
     return 'container';
   }
@@ -40,6 +47,16 @@ class FormElementContainer extends AbstractFormElementContainer implements FormE
 
   public function setCollapsible(bool $collapsible): self {
     $this->collapsible = $collapsible;
+
+    return $this;
+  }
+
+  public function getDescription(): ?string {
+    return $this->description;
+  }
+
+  public function setDescription(?string $description): self {
+    $this->description = $description;
 
     return $this;
   }

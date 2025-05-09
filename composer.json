@@ -60,6 +60,9 @@
         "psr/simple-cache": "^1 || ^2 || ^3",
         "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3"
     },
+    "suggest": {
+        "symfony/html-sanitizer": "Required for HTML input field in remote forms"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.13.x"
