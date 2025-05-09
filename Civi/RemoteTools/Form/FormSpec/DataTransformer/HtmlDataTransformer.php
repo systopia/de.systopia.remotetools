@@ -33,7 +33,7 @@ final class HtmlDataTransformer implements FieldDataTransformerInterface {
    * @inheritDoc
    */
   public function toEntityValue($data, AbstractFormField $field) {
-    if (!class_exists(HtmlSanitizer::class)) {
+    if (!class_exists(HtmlSanitizer::class) || !class_exists(HtmlSanitizerConfig::class)) {
       throw new \RuntimeException('symfony/html-sanitizer is required to use this class');
     }
 
