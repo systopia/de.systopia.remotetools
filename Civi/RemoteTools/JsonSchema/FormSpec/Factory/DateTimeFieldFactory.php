@@ -25,7 +25,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchemaString;
 
 final class DateTimeFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     $keywords = ['format' => 'date-time'];
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();

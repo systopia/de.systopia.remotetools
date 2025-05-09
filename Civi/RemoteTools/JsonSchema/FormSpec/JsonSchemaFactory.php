@@ -83,6 +83,10 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
       $keywords['oneOf'] = $oneOf;
     }
 
+    if (NULL !== $formSpec->getLimitValidation()) {
+      $keywords['$limitValidation'] = LimitValidationSchemaFactory::createSchema($formSpec->getLimitValidation());
+    }
+
     return new JsonSchemaObject($properties, $keywords);
   }
 

@@ -31,7 +31,7 @@ final class NumberFieldFactory extends AbstractFieldJsonSchemaFactory {
     return -1;
   }
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     $keywords = [];
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();

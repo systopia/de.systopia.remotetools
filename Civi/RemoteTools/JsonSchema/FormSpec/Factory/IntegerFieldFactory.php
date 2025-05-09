@@ -26,7 +26,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchemaInteger;
 
 final class IntegerFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     $keywords = [];
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();

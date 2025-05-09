@@ -31,7 +31,7 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
     return IntegerFieldFactory::getPriority() + 1;
   }
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
     Assert::isInstanceOf($field, FileField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\FileField $field */
 
