@@ -43,5 +43,8 @@ cd "$EXT_DIR"
 # In the container used for tests there seems to be psr/cache 1 installed somewhere.
 # This conflicts with symfony/cache >=6, thus we use version 5 here.
 composer require --no-update 'symfony/cache:^5'
+# symfony/html-sanitizer requires PHP >=8.1. So installation will fail if we test with an earlier version.
+# Affected tests are skipped in that case.
+composer require --no-update symfony/html-sanitizer ||:
 composer update --no-progress --prefer-dist --optimize-autoloader --no-dev
 composer composer-phpunit -- update --no-progress --prefer-dist
