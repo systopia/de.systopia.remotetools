@@ -24,7 +24,7 @@ namespace Civi\RemoteTools\Form\FormSpec;
  *
  * @api
  */
-abstract class AbstractFormInput implements FormElementInterface {
+abstract class AbstractFormInput extends AbstractFormElement {
 
   private string $name;
 

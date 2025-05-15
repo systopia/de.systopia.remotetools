@@ -28,7 +28,11 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractControlFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  final public function createSchema(
+  final public function supportsElement(FormElementInterface $element): bool {
+    return $element instanceof AbstractFormInput && $this->supportsInput($element);
+  }
+
+  final protected function doCreateSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
@@ -36,10 +40,6 @@ abstract class AbstractControlFactory extends AbstractConcreteElementUiSchemaFac
     /** @var \Civi\RemoteTools\Form\FormSpec\AbstractFormInput $element */
 
     return $this->createInputSchema($element, $factory);
-  }
-
-  final public function supportsElement(FormElementInterface $element): bool {
-    return $element instanceof AbstractFormInput && $this->supportsInput($element);
   }
 
   final protected function getScope(AbstractFormInput $field): string {

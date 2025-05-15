@@ -19,11 +19,20 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec;
 
+use Civi\RemoteTools\Form\FormSpec\Rule\FormRule;
+
 /**
  * @api
  */
 interface FormElementInterface {
 
   public function getType(): string;
+
+  public function getRule(): ?FormRule;
+
+  /**
+   * @return $this
+   */
+  public function setRule(?FormRule $rule): self;
 
 }

@@ -19,12 +19,34 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory;
 
+use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\ConcreteElementUiSchemaFactoryInterface;
+use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
+use Civi\RemoteTools\JsonForms\FormSpec\RuleFactory;
+use Civi\RemoteTools\JsonForms\JsonFormsElement;
 
 abstract class AbstractConcreteElementUiSchemaFactory implements ConcreteElementUiSchemaFactoryInterface {
 
   public static function getPriority(): int {
     return 0;
   }
+
+  final public function createSchema(
+    FormElementInterface $element,
+    ElementUiSchemaFactoryInterface $factory
+  ): JsonFormsElement {
+    $jsonFormsElement = $this->doCreateSchema($element, $factory);
+
+    if (NULL !== $element->getRule()) {
+      $jsonFormsElement['rule'] = RuleFactory::createJsonFormsRule($element->getRule());
+    }
+
+    return $jsonFormsElement;
+  }
+
+  abstract protected function doCreateSchema(
+    FormElementInterface $element,
+    ElementUiSchemaFactoryInterface $factory
+  ): JsonFormsElement;
 
 }

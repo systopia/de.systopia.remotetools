@@ -19,6 +19,8 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec;
 
+use Civi\RemoteTools\Form\FormSpec\Rule\FormRuleTrait;
+
 /**
  * @codeCoverageIgnore
  *
@@ -27,6 +29,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
  * @api
  */
 class FormElementContainer extends AbstractFormElementContainer implements FormElementInterface {
+
+  use FormRuleTrait;
 
   private bool $collapsible = FALSE;
 

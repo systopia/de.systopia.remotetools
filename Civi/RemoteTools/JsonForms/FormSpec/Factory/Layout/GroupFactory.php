@@ -30,7 +30,11 @@ use Webmozart\Assert\Assert;
 
 final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  public function createSchema(
+  public function supportsElement(FormElementInterface $element): bool {
+    return $element instanceof FormElementContainer;
+  }
+
+  protected function doCreateSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
@@ -43,10 +47,6 @@ final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
     }
 
     return new JsonFormsGroup($element->getTitle(), $elements, $element->getDescription());
-  }
-
-  public function supportsElement(FormElementInterface $element): bool {
-    return $element instanceof FormElementContainer;
   }
 
 }

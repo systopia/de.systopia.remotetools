@@ -20,13 +20,13 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec\Other;
 
-use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
+use Civi\RemoteTools\Form\FormSpec\AbstractFormElement;
 
 /**
  * Displays a link to a CiviCRM resource. The URL is not exposed to users, but
  * the remote system acts as proxy.
  */
-final class InternalLinkElement implements FormElementInterface {
+final class InternalLinkElement extends AbstractFormElement {
 
   private string $url;
 

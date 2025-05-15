@@ -29,7 +29,7 @@ use Webmozart\Assert\Assert;
 
 final class HtmlMarkupFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  public function createSchema(
+  protected function doCreateSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {

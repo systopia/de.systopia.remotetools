@@ -19,12 +19,12 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec\Markup;
 
-use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
+use Civi\RemoteTools\Form\FormSpec\AbstractFormElement;
 
 /**
  * @api
  */
-final class HtmlElement implements FormElementInterface {
+final class HtmlElement extends AbstractFormElement {
 
   private string $content;
 

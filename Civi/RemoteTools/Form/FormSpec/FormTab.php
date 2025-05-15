@@ -19,12 +19,16 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec;
 
+use Civi\RemoteTools\Form\FormSpec\Rule\FormRuleTrait;
+
 /**
  * @codeCoverageIgnore
  *
  * @api
  */
 class FormTab extends AbstractFormElementContainer implements FormElementInterface {
+
+  use FormRuleTrait;
 
   public ?string $description;
 
