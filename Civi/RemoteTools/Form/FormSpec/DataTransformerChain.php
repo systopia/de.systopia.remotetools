@@ -17,6 +17,10 @@ final class DataTransformerChain implements DataTransformerInterface {
     $this->transformers = $transformers;
   }
 
+  public function appendTransformer(DataTransformerInterface $transformer): void {
+    $this->transformers = [...$this->transformers, $transformer];
+  }
+
   /**
    * @inheritDoc
    */
