@@ -31,7 +31,11 @@ use Webmozart\Assert\Assert;
  */
 final class InternalLinkFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  public function createSchema(
+  public function supportsElement(FormElementInterface $element): bool {
+    return $element instanceof InternalLinkElement;
+  }
+
+  protected function doCreateSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
@@ -43,10 +47,6 @@ final class InternalLinkFactory extends AbstractConcreteElementUiSchemaFactory {
       'description' => $element->getDescription(),
       'filename' => $element->getFilename(),
     ]);
-  }
-
-  public function supportsElement(FormElementInterface $element): bool {
-    return $element instanceof InternalLinkElement;
   }
 
 }
