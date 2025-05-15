@@ -136,4 +136,12 @@ abstract class AbstractFormField extends AbstractFormInput {
     return $this;
   }
 
+  public function getDataTransformer(): FieldDataTransformerInterface {
+    return IdentityFieldDataTransformer::getInstance();
+  }
+
+  public function getValidator(): FieldValidatorInterface {
+    return NullFieldValidator::getInstance();
+  }
+
 }

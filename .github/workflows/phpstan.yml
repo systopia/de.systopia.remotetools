@@ -43,6 +43,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        [ "${{ matrix.php-versions }}" = "7.4" ] || [ "${{ matrix.php-versions }}" = "8.0" ] || composer require --no-update 'symfony/html-sanitizer:>=6'
         composer update --no-progress --prefer-dist --${{ matrix.prefer }} --optimize-autoloader &&
         composer composer-phpunit -- update --no-progress --prefer-dist &&
         composer composer-phpstan -- update --no-progress --prefer-dist --optimize-autoloader &&

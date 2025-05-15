@@ -51,7 +51,10 @@ namespace Civi\RemoteTools\Form\FormSpec;
  */
 final class FormSpec extends AbstractFormElementContainer {
 
-  private ?DataTransformerInterface $dataTransformer = NULL;
+  /**
+   * @phpstan-var list<DataTransformerInterface>
+   */
+  private array $dataTransformers = [];
 
   /**
    * @phpstan-var limitValidationT
@@ -63,13 +66,27 @@ final class FormSpec extends AbstractFormElementContainer {
    */
   private array $validators = [];
 
+  public function __construct(string $title, array $elements = []) {
+    parent::__construct($title, $elements);
+    $this->dataTransformers[] = new FormSpecDataTransformer($this);
+    $this->validators[] = new FormSpecValidator($this);
+  }
+
+  public function appendDataTransformer(DataTransformerInterface $dataTransformer): self {
+    $this->dataTransformers[] = $dataTransformer;
+
+    return $this;
+  }
+
   public function getDataTransformer(): DataTransformerInterface {
-    // @phpstan-ignore-next-line
-    return $this->dataTransformer ??= new IdentityDataTransformer();
+    return new DataTransformerChain($this->dataTransformers);
   }
 
   public function setDataTransformer(DataTransformerInterface $dataTransformer): self {
-    $this->dataTransformer = $dataTransformer;
+    $this->dataTransformers = [
+      new FormSpecDataTransformer($this),
+      $dataTransformer,
+    ];
 
     return $this;
   }
