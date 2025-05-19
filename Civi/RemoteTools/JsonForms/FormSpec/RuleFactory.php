@@ -27,8 +27,7 @@ final class RuleFactory {
 
   public static function createJsonFormsRule(FormRule $rule): JsonFormsRule {
     $propertyConditions = [];
-    foreach ($rule->conditions as $fieldName => $condition) {
-      [$operator, $value] = $condition;
+    foreach ($rule->conditions as $fieldName => [$operator, $value]) {
       switch ($operator) {
         case '=':
           $propertyConditions[$fieldName] = ['const' => $value];
