@@ -30,6 +30,7 @@ namespace Civi\RemoteTools\Form\FormSpec\Rule;
  * @phpstan-type effectT 'ENABLE'|'DISABLE'|'SHOW'|'HIDE'
  * @phpstan-type conditionT array{operatorT, valueT}
  * @phpstan-type conditionListT array<fieldNameT, conditionT>
+ *   All conditions have to be met for the effect to be applied.
  *
  * @api
  */
