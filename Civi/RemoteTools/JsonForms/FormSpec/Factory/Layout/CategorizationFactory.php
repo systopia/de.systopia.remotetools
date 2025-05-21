@@ -29,7 +29,11 @@ use Webmozart\Assert\Assert;
 
 final class CategorizationFactory extends AbstractConcreteElementUiSchemaFactory {
 
-  public function createSchema(
+  public function supportsElement(FormElementInterface $element): bool {
+    return $element instanceof VerticalTabsContainer;
+  }
+
+  protected function doCreateSchema(
     FormElementInterface $element,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
@@ -38,10 +42,6 @@ final class CategorizationFactory extends AbstractConcreteElementUiSchemaFactory
     $elements = array_map([$factory, 'createSchema'], $element->getElements());
 
     return new JsonFormsCategorization($elements);
-  }
-
-  public function supportsElement(FormElementInterface $element): bool {
-    return $element instanceof VerticalTabsContainer;
   }
 
 }

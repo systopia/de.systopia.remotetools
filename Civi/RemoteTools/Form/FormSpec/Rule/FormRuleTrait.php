@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2024 SYSTOPIA GmbH
+ * Copyright (C) 2025 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,27 +17,22 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\Form\FormSpec;
+namespace Civi\RemoteTools\Form\FormSpec\Rule;
 
-use Civi\RemoteTools\Form\FormSpec\Rule\FormRuleTrait;
+use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
 
-/**
- * @codeCoverageIgnore
- *
- * @extends AbstractFormElementContainer<FormTab>
- *
- * @api
- */
-class VerticalTabsContainer extends AbstractFormElementContainer implements FormElementInterface {
+trait FormRuleTrait {
 
-  use FormRuleTrait;
+  private ?FormRule $rule = NULL;
 
-  public function __construct(array $elements = []) {
-    parent::__construct('', $elements);
+  public function getRule(): ?FormRule {
+    return $this->rule;
   }
 
-  public function getType(): string {
-    return 'vertical_tabs';
+  public function setRule(?FormRule $rule): FormElementInterface {
+    $this->rule = $rule;
+
+    return $this;
   }
 
 }
