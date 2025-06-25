@@ -27,7 +27,7 @@ class JsonSchemaCalculate extends JsonSchema {
   /**
    * @param string $type
    * @param string $expression
-   * @param array<string, scalar|JsonSchema> $variables
+   * @param array<string, scalar|null|JsonSchema> $variables
    * @param scalar|null|JsonSchema $fallback
    */
   public function __construct(string $type, string $expression, array $variables,
