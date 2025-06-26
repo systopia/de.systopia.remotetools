@@ -262,9 +262,25 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
       ->setData(['name' => 'bar', 'foo' => 'bar'])
       ->execute();
     static::assertFalse($result['valid']);
-    // "title" is required, additional properties (foo) are not allowed.
-    // @phpstan-ignore-next-line
-    static::assertCount(2, $result['errors']['']);
+    // "title" is required.
+    // There is no error for the additional property (foo) because of
+    // https://github.com/systopia/opis-json-schema-ext/pull/40
+    // @phpstan-ignore offsetAccess.nonOffsetAccessible
+    static::assertIsArray($result['errors']['']);
+    static::assertCount(1, $result['errors']['']);
+    static::assertStringContainsString('title', $result['errors'][''][0]);
+
+    $result = TestRemoteGroup::validateCreateForm()
+      ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
+      ->setArguments(['x' => 'y'])
+      ->setData(['name' => 'bar', 'title' => 'Bar', 'foo' => 'bar'])
+      ->execute();
+    static::assertFalse($result['valid']);
+    // Additional properties (foo) are not allowed.
+    // @phpstan-ignore offsetAccess.nonOffsetAccessible
+    static::assertIsArray($result['errors']['']);
+    static::assertCount(1, $result['errors']['']);
+    static::assertStringContainsString('foo', $result['errors'][''][0]);
 
     $result = TestRemoteGroup::validateCreateForm()
       ->setProfile(TestRemoteGroupReadWriteEntityProfile::NAME)
