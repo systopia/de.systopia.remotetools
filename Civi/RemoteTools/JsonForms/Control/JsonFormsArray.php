@@ -20,7 +20,6 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\JsonForms\Control;
 
 use Civi\RemoteTools\JsonForms\JsonFormsControl;
-use Civi\RemoteTools\JsonSchema\JsonSchema;
 
 class JsonFormsArray extends JsonFormsControl {
 
@@ -31,9 +30,13 @@ class JsonFormsArray extends JsonFormsControl {
    * @phpstan-param array{
    *   addButtonLabel?: string,
    *   removeButtonLabel?: string,
-   *   detail?: array{type: string},
+   *   itemLayout?: string,
    * }|null $options
-   *   "type" in "detail" is the layout type, e.g. HorizontalLayout.
+   *   "itemLayout" is the layout type to display the controls for the item
+   *   properties, e.g. HorizontalLayout.
+   *
+   * Usage of $elements and the option "itemLayout" is supported by the Drupal
+   * module JSON Forms since version 0.6.
    */
   public function __construct(
     string $scope,
@@ -44,30 +47,19 @@ class JsonFormsArray extends JsonFormsControl {
     array $keywords = []
   ) {
     if (NULL !== $elements) {
-      $options['detail'] ??= [];
-      $options['detail']['elements'] = $elements;
+      $options ??= [];
+      $options['elements'] = $elements;
     }
 
     parent::__construct($scope, $label, $description, $options, $keywords);
   }
 
   /**
-   * @return array<int, JsonFormsControl>|null
+   * @return list<JsonFormsControl>|null
    */
   public function getElements(): ?array {
-    $options = $this->keywords['options'] ?? NULL;
-    if (!$options instanceof JsonSchema) {
-      return NULL;
-    }
-    $detail = $options->keywords['detail'] ?? NULL;
-    if (!$detail instanceof JsonSchema) {
-      return NULL;
-    }
-
-    /** @var array<int, JsonFormsControl>|null $elements */
-    $elements = $detail->keywords['elements'] ?? NULL;
-
-    return $elements;
+    /** @var list<JsonFormsControl>|null */
+    return $this->keywords['options']->keywords['elements'] ?? NULL;
   }
 
 }
