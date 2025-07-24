@@ -48,7 +48,7 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
 
       foreach ($this->schemaFactories as $fieldSchemaFactory) {
         if ($fieldSchemaFactory->supportsField($field)) {
-          $properties[$field->getName()] = $fieldSchemaFactory->createSchema($field);
+          $properties[$field->getName()] = $fieldSchemaFactory->createSchema($field, $this);
           break;
         }
       }

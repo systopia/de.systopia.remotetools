@@ -20,7 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 /**
- * @template T of scalar
+ * @template T of scalar|list<array<string, scalar>>
  *
  * @codeCoverageIgnore
  *
