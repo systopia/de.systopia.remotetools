@@ -28,7 +28,7 @@ interface FieldJsonSchemaFactoryInterface {
 
   public static function getPriority(): int;
 
-  public function createSchema(AbstractFormField $field): JsonSchema;
+  public function createSchema(AbstractFormField $field, JsonSchemaFactoryInterface $jsonSchemaFactory): JsonSchema;
 
   public function supportsField(AbstractFormField $field): bool;
 
