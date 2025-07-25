@@ -21,6 +21,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\JsonSchema\FormSpec\FieldJsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\LimitValidationSchemaFactory;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 
@@ -30,8 +31,8 @@ abstract class AbstractFieldJsonSchemaFactory implements FieldJsonSchemaFactoryI
     return 0;
   }
 
-  public function createSchema(AbstractFormField $field): JsonSchema {
-    $schema = $this->doCreateSchema($field);
+  public function createSchema(AbstractFormField $field, JsonSchemaFactoryInterface $jsonSchemaFactory): JsonSchema {
+    $schema = $this->doCreateSchema($field, $jsonSchemaFactory);
 
     if (NULL !== $field->getLimitValidation()) {
       $schema['$limitValidation'] = LimitValidationSchemaFactory::createSchema($field->getLimitValidation());
@@ -40,6 +41,6 @@ abstract class AbstractFieldJsonSchemaFactory implements FieldJsonSchemaFactoryI
     return $schema;
   }
 
-  abstract protected function doCreateSchema(AbstractFormField $field): JsonSchema;
+  abstract protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema;
 
 }
