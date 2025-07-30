@@ -21,6 +21,13 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 
+/**
+ * @extends AbstractFormField<int>
+ *
+ * @codeCoverageIgnore
+ *
+ * @api
+ */
 class FileField extends AbstractFormField {
 
   private ?string $filename = NULL;
