@@ -26,8 +26,8 @@ namespace Civi;
  */
 class RemoteToolsDispatcher {
   /**
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-  protected $dispatcher = NULL;
+   * @var \Civi\Core\CiviEventDispatcherInterface */
+  protected $dispatcher;
 
   public function __construct() {
     $this->dispatcher = \Civi::dispatcher();

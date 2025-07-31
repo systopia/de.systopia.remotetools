@@ -1,15 +1,15 @@
+includes:
+	- phpstan-baseline.neon
 parameters:
 	paths:
-		# The commented paths might be considered maybe with an intial baseline.
-		#- api
-		#- Civi
-		#- CRM
-		#- tests
-		- Civi/RemoteTools
+		- api
+		- Civi
+		- CRM
 		- services
-		- tests/phpunit/Civi
+		- tests
 	excludePaths:
 		analyse:
+			- CRM/Remotetools/CustomData.php
 			- CRM/Remotetools/DAO/*
 			- tests/phpunit/bootstrap.php
 	scanFiles:
@@ -17,6 +17,8 @@ parameters:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
+		- ../de.systopia.identitytracker/CRM
+		- ../de.systopia.xcm/CRM
 	bootstrapFiles:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
 		- phpstanBootstrap.php

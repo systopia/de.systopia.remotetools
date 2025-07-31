@@ -23,18 +23,18 @@ use Civi\Api4\Contact;
 class CRM_Remotetools_ContactRoles {
 
   /**
-   * @var array cache for all existing roles  */
-  protected static $roles_cache = NULL;
+   * @var array|null cache for all existing roles  */
+  protected static ?array $roles_cache = NULL;
 
   /**
    * @var array cache for contacts  */
-  protected static $contact_roles_cache = NULL;
+  protected static array $contact_roles_cache = [];
 
   /**
    * Will flush the internal caches regarding
    *  roles, and which contact has which
    */
-  public static function flushRolesCache() {
+  public static function flushRolesCache(): void {
     self::$roles_cache = NULL;
     self::$contact_roles_cache = [];
   }
@@ -50,7 +50,7 @@ class CRM_Remotetools_ContactRoles {
    * @return boolean
    *   roles list [[name => label]]
    */
-  public static function hasRole($contact_id, $role_name) {
+  public static function hasRole($contact_id, $role_name): bool {
     $roles = self::getRoles($contact_id);
     return isset($roles[$role_name]);
   }
@@ -94,7 +94,7 @@ class CRM_Remotetools_ContactRoles {
    * @params $role_names array
    *  roles names (not labels)
    */
-  public static function addRoles($contact_id, $role_names) {
+  public static function addRoles($contact_id, $role_names): void {
     // check if we have to do anything...
     $given_roles = self::getRoles($contact_id);
     $roles_to_add = [];
@@ -108,10 +108,7 @@ class CRM_Remotetools_ContactRoles {
       // ...looks like we have to do something
       $new_role_values = [];
       $all_roles = self::getAllRoles();
-      foreach ($given_roles as $role) {
-        $new_role_values[] = $role['value'];
-      }
-      foreach ($roles_to_add as $role_name) {
+      foreach (array_merge(array_keys($given_roles), $roles_to_add) as $role_name) {
         if (isset($all_roles[$role_name])) {
           $new_role_values[] = $all_roles[$role_name]['value'];
         }
@@ -129,10 +126,10 @@ class CRM_Remotetools_ContactRoles {
   /**
    * Get a list of all roles
    *
-   * @return array
+   * @phpstan-return array<string, array<string, mixed>>
    *   roles list [[name => data]]
    */
-  public static function getAllRoles() {
+  public static function getAllRoles(): array {
     if (self::$roles_cache === NULL) {
       self::$roles_cache = [];
       $query = civicrm_api3(

@@ -36,7 +36,7 @@ abstract class CRM_Remotetools_TestBase extends \PHPUnit\Framework\TestCase impl
   }
 
   /**
-   * @var CRM_Core_Transaction current transaction */
+   * @var CRM_Core_Transaction|null current transaction */
   protected $transaction = NULL;
 
   public function setUpHeadless() {
@@ -217,7 +217,7 @@ abstract class CRM_Remotetools_TestBase extends \PHPUnit\Framework\TestCase impl
     }
 
     $verify_contact_id = CRM_Remotetools_Contact::getByKey($key);
-    $this->assertEquals($contact_id, $verify_contact_id, "Couldn't generate remote contact key.");
+    static::assertEquals($contact_id, $verify_contact_id, "Couldn't generate remote contact key.");
     return $key;
   }
 
