@@ -268,6 +268,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     // @phpstan-ignore offsetAccess.nonOffsetAccessible
     static::assertIsArray($result['errors']['']);
     static::assertCount(1, $result['errors']['']);
+    static::assertIsString($result['errors'][''][0]);
     static::assertStringContainsString('title', $result['errors'][''][0]);
 
     $result = TestRemoteGroup::validateCreateForm()
@@ -280,6 +281,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     // @phpstan-ignore offsetAccess.nonOffsetAccessible
     static::assertIsArray($result['errors']['']);
     static::assertCount(1, $result['errors']['']);
+    static::assertIsString($result['errors'][''][0]);
     static::assertStringContainsString('foo', $result['errors'][''][0]);
 
     $result = TestRemoteGroup::validateCreateForm()

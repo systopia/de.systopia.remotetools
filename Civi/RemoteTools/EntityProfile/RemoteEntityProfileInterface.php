@@ -131,15 +131,15 @@ interface RemoteEntityProfileInterface {
   public function isImplicitJoinAllowed(string $fieldName, string $joinFieldName, ?int $contactId): bool;
 
   /**
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    *   The proposed select field names. Contains only "allowed" values on get,
    *   e.g. no implicit joins that are not allowed.
    * @phpstan-param 'delete'|'get'|'update' $actionName
-   * @phpstan-param array<string> $remoteSelect
+   * @phpstan-param list<string> $remoteSelect
    *   The field names from the remote request if action is "get", empty array
    *   otherwise.
    *
-   * @phpstan-return array<string>
+   * @phpstan-return list<string>
    *   The field names to select. In most cases just $select or $select with
    *   additional field names, e.g. if required to decide if update/delete is
    *   allowed, or if there's no 1:1 mapping between entity fields and remote
@@ -177,7 +177,7 @@ interface RemoteEntityProfileInterface {
 
   /**
    * @phpstan-param array<string, mixed> $entityValues
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    *   Selected field names. Maybe empty on create or update.
    *
    * @phpstan-return array<string, mixed>
@@ -218,7 +218,7 @@ interface RemoteEntityProfileInterface {
   public function getUpdateFormSpec(array $entityValues, array $entityFields, ?int $contactId): FormSpec;
 
   /**
-   * @phpstan-return bool|array<string>
+   * @phpstan-return bool|list<string>
    *    Value for the 'loadOptions' parameter when fetching entity fields that
    *    are passed to the form spec creation methods. FALSE if no options are
    *    required, TRUE to get options as id-label-pairs, or an array of the
@@ -229,7 +229,7 @@ interface RemoteEntityProfileInterface {
    *
    * @api
    */
-  public function getFieldLoadOptionsForFormSpec();
+  public function getFieldLoadOptionsForFormSpec(): bool|array;
 
   /**
    * @phpstan-param array<int|string, mixed> $arguments

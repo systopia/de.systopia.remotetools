@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 
 /**
  * @method array<string, mixed> getData()
- * @method $this setData(array $data)
+ * @method $this setData(array<string, mixed> $data)
  *
  * @api
  */

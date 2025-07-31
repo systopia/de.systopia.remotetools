@@ -33,7 +33,7 @@ trait DecorateServiceTrait {
     string $id,
     string $decoratorClass,
     string $serviceIdPostfix,
-    $argumentKey = 0
+    int|string $argumentKey = 0
   ): void {
     $decoratorId = $decoratorClass . ':' . $serviceIdPostfix;
     $container->autowire($decoratorId, $decoratorClass)

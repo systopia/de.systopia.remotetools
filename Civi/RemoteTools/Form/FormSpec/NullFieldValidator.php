@@ -17,7 +17,7 @@ final class NullFieldValidator implements FieldValidatorInterface {
   /**
    * @inheritDoc
    */
-  public function validate($value, AbstractFormField $field): array {
+  public function validate(mixed $value, AbstractFormField $field): array {
     return [];
   }
 

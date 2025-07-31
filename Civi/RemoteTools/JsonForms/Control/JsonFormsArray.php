@@ -24,7 +24,7 @@ use Civi\RemoteTools\JsonForms\JsonFormsControl;
 class JsonFormsArray extends JsonFormsControl {
 
   /**
-   * @phpstan-param array<int, JsonFormsControl>|null $elements
+   * @phpstan-param list<JsonFormsControl>|null $elements
    *   The elements of each array entry to display. If NULL, all elements are
    *   shown based on the JSON schema.
    * @phpstan-param array{

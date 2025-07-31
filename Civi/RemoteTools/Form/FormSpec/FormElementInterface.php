@@ -33,6 +33,6 @@ interface FormElementInterface {
   /**
    * @return $this
    */
-  public function setRule(?FormRule $rule): self;
+  public function setRule(?FormRule $rule): static;
 
 }

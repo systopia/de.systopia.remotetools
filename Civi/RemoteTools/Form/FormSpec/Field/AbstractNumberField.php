@@ -43,7 +43,7 @@ abstract class AbstractNumberField extends AbstractFormField {
   /**
    * @return $this
    */
-  public function setMaximum(?int $maximum): self {
+  public function setMaximum(?int $maximum): static {
     $this->maximum = $maximum;
 
     return $this;
@@ -56,7 +56,7 @@ abstract class AbstractNumberField extends AbstractFormField {
   /**
    * @return $this
    */
-  public function setMinimum(?int $minimum): self {
+  public function setMinimum(?int $minimum): static {
     $this->minimum = $minimum;
 
     return $this;

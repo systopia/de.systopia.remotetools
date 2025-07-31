@@ -88,7 +88,7 @@ final class RemoteEntityProfilePass implements CompilerPassInterface {
     string $id,
     string $key,
     array $attributes,
-    string $default = NULL
+    ?string $default = NULL
   ): string {
     if (isset($attributes[$key])) {
       Assert::string($attributes[$key], sprintf(

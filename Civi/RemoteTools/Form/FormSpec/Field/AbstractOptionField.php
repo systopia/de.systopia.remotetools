@@ -48,9 +48,9 @@ abstract class AbstractOptionField extends AbstractFormField {
   }
 
   /**
-   * @param T $value
+   * @phpstan-param T $value
    */
-  public function addOption($value, string $label): self {
+  public function addOption(int|string $value, string $label): static {
     $this->options[$value] = $label;
 
     return $this;
@@ -70,7 +70,7 @@ abstract class AbstractOptionField extends AbstractFormField {
    *
    * @return $this
    */
-  public function setOptions(array $options): self {
+  public function setOptions(array $options): static {
     $this->options = $options;
 
     return $this;

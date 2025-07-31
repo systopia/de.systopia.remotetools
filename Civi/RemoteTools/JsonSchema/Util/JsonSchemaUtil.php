@@ -29,7 +29,7 @@ final class JsonSchemaUtil {
    * @phpstan-param non-empty-array<int|string, string> $titles
    *   Allowed values mapped to titles.
    *
-   * @phpstan-return non-empty-array<JsonSchema>
+   * @phpstan-return non-empty-list<JsonSchema>
    *   To be used as value of "oneOf" keyword.
    *
    * @see buildTitledOneOf2()
@@ -50,7 +50,7 @@ final class JsonSchemaUtil {
    * @phpstan-param non-empty-array<string, scalar|null> $values
    *   Titles mapped to values. Every value should only appear once.
    *
-   * @phpstan-return non-empty-array<JsonSchema>
+   * @phpstan-return non-empty-list<JsonSchema>
    *   To be used as value of "oneOf" keyword.
    *
    * @see buildTitledOneOf()
@@ -65,7 +65,7 @@ final class JsonSchemaUtil {
   }
 
   /**
-   * @phpstan-param array<int|string> $path
+   * @phpstan-param list<int|string> $path
    */
   public static function getPropertySchemaAt(JsonSchema $jsonSchema, array $path): ?JsonSchema {
     foreach ($path as $pathElement) {

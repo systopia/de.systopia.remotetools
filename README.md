@@ -15,8 +15,8 @@ could be your website, and/or another database.
 
 ## Requirements
 
-* PHP 7.4 or 8
-* CiviCRM 5.57
+* PHP 8.1+
+* CiviCRM 5.57+
 
 ## Installation
 
@@ -25,6 +25,7 @@ could be your website, and/or another database.
   * [de.systopia.xcm](https://github.com/systopia/de.systopia.xcm)
 * Add the extension folder to your CiviCRM `ext` directory.
 * If your project uses composer: Add the requirements listed in `composer.json` to your composer project:
+  * [symfony/html-sanitizer](https://github.com/symfony/html-sanitizer)
   * [systopia/expression-language-ext](https://github.com/systopia/expression-language-ext)
   * [systopia/opis-json-schema-ext](https://github.com/systopia/opis-json-schema-ext)
   * [webmozart/assert](https://github.com/webmozarts/assert)
@@ -102,7 +103,7 @@ Drupal forms.
 Custom forms for contact searches can be inherited from class [CRM_Remotetools_RemoteContactProfile](CRM/Remotetools/RemoteContactProfile.php).
 Your profile class needs to implement the following methods:
 
-* `getProfileID()` 
+* `getProfileID()`
   * return the profile id, ie. `'my-profile'`
 * `getProfileName()`
   * return the human readable form of the profile id, .ie `'This is my profile'`
@@ -122,7 +123,7 @@ In addition, take a look and implement the following methods:
 * `filterResult()`
   * apply customization to the result of a search query
 * `isOwnDataProfile`
-  * see method comments and either return `true` or `false` 
+  * see method comments and either return `true` or `false`
 
 ##### Field specification
 
@@ -133,7 +134,7 @@ passed on to `setFieldSpec()` in `addFields()`:
 
 ```php
 $fields_collection->setFieldSpec(
-  'a_list', 
+  'a_list',
   [
     'name' => 'a_list'
     'type' => CRM_Utils_Type::T_ENUM,

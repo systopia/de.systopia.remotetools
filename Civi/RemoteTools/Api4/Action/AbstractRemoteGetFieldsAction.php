@@ -48,6 +48,7 @@ abstract class AbstractRemoteGetFieldsAction extends BasicGetFieldsAction implem
     $originalSelect = $this->getSelect();
     if ([] !== $this->getSelect()) {
       $this->setSelect(array_unique(
+        // @phpstan-ignore argument.type
         array_merge($this->getSelect(), WhereUtil::getFields($this->getWhere()))
       ));
     }

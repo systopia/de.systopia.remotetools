@@ -136,7 +136,7 @@ abstract class AbstractRemoteEntityProfileDecorator implements RemoteEntityProfi
   /**
    * @inheritDoc
    */
-  public function getFieldLoadOptionsForFormSpec() {
+  public function getFieldLoadOptionsForFormSpec(): bool|array {
     return $this->profile->getFieldLoadOptionsForFormSpec();
   }
 

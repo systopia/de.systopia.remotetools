@@ -45,7 +45,7 @@ class FormTab extends AbstractFormElementContainer implements FormElementInterfa
     return $this->description;
   }
 
-  public function setDescription(?string $description): self {
+  public function setDescription(?string $description): static {
     $this->description = $description;
 
     return $this;

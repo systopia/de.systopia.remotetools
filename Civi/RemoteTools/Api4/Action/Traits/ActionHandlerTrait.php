@@ -19,6 +19,7 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Api4\Action\Traits;
 
+use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\ActionHandler\ActionHandlerInterface;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 
@@ -39,7 +40,7 @@ trait ActionHandlerTrait {
   public function __construct(
           string $entityName,
           string $actionName,
-          ActionHandlerInterface $actionHandler = NULL
+          ?ActionHandlerInterface $actionHandler = NULL
   ) {
     parent::__construct($entityName, $actionName);
     $this->actionHandler = $actionHandler;
@@ -72,7 +73,7 @@ trait ActionHandlerTrait {
    *   If no exception handler is found and attribute
    *   _ignoreMissingActionHandler is FALSE.
    */
-  protected function getHandlerResult() {
+  protected function getHandlerResult(): array|Result {
     if (!$this->_ignoreMissingActionHandler) {
       // @phpstan-ignore-next-line
       return $this->getActionHandler()->{$this->getActionName()}($this);

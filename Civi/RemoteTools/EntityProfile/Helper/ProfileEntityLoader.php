@@ -30,10 +30,7 @@ use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\Helper\WhereFactoryInterface;
 
 /**
- * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
- * Actually this should be: array{string, array<int, comparisonT|compositeConditionT>},
- * so that is not possible.
- * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
+ * @phpstan-import-type conditionT from \Civi\RemoteTools\Api4\Query\ConditionInterface
  */
 final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
 
@@ -109,7 +106,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
    * @phpstan-param array<array<string, mixed>> $entityFields
    * @phpstan-param array<array<string, mixed>> $remoteFields
    *
-   * @phpstan-return array{entity: array<string>, remote: array<string>, differ: bool}
+   * @phpstan-return array{entity: list<string>, remote: list<string>, differ: bool}
    *   differ is TRUE if there are extra fields in entity that are not part of
    *   remote.
    */
@@ -122,6 +119,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
     $implicitJoinAllowedCallback = fn(string $fieldName, string $joinField)
     => $profile->isImplicitJoinAllowed($fieldName, $joinField, $action->getResolvedContactId());
     $selects = $this->selectFactory->getSelects(
+      // @phpstan-ignore argument.type
       $action->getSelect(),
       $entityFields,
       $remoteFields,
@@ -133,6 +131,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
       $selects['remote'],
       $action->getResolvedContactId(),
     );
+    // @phpstan-ignore notEqual.notAllowed
     if ($selects['entity'] != $entitySelect) {
       $selects['entity'] = $entitySelect;
       $selects['differ'] = TRUE;
@@ -148,7 +147,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
    * @phpstan-param array<array<string, mixed>> $entityFields
    * @phpstan-param array<array<string, mixed>> $remoteFields
    *
-   * @phpstan-return array<comparisonT|compositeConditionT>
+   * @phpstan-return list<conditionT>
    */
   private function createWhereForGet(
     RemoteEntityProfileInterface $profile,
@@ -162,6 +161,7 @@ final class ProfileEntityLoader implements ProfileEntityLoaderInterface {
     => $profile->convertRemoteFieldComparison($comparison, $action->getResolvedContactId());
 
     $where = $this->whereFactory->getWhere(
+      // @phpstan-ignore argument.type
       $action->getWhere(),
       $entityFields,
       $remoteFields,

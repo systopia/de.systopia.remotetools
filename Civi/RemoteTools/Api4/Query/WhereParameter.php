@@ -27,7 +27,7 @@ use Civi\RemoteTools\Api4\ApiParameterInterface;
 final class WhereParameter implements ApiParameterInterface {
 
   /**
-   * @var array<ConditionInterface>
+   * @var list<ConditionInterface>
    */
   private array $conditions;
 
@@ -46,11 +46,12 @@ final class WhereParameter implements ApiParameterInterface {
    *   The conditions are linked by AND.
    */
   public function __construct(ConditionInterface ...$conditions) {
+    /** @var list<ConditionInterface> $conditions */
     $this->conditions = $conditions;
   }
 
   /**
-   * @return array<ConditionInterface> The conditions are linked by AND.
+   * @return list<ConditionInterface> The conditions are linked by AND.
    */
   public function getConditions(): array {
     return $this->conditions;

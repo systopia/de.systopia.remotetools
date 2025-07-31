@@ -22,12 +22,12 @@ namespace Civi\RemoteTools\Helper;
 interface SelectFactoryInterface {
 
   /**
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    * @phpstan-param array<string, array<string, mixed>> $remoteFields
    * @phpstan-param callable(string $fieldName, string $joinedFieldName): bool $implicitJoinAllowedCallback
    *
-   * @phpstan-return array{entity: array<string>, remote: array<string>}
+   * @phpstan-return array{entity: list<string>, remote: list<string>}
    */
   public function getSelects(
     array $select,

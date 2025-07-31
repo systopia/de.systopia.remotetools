@@ -28,10 +28,7 @@ use Civi\RemoteTools\Helper\WhereFactoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
- * Actually this should be: array{string, array<int, comparisonT|compositeConditionT>},
- * so that is not possible.
- * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
+ * @phpstan-import-type conditionT from \Civi\RemoteTools\Api4\Query\ConditionInterface
  */
 final class ProfileEntityDeleter implements ProfileEntityDeleterInterface {
 
@@ -98,7 +95,7 @@ final class ProfileEntityDeleter implements ProfileEntityDeleterInterface {
    * @phpstan-param array<array<string, mixed>> $entityFields
    * @phpstan-param array<array<string, mixed>> $remoteFields
    *
-   * @phpstan-return array<comparisonT|compositeConditionT>
+   * @phpstan-return list<conditionT>
    */
   private function createWhereForDelete(
     RemoteEntityProfileInterface $profile,
@@ -112,6 +109,7 @@ final class ProfileEntityDeleter implements ProfileEntityDeleterInterface {
     => $profile->convertRemoteFieldComparison($comparison, $action->getResolvedContactId());
 
     $where = $this->whereFactory->getWhere(
+      // @phpstan-ignore argument.type
       $action->getWhere(),
       $entityFields,
       $remoteFields,

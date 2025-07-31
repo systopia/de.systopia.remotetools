@@ -12,7 +12,6 @@ fi
 # CIVICRM_SMARTY_AUTOLOAD_PATH is not set in the container's civicrm.settings.php so we have to do it here.
 # Otherwise this results in this error:
 # Fatal error: Cannot declare class Smarty, because the name is already in use in /var/www/html/sites/all/modules/civicrm/packages/smarty5/Smarty.php on line 4
-#
 smarty=$(printf '%s\n' /var/www/html/sites/all/modules/civicrm/packages/smarty* | sort -r | head -n1)
 if [ -e "$smarty/Smarty.php" ]; then
   export CIVICRM_SMARTY_AUTOLOAD_PATH="$smarty/Smarty.php"

@@ -21,20 +21,11 @@ namespace Civi\RemoteTools\Form\FormSpec\DataTransformer;
 
 use Civi\RemoteTools\Form\FormSpec\Field\HtmlField;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 
 /**
  * @covers \Civi\RemoteTools\Form\FormSpec\DataTransformer\HtmlDataTransformer
  */
 final class HtmlDataTransformerTest extends TestCase {
-
-  protected function setUp(): void {
-    if (!class_exists(HtmlSanitizer::class)) {
-      static::markTestSkipped('symfony/html-sanitizer is not installed.');
-    }
-
-    parent::setUp();
-  }
 
   public function testToEntityValue(): void {
     $transformer = new HtmlDataTransformer();

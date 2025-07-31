@@ -45,7 +45,7 @@ final class HtmlElement extends AbstractFormElement {
    *
    * @return $this
    */
-  public function setContent(string $content): self {
+  public function setContent(string $content): static {
     $this->content = $content;
 
     return $this;

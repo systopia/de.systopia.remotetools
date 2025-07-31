@@ -11,12 +11,11 @@ namespace Civi\RemoteTools\Form\FormSpec;
 interface FieldValidatorInterface {
 
   /**
-   * @param mixed $value
    * @phpstan-param T $field
    *
    * @phpstan-return list<string>
    *   Validation error messages.
    */
-  public function validate($value, AbstractFormField $field): array;
+  public function validate(mixed $value, AbstractFormField $field): array;
 
 }

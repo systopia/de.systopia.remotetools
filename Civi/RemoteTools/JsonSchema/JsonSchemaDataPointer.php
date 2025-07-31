@@ -33,7 +33,7 @@ class JsonSchemaDataPointer extends JsonSchema {
    * @phpstan-param TValue $fallback
    *   Fallback is used if the pointed element does not exist or has no value.
    */
-  public function __construct(string $path, $fallback = NULL) {
+  public function __construct(string $path, bool|float|int|string|JsonSchema|null|array $fallback = NULL) {
     $keywords = ['$data' => $path];
     if (NULL !== $fallback) {
       $keywords['fallback'] = $fallback;

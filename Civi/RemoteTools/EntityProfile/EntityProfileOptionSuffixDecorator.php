@@ -49,6 +49,7 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
 
     foreach ($remoteFields as $fieldName => $field) {
       if (($field['options'] ?? FALSE) !== FALSE && is_array($field['suffixes'] ?? NULL)) {
+        /** @var string $suffix */
         foreach ($field['suffixes'] as $suffix) {
           if (
             is_array($field['options'])
@@ -136,7 +137,7 @@ final class EntityProfileOptionSuffixDecorator extends AbstractRemoteEntityProfi
    * @return bool|array
    * @phpstan-return true|array<int|string, scalar>
    */
-  private function getSuffixFieldOptions($options, string $suffix) {
+  private function getSuffixFieldOptions(bool|array $options, string $suffix): bool|array {
     if (!is_array($options)) {
       return TRUE;
     }

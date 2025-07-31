@@ -47,7 +47,10 @@ final class FilePersister implements FilePersisterInterface {
 
   public function persistFile(string $filename, string $content, ?string $description, ?int $contactId): int {
     $safeFilename = \CRM_Utils_File::makeFileName($filename, TRUE);
-    $filePath = $this->config->customFileUploadDir . $safeFilename;
+    /** @var string $customFileUploadDir */
+    // Since CiviCRM 6.1 this property is type hinted, so this can be reduced to a single line sometime in the future.
+    $customFileUploadDir = $this->config->customFileUploadDir;
+    $filePath = $customFileUploadDir . $safeFilename;
 
     $this->transactionManager->getBaseFrame()->addCallback(
       \CRM_Core_Transaction::PHASE_PRE_ROLLBACK,

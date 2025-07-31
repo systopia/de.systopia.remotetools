@@ -20,23 +20,20 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Helper;
 
 /**
- * @phpstan-type comparisonT array{string, string, 2?: scalar|array<scalar>}
- * Actually this should be: array{string, array<int, comparisonT|compositeConditionT>},
- * so that is not possible.
- * @phpstan-type compositeConditionT array{string, array<int, array<int, mixed>>}
+ * @phpstan-import-type conditionT from \Civi\RemoteTools\Api4\Query\ConditionInterface
  */
 interface WhereFactoryInterface {
 
   /**
    * phpcs:disable Generic.Files.LineLength.TooLong
    *
-   * @phpstan-param array<comparisonT|compositeConditionT> $where
+   * @phpstan-param list<conditionT> $where
    * @phpstan-param array<string, array<string, mixed>> $entityFields
    * @phpstan-param array<string, array<string, mixed>> $remoteFields
    * @phpstan-param callable(string $fieldName, string $joinedFieldName): bool $implicitJoinAllowedCallback
    * @phpstan-param callable(\Civi\RemoteTools\Api4\Query\Comparison $comparison): ?\Civi\RemoteTools\Api4\Query\ConditionInterface $convertRemoteFieldComparisonCallback
    *
-   * @phpstan-return array<comparisonT|compositeConditionT>
+   * @phpstan-return list<conditionT>
    *
    * phpcs:enable
    * }

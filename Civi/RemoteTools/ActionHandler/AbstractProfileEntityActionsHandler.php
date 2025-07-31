@@ -103,6 +103,7 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       ->setLimit($action->getLimit())
       ->setOffset($action->getOffset())
       ->setOrderBy($action->getOrderBy())
+      // @phpstan-ignore argument.type
       ->setSelect($action->getSelect())
       ->setWhere($action->getWhere())
       ->apply($remoteFields);

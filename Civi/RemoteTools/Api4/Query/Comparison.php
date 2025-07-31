@@ -20,7 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Api4\Query;
 
 /**
- * @phpstan-type comparisonT array{string, string, 2?: scalar|non-empty-array<scalar>}
+ * @phpstan-type comparisonT array{string, string, 2?: scalar|non-empty-list<scalar>}
  *
  * @api
  */
@@ -31,27 +31,27 @@ final class Comparison implements ConditionInterface {
   private string $operator;
 
   /**
-   * @var scalar|non-empty-array<int, scalar>|null
+   * @var scalar|non-empty-list<scalar>|null
    */
   private $value;
 
   /**
    * @param string $field
    * @param string $operator '=' and '!=' are allowed with NULL as value.
-   * @param scalar|non-empty-array<int, scalar>|null $value
+   * @param scalar|non-empty-list<scalar>|null $value
    *
    * @return self
    */
-  public static function new(string $field, string $operator, $value): self {
+  public static function new(string $field, string $operator, bool|float|int|string|array|null $value): self {
     return new self($field, $operator, $value);
   }
 
   /**
    * @param string $field
    * @param string $operator '=' and '!=' are allowed with NULL as value.
-   * @param scalar|non-empty-array<int, scalar>|null $value
+   * @param scalar|non-empty-list<scalar>|null $value
    */
-  public function __construct(string $field, string $operator, $value) {
+  public function __construct(string $field, string $operator, bool|float|int|string|array|null $value) {
     $this->field = $field;
     $this->operator = $operator;
     $this->value = $value;
@@ -66,9 +66,9 @@ final class Comparison implements ConditionInterface {
   }
 
   /**
-   * @return scalar|non-empty-array<int, scalar>|null
+   * @return scalar|non-empty-list<scalar>|null
    */
-  public function getValue() {
+  public function getValue(): bool|int|string|float|array|null {
     return $this->value;
   }
 

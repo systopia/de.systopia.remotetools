@@ -47,7 +47,7 @@ abstract class AbstractTextField extends AbstractFormField {
   /**
    * @return $this
    */
-  public function setMaxLength(?int $maxLength): self {
+  public function setMaxLength(?int $maxLength): static {
     $this->maxLength = $maxLength;
 
     return $this;
@@ -64,7 +64,7 @@ abstract class AbstractTextField extends AbstractFormField {
   /**
    * @return $this
    */
-  public function setMinLength(?int $minLength): self {
+  public function setMinLength(?int $minLength): static {
     $this->minLength = $minLength;
 
     return $this;
@@ -77,7 +77,7 @@ abstract class AbstractTextField extends AbstractFormField {
   /**
    * @return $this
    */
-  public function setPattern(?string $pattern): self {
+  public function setPattern(?string $pattern): static {
     $this->pattern = $pattern;
 
     return $this;

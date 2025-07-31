@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\Api4\Action\Traits;
 
 /**
  * @method array<int|string, mixed> getArguments()
- * @method $this setArguments(array $arguments)
+ * @method $this setArguments(array<int|string, mixed> $arguments)
  *
  * @api
  */

@@ -21,7 +21,6 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 use Civi\RemoteTools\Form\FormSpec\DataTransformer\HtmlDataTransformer;
 use Civi\RemoteTools\Form\FormSpec\FieldDataTransformerInterface;
-use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 
 /**
  * Input is sanitized with all non-body elements and unsafe elements being
@@ -65,9 +64,6 @@ final class HtmlField extends AbstractTextField {
   public function __construct(string $name, string $label) {
     parent::__construct($name, $label);
     $this->setMaxLength(20000);
-    if (!class_exists(HtmlSanitizer::class)) {
-      throw new \RuntimeException('symfony/html-sanitizer is required to use this class');
-    }
   }
 
   public function getInputType(): string {
@@ -82,7 +78,7 @@ final class HtmlField extends AbstractTextField {
    * @param list<string>|null $allowedAttributes
    *   If NULL, all standard attributes defined by W3C are allowed.
    */
-  public function addAllowedElement(string $element, ?array $allowedAttributes): self {
+  public function addAllowedElement(string $element, ?array $allowedAttributes): static {
     $this->allowedElements[$element] = $allowedAttributes;
     unset($this->blockedElements[$element]);
     unset($this->droppedElements[$element]);
@@ -104,7 +100,7 @@ final class HtmlField extends AbstractTextField {
    * Element that shall be removed from the input, but with its children
    * retained.
    */
-  public function addBlockedElement(string $element): self {
+  public function addBlockedElement(string $element): static {
     $this->blockedElements[$element] = TRUE;
     unset($this->allowedElements[$element]);
     unset($this->droppedElements[$element]);
@@ -122,7 +118,7 @@ final class HtmlField extends AbstractTextField {
   /**
    * Element that shall be removed from the input including its children.
    */
-  public function addDroppedElement(string $element): self {
+  public function addDroppedElement(string $element): static {
     $this->droppedElements[$element] = TRUE;
     unset($this->allowedElements[$element]);
     unset($this->blockedElements[$element]);

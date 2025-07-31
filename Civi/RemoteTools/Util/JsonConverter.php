@@ -31,6 +31,7 @@ final class JsonConverter {
   public static function toArray(\stdClass $data): array {
     $result = \json_decode(\json_encode($data, JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION), TRUE);
     Assert::isArray($result);
+    /** @var array<string, mixed> $result */
 
     return $result;
   }

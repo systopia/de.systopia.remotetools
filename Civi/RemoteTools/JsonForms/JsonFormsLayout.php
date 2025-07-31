@@ -24,7 +24,7 @@ use Civi\RemoteTools\JsonSchema\JsonSchema;
 class JsonFormsLayout extends JsonFormsElement {
 
   /**
-   * @param array<int, JsonFormsElement> $elements
+   * @param list<JsonFormsElement> $elements
    * @param array<string, mixed>|null $options
    */
   public function __construct(
@@ -51,10 +51,10 @@ class JsonFormsLayout extends JsonFormsElement {
   }
 
   /**
-   * @return array<int, JsonFormsElement>
+   * @return list<JsonFormsElement>
    */
   public function getElements(): array {
-    /** @var array<int, JsonFormsElement> $elements */
+    /** @var list<JsonFormsElement> $elements */
     $elements = $this->keywords['elements'];
 
     return $elements;
@@ -65,7 +65,7 @@ class JsonFormsLayout extends JsonFormsElement {
     return $this->keywords['options']->keywords['readonly'] ?? NULL;
   }
 
-  public function setReadonly(bool $readonly): self {
+  public function setReadonly(bool $readonly): static {
     /** @var \Civi\RemoteTools\JsonSchema\JsonSchema $options */
     // @phpstan-ignore-next-line
     $options = $this->keywords['options'] ??= new JsonSchema([]);

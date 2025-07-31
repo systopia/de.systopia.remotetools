@@ -25,7 +25,7 @@ use CRM_Remotetools_ExtensionUtil as E;
 class ValidationResult {
 
   /**
-   * @phpstan-var array<string, non-empty-array<ValidationError>>
+   * @phpstan-var array<string, non-empty-list<ValidationError>>
    */
   private array $errors = [];
 
@@ -37,7 +37,7 @@ class ValidationResult {
     $this->addErrors(...$errors);
   }
 
-  public function addErrors(ValidationError ...$errors): self {
+  public function addErrors(ValidationError ...$errors): static {
     foreach ($errors as $error) {
       $this->addError($error);
     }
@@ -45,7 +45,7 @@ class ValidationResult {
     return $this;
   }
 
-  public function addError(ValidationError $error): self {
+  public function addError(ValidationError $error): static {
     if (isset($this->errors[$error->field])) {
       $this->errors[$error->field][] = $error;
     }
@@ -57,7 +57,7 @@ class ValidationResult {
   }
 
   /**
-   * @phpstan-return array<string, non-empty-array<ValidationError>>
+   * @phpstan-return array<string, non-empty-list<ValidationError>>
    *   Field names mapped to errors.
    */
   public function getErrors(): array {
@@ -65,7 +65,7 @@ class ValidationResult {
   }
 
   /**
-   * @phpstan-return array<ValidationError>
+   * @phpstan-return list<ValidationError>
    */
   public function getErrorsFlat(): array {
     $errors = [];
@@ -83,7 +83,7 @@ class ValidationResult {
   }
 
   /**
-   * @phpstan-return array<string, non-empty-array<string>>
+   * @phpstan-return array<string, non-empty-list<string>>
    *   Field names mapped to error messages.
    */
   public function getErrorMessages(): array {
@@ -97,7 +97,7 @@ class ValidationResult {
   }
 
   /**
-   * @phpstan-return array<ValidationError>
+   * @phpstan-return list<ValidationError>
    */
   public function getErrorsFor(string $field): array {
     return $this->errors[$field] ?? [];
@@ -111,7 +111,7 @@ class ValidationResult {
     return [] === $this->errors;
   }
 
-  public function merge(self $result): self {
+  public function merge(self $result): static {
     $this->addErrors(...$result->getErrorsFlat());
 
     return $this;
