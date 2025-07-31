@@ -112,9 +112,9 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
   public function filterResult($request, &$reply_records) {
     foreach (array_keys($reply_records) as $index) {
       $reply_records[$index] = [
-        'civicrm_id' => CRM_Utils_Array::value('id', $reply_records[$index], ''),
-        'first_name' => CRM_Utils_Array::value('first_name', $reply_records[$index], ''),
-        'last_name'  => CRM_Utils_Array::value('last_name', $reply_records[$index], ''),
+        'civicrm_id' => $reply_records[$index]['id'] ?? '',
+        'first_name' => $reply_records[$index]['first_name'] ?? '',
+        'last_name'  => $reply_records[$index]['last_name'] ?? '',
       ];
     }
   }

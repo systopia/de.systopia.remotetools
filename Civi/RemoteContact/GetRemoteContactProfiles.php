@@ -41,6 +41,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    * @param null $name_filter
    */
   public function __construct($name_filter = NULL) {
+    parent::__construct([]);
     if ($name_filter) {
       // make sure this is a regex
       // todo: do a _much_ better job here!

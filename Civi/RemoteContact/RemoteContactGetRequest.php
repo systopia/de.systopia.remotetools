@@ -157,8 +157,6 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
         }
         else {
           // finally execute
-          // mark es being executed
-          $request->result = FALSE;
           $request_data = $request->getRequest();
           $log_debug = $request->getRequestParameter('log_debug');
           if (!empty($log_debug)) {

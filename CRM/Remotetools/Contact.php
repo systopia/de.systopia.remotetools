@@ -152,7 +152,7 @@ class CRM_Remotetools_Contact {
    */
   public static function remoteKeyExists($key_candidate) {
     // check if exists:
-    return CRM_Core_DAO::singleValueQuery("
+    return (int) CRM_Core_DAO::singleValueQuery("
             SELECT COUNT(*)
             FROM civicrm_value_contact_id_history
             WHERE identifier_type = 'remote_contact'

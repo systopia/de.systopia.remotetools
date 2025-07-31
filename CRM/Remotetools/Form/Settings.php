@@ -74,11 +74,11 @@ class CRM_Remotetools_Form_Settings extends CRM_Core_Form {
     // store values
     $values = $this->exportValues();
     Civi::settings()->set('remotecontact_matching_enabled',
-                          CRM_Utils_Array::value('remotecontact_matching_enabled', $values, 0));
+                          $values['remotecontact_matching_enabled'] ?? 0);
     Civi::settings()->set('remotecontact_matching_creates_contacts_enabled',
-                          CRM_Utils_Array::value('remotecontact_matching_creates_contacts_enabled', $values, 0));
+                          $values['remotecontact_matching_creates_contacts_enabled'] ?? 0);
     Civi::settings()->set('remotecontact_matching_profile',
-                          CRM_Utils_Array::value('remotecontact_matching_profile', $values, ''));
+                          $values['remotecontact_matching_profile'] ?? '');
     CRM_Core_Session::setStatus(E::ts('CiviRemote Configuration Updated'));
     parent::postProcess();
   }

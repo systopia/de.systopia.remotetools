@@ -275,7 +275,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
 
     $profiles = self::getAvailableProfiles();
     foreach ($profiles as $profile) {
-      /** @var $profile CRM_Remotetools_RemoteContactProfile */
+      /** @var CRM_Remotetools_RemoteContactProfile $profile */
       $list[$profile->getProfileID()] = $profile->getProfileName();
     }
 

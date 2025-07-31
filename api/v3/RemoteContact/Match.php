@@ -78,7 +78,7 @@ function civicrm_api3_remote_contact_match($params) {
   $null = NULL;
 
   try {
-    $prefix = CRM_Utils_Array::value('key_prefix', $params, '');
+    $prefix = $params['key_prefix'] ?? '';
     $new_key = CRM_Remotetools_Contact::match($params, $prefix);
     return civicrm_api3_create_success(
       ['key' => $new_key],

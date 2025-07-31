@@ -59,60 +59,60 @@ class CRM_Remotetools_MultivalueCustomFieldsTest extends CRM_Remotetools_RemoteC
       'contact_multi_test1' => 3,
       'contact_multi_test2' => 3,
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts');
+    static::assertCount(2, $contacts, 'This should have found both contacts');
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => 3],
       'contact_multi_test2' => ['IN' => 3],
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts');
+    static::assertCount(2, $contacts, 'This should have found both contacts');
 
     // test2: run with single unique value
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => 1,
       'contact_multi_test2' => 1,
     ]);
-    $this->assertCount(1, $contacts, 'This should have found only one contact');
+    static::assertCount(1, $contacts, 'This should have found only one contact');
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => [1]],
       'contact_multi_test2' => ['IN' => [1]],
     ]);
-    $this->assertCount(1, $contacts, 'This should have found only one contact');
+    static::assertCount(1, $contacts, 'This should have found only one contact');
 
     // test3: run with exact multi-value
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => [1, 2, 3],
       'contact_multi_test2' => [1, 2, 3],
     ]);
-    $this->assertCount(1, $contacts, 'This should have found only one contact');
+    static::assertCount(1, $contacts, 'This should have found only one contact');
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => [1, 2, 3]],
       'contact_multi_test2' => ['IN' => [1, 2, 3]],
     ]);
-    $this->assertCount(1, $contacts, 'This should have found only one contact');
+    static::assertCount(1, $contacts, 'This should have found only one contact');
 
     // test4: run with common multi-value
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => [2, 3],
       'contact_multi_test2' => [2, 3],
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts');
+    static::assertCount(2, $contacts, 'This should have found both contacts');
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => [2, 3]],
       'contact_multi_test2' => ['IN' => [2, 3]],
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts');
+    static::assertCount(2, $contacts, 'This should have found both contacts');
 
     // test5: run with common single value -> should return empty, because it's ANDed (neither have 1 AND 4)
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => [1, 4],
       'contact_multi_test2' => [1, 4],
     ]);
-    $this->assertCount(0, $contacts, 'This should have NOT found both contacts, because the API does AND');
+    static::assertCount(0, $contacts, 'This should have NOT found both contacts, because the API does AND');
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => [1, 4]],
       'contact_multi_test2' => ['IN' => [1, 4]],
     ]);
-    $this->assertCount(0, $contacts, 'This should have NOT found both contacts, because the API does AND');
+    static::assertCount(0, $contacts, 'This should have NOT found both contacts, because the API does AND');
 
     // test6: run with common single value, but this time in OR-mode
     $contacts = $this->remoteContactQuery($profile, [
@@ -120,14 +120,14 @@ class CRM_Remotetools_MultivalueCustomFieldsTest extends CRM_Remotetools_RemoteC
       'contact_multi_test2' => [1, 4],
       'option.multivalue_search_mode_or' => ['contact_multi_test1', 'contact_multi_test2'],
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts, because the API was instructed to OR');
+    static::assertCount(2, $contacts, 'This should have found both contacts, because the API was instructed to OR');
 
     $contacts = $this->remoteContactQuery($profile, [
       'contact_multi_test1' => ['IN' => [1, 4]],
       'contact_multi_test2' => ['IN' => [1, 4]],
       'option.multivalue_search_mode_or' => ['contact_multi_test1', 'contact_multi_test2'],
     ]);
-    $this->assertCount(2, $contacts, 'This should have found both contacts, because the API was instructed to OR');
+    static::assertCount(2, $contacts, 'This should have found both contacts, because the API was instructed to OR');
   }
 
 }

@@ -44,7 +44,7 @@ class RemoteToolsRequest extends Event {
   protected $request = [];
 
   /**
-   * @var array the result of the request */
+   * @var array|null the result of the request */
   protected $result = NULL;
 
   /**
@@ -126,7 +126,7 @@ class RemoteToolsRequest extends Event {
    *   default return value, if not set
    */
   public function getOriginalRequestParameter($name, $default = NULL) {
-    return \CRM_Utils_Array::value($name, $this->original_request, $default);
+    return $this->original_request[$name] ?? $default;
   }
 
   /**
@@ -202,7 +202,7 @@ class RemoteToolsRequest extends Event {
    *   default return value, if not set
    */
   public function getRequestParameter($name, $default = NULL) {
-    return \CRM_Utils_Array::value($name, $this->request, $default);
+    return $this->request[$name] ?? $default;
   }
 
   /**
@@ -215,7 +215,7 @@ class RemoteToolsRequest extends Event {
    *   previous value, or null if not set
    */
   public function removeRequestParameter($name) {
-    $old_value = \CRM_Utils_Array::value($name, $this->request);
+    $old_value = $this->request[$name] ?? NULL;
     unset($this->request[$name]);
     return $old_value;
   }
@@ -353,7 +353,7 @@ class RemoteToolsRequest extends Event {
    * Get the list of fields currently requested to be returned
    */
   public function getReturnFields() {
-    $return_string = \CRM_Utils_Array::value('return', $this->request, '');
+    $return_string = $this->request['return'] ?? NULL;
     if ($return_string) {
       return explode(',', $return_string);
     }

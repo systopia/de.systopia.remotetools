@@ -1,0 +1,1502 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property object\:\:\$contact_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Call to an undefined method object\:\:fetch\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 3
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Method CRM_Remotetools_Contact\:\:match\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Method CRM_Remotetools_Contact\:\:storeRemoteKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Parameter \#1 \$string of function substr expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Variable \$transaction might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/Remotetools/Contact.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
+			message: '#^Method CRM_Remotetools_ContactRoles\:\:addRoles\(\) has parameter \$role_names with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
+			message: '#^Property CRM_Remotetools_ContactRoles\:\:\$contact_roles_cache type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
+			message: '#^Property CRM_Remotetools_ContactRoles\:\:\$roles_cache type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 5
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getIDs\(\) has parameter \$field_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getIDs\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getIDs\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getOptions\(\) has parameter \$localise with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getOptions\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getOptions\(\) has parameter \$sort with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getOptions\(\) has parameter \$use_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getSortingTuples\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:getSortingTuples\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:restrictToIds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:restrictToIds\(\) has parameter \$field_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:restrictToIds\(\) has parameter \$ids with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:restrictToIds\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:setSortingString\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_DataTools\:\:setSortingString\(\) has parameter \$sorting_tuples with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Only booleans are allowed in an elseif condition, int\|false given\.$#'
+			identifier: elseif.condNotBoolean
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|false given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, ''intval'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strtolower expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/DataTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_Form_Settings\:\:buildQuickForm\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/Form/Settings.php
+
+		-
+			message: '#^Method CRM_Remotetools_Form_Settings\:\:postProcess\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/Form/Settings.php
+
+		-
+			message: '#^Empty array passed to foreach\.$#'
+			identifier: foreach.emptyArray
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:addFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:adjustSorting\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:adjustSorting\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:applyRestrictions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:applyRestrictions\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:applyRestrictions\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:filterResult\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:filterResult\(\) has parameter \$reply_records with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getAvailableProfiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getExternalToInternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getInternalToExternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getProfileList\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getReturnFields\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getReturnFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:initProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:isOwnDataProfile\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:mapExternalFields\(\) has parameter \$field_names with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:mapExternalFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:mapInternalFields\(\) has parameter \$field_names with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:mapInternalFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:registerKnownProfiles\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Parameter \#1 \$name_filter of class Civi\\RemoteContact\\GetRemoteContactProfiles constructor expects null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:addFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:applyRestrictions\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:applyRestrictions\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:applyRestrictions\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:filterResult\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:filterResult\(\) has parameter \$reply_records with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:getReturnFields\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:getReturnFields\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:initProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:isOwnDataProfile\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$entity_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Call to an undefined method object\:\:fetch\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Call to an undefined method object\:\:free\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^If_\: Use a function e\.g\. `count\(\$foo\) \> 0` instead of `\$foo`\.$#'
+			identifier: voku.If
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:applySqlQueries\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:applySqlQueries\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:applySqlQueries\(\) has parameter \$sql_queries with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:extractMutltivalueSQLQueries\(\) has parameter \$multivalue_search_or_queries with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:extractMutltivalueSQLQueries\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:extractMutltivalueSQLQueries\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:processMultivalueOrSearch\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactQueryTools\:\:processMultivalueOrSearch\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Parameter \#1 \$field_id of static method CRM_Remotetools_CustomData\:\:getFieldSpecs\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/RemoteContactQueryTools.php
+
+		-
+			message: '#^Call to function base64_decode\(\) requires parameter \#2 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 3
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Method CRM_Remotetools_SecureToken\:\:getContactHash\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Parameter \#1 \$string of function base64_encode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: CRM/Remotetools/SecureToken.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Remotetools/Upgrader.php
+
+		-
+			message: '#^Method CRM_Remotetools_Upgrader\:\:disable\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/Upgrader.php
+
+		-
+			message: '#^Method CRM_Remotetools_Upgrader\:\:install\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Remotetools/Upgrader.php
+
+		-
+			message: '#^Method CRM_Remotetools_Upgrader\:\:upgrade_0001\(\) has Exception in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: CRM/Remotetools/Upgrader.php
+
+		-
+			message: '#^Method CRM_Remotetools_Upgrader\:\:upgrade_0002\(\) has Exception in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: CRM/Remotetools/Upgrader.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Identical\: Possible insane comparison between null and CRM_Remotetools_RemoteContactProfile\.$#'
+			identifier: voku.Identical
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:__construct\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:addProfileFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:addProfileFields\(\) has parameter \$fields_collection with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:getFieldSpecs\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:getProfile\(\) should return CRM_Remotetools_RemoteContactProfile but returns CRM_Remotetools_RemoteContactProfile\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:removeFieldSpec\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:setFieldSpec\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetFieldsEvent\:\:setFieldSpec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, CRM_Remotetools_RemoteContactProfile\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Property Civi\\RemoteContact\\GetFieldsEvent\:\:\$field_specs type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Property Civi\\RemoteContact\\GetFieldsEvent\:\:\$profile \(CRM_Remotetools_RemoteContactProfile\) does not accept CRM_Remotetools_RemoteContactProfile\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Civi/RemoteContact/GetFieldsEvent.php
+
+		-
+			message: '#^Do not throw the \\Exception base class\.$#'
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetRemoteContactProfiles\:\:addInstance\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetRemoteContactProfiles\:\:getInstances\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetRemoteContactProfiles\:\:matchesName\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\GetRemoteContactProfiles\:\:matchesName\(\) has parameter \$instance_name with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Property Civi\\RemoteContact\\GetRemoteContactProfiles\:\:\$name_filter \(string\) does not accept string\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Property Civi\\RemoteContact\\GetRemoteContactProfiles\:\:\$profile_instances type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteContact/GetRemoteContactProfiles.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Identical\: Possible insane comparison between null and CRM_Remotetools_RemoteContactProfile\.$#'
+			identifier: voku.Identical
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^In method "Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest", caught "Exception" must be rethrown\. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception\. More info\: http\://bit\.ly/failloud$#'
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:addProfileRequirements\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:addProfileRequirements\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:filterResult\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:getProfile\(\) should return CRM_Remotetools_RemoteContactProfile but returns CRM_Remotetools_RemoteContactProfile\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:initProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:isSelfRequest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:setSelfRequest\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:setSelfRequest\(\) has parameter \$is_self_request with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, CRM_Remotetools_RemoteContactProfile\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteContact\\RemoteContactGetRequest\:\:\$profile \(CRM_Remotetools_RemoteContactProfile\) does not accept CRM_Remotetools_RemoteContactProfile\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsDispatcher\:\:addUniqueListener\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsDispatcher.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsDispatcher\:\:addUniqueListener\(\) has parameter \$listener with no signature specified for callable\.$#'
+			identifier: missingType.callable
+			count: 1
+			path: Civi/RemoteToolsDispatcher.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:__construct\(\) has parameter \$original_request with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:addError\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:addStatus\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:addWarning\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createAPI3Error\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createAPI3Success\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createAPI3Success\(\) has parameter \$action with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createAPI3Success\(\) has parameter \$entity with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createAPI3Success\(\) has parameter \$extraReturnValues with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createStaticAPI3Error\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:createStaticAPI3Error\(\) has parameter \$error_message with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getErrors\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getOriginalRequest\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getOriginalRequestParameter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getOriginalReturnFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getReferencedStatusList\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getReply\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getRequest\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getRequestParameter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getRequestedEntityIDs\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getReturnFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getSorting\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getSorting\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:getStatusMessageList\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:mapParameters\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:mapParameters\(\) has parameter \$mapping with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:restrictToEntityIds\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:restrictToEntityIds\(\) has parameter \$entity_ids with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setCallerContactID\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setRequestOption\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setSorting\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setSorting\(\) has parameter \$request_data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setSorting\(\) has parameter \$sorting_tuples with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:setSorting\(\) never assigns null to &\$request_data so it can be removed from the by\-ref type\.$#'
+			identifier: parameterByRef.unusedType
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Method Civi\\RemoteToolsRequest\:\:wasExecuted\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$caller_contact_id \(int\) in isset\(\) is not nullable\.$#'
+			identifier: isset.property
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$error_list type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$info_list type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$original_request type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$reply type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$request type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$result type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$warning_list type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Civi/RemoteToolsRequest.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Get.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Get.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: api/v3/RemoteContact/GetRoles.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_get_roles_spec\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/RemoteContact/GetRoles.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_get_roles_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/GetRoles.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get_roles\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/GetRoles.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get_roles\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/GetRoles.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 3
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get_self\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_get_self\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, CRM_Remotetools_RemoteContactProfile given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Variable \$reply_data might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_getfields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_getfields\(\) has parameter \$params with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$fields does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 3
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: api/v3/RemoteContact/Getfields.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_match_spec\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_match_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_match\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_match\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^In function "civicrm_api3_remote_contact_match", caught "Exception" must be rethrown\. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception\. More info\: http\://bit\.ly/failloud$#'
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_update_spec\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Function _civicrm_api3_remote_contact_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_update\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_update\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Function civicrm_api3_remote_contact_update\(\) should return array but returns array\|int\.$#'
+			identifier: return.type
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Method CRM_Remotetools_MultivalueCustomFieldsTest\:\:testMultiValueCustomOR\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/MultivalueCustomFieldsTest.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:addFields\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:getExternalToInternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactTestBase\:\:remoteContactQuery\(\) has parameter \$query with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_RemoteContactTestBase\:\:remoteContactQuery\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Property CRM_Remotetools_RemoteContactTestBase\:\:\$known_profiles type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Cannot call method rollback\(\) on CRM_Core_Transaction\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:createContact\(\) has parameter \$contact_details with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:createContact\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:createContacts\(\) has parameter \$contact_details with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:createContacts\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:getCampaign\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:randomSubset\(\) has parameter \$array with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:randomSubset\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:setUpHeadless\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:setUpXCMProfile\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Method CRM_Remotetools_TestBase\:\:setUpXCMProfile\(\) has parameter \$profile_data_override with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
+
+		-
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/phpunit/CRM/Remotetools/TestBase.php
