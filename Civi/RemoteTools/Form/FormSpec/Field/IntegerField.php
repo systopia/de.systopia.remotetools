@@ -44,7 +44,7 @@ final class IntegerField extends AbstractNumberField {
     return $this->maximum;
   }
 
-  public function setMaximum(?int $maximum): self {
+  public function setMaximum(?int $maximum): static {
     $this->maximum = $maximum;
 
     return $this;
@@ -54,7 +54,7 @@ final class IntegerField extends AbstractNumberField {
     return $this->minimum;
   }
 
-  public function setMinimum(?int $minimum): self {
+  public function setMinimum(?int $minimum): static {
     $this->minimum = $minimum;
 
     return $this;

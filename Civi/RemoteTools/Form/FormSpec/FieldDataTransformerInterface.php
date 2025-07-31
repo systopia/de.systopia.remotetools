@@ -11,11 +11,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
 interface FieldDataTransformerInterface {
 
   /**
-   * @param mixed $data
    * @phpstan-param T $field
-   *
-   * @return mixed
    */
-  public function toEntityValue($data, AbstractFormField $field);
+  public function toEntityValue(mixed $data, AbstractFormField $field): mixed;
 
 }

@@ -89,7 +89,7 @@ abstract class AbstractRemoteEntityProfile implements RemoteEntityProfileInterfa
   /**
    * @inheritDoc
    */
-  public function getFieldLoadOptionsForFormSpec() {
+  public function getFieldLoadOptionsForFormSpec(): bool|array {
     return FALSE;
   }
 

@@ -70,6 +70,7 @@ final class ValidationResult implements ValidationResultInterface {
    * @return array<string, non-empty-list<string>>
    */
   public function getErrorMessages(): array {
+    // @phpstan-ignore argument.type
     return $this->mapErrorsToMessages($this->errorCollector->getErrors());
   }
 
@@ -77,6 +78,7 @@ final class ValidationResult implements ValidationResultInterface {
    * @return array<string, non-empty-list<string>>
    */
   public function getLeafErrorMessages(): array {
+    // @phpstan-ignore argument.type
     return $this->mapErrorsToMessages($this->errorCollector->getLeafErrors());
   }
 

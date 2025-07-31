@@ -28,7 +28,7 @@ final class ActionHandlerNotFoundException extends RuntimeException {
 
   public function __construct(
           AbstractAction $action,
-          string $message = NULL,
+          ?string $message = NULL,
           int $code = 0,
           ?\Throwable $previous = NULL
   ) {

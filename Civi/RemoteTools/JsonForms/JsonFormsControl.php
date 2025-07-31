@@ -57,9 +57,9 @@ class JsonFormsControl extends JsonFormsElement {
     return $this->keywords['options']->keywords['readonly'] ?? NULL;
   }
 
-  public function setReadonly(bool $readonly): self {
+  public function setReadonly(bool $readonly): static {
     /** @var \Civi\RemoteTools\JsonSchema\JsonSchema $options */
-    // @phpstan-ignore-next-line
+    // @phpstan-ignore voku.Coalesce
     $options = $this->keywords['options'] ??= new JsonSchema([]);
     $options->addKeyword('readonly', $readonly);
 

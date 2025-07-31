@@ -40,7 +40,7 @@ final class SubmitButton extends AbstractFormInput {
     return $this->value;
   }
 
-  public function setValue(string $value): self {
+  public function setValue(string $value): static {
     $this->value = $value;
 
     return $this;
@@ -50,7 +50,7 @@ final class SubmitButton extends AbstractFormInput {
     return $this->confirmMessage;
   }
 
-  public function setConfirmMessage(?string $confirmMessage): self {
+  public function setConfirmMessage(?string $confirmMessage): static {
     $this->confirmMessage = $confirmMessage;
 
     return $this;

@@ -22,7 +22,7 @@ namespace Civi\RemoteTools\JsonForms\Util;
 final class JsonFormsUtil {
 
   /**
-   * @phpstan-param array<string> $path
+   * @phpstan-param list<string> $path
    */
   public static function pathToScope(array $path): string {
     return '#/properties/' . implode('/properties/', $path);

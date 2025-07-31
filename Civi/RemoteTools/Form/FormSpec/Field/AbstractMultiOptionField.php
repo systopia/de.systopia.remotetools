@@ -58,9 +58,9 @@ abstract class AbstractMultiOptionField extends AbstractFormField {
   abstract public function getItemDataType(): string;
 
   /**
-   * @param T $value
+   * @phpstan-param T $value
    */
-  public function addOption($value, string $label): self {
+  public function addOption(int|string $value, string $label): static {
     $this->options[$value] = $label;
 
     return $this;
@@ -80,7 +80,7 @@ abstract class AbstractMultiOptionField extends AbstractFormField {
    *
    * @return $this
    */
-  public function setOptions(array $options): self {
+  public function setOptions(array $options): static {
     $this->options = $options;
 
     return $this;
@@ -94,7 +94,7 @@ abstract class AbstractMultiOptionField extends AbstractFormField {
     return $this->minItems;
   }
 
-  public function setMinItems(?int $minItems): self {
+  public function setMinItems(?int $minItems): static {
     $this->minItems = $minItems;
 
     return $this;
@@ -104,7 +104,7 @@ abstract class AbstractMultiOptionField extends AbstractFormField {
     return $this->maxItems;
   }
 
-  public function setMaxItems(?int $maxItems): self {
+  public function setMaxItems(?int $maxItems): static {
     $this->maxItems = $maxItems;
 
     return $this;

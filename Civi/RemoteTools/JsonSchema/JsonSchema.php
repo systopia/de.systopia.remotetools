@@ -86,11 +86,9 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   }
 
   /**
-   * @param mixed $value
-   *
    * @phpstan-assert TValue $value
    */
-  protected static function assertAllowedValue($value): void {
+  protected static function assertAllowedValue(mixed $value): void {
     if (!static::isAllowedValue($value)) {
       throw new \InvalidArgumentException(
         \sprintf(
@@ -104,11 +102,9 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   }
 
   /**
-   * @param mixed $value
-   *
    * @phpstan-assert-if-true TValue $value
    */
-  protected static function isAllowedValue($value): bool {
+  protected static function isAllowedValue(mixed $value): bool {
     if (!\is_array($value)) {
       $value = [$value];
     }
@@ -153,12 +149,11 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   }
 
   /**
-   * @param string $keyword
-   * @param TValue $value
+   * @phpstan-param TValue $value
    *
    * @return $this
    */
-  public function addKeyword(string $keyword, $value): self {
+  public function addKeyword(string $keyword, bool|float|int|string|self|null|array $value): static {
     if ($this->hasKeyword($keyword)) {
       throw new \InvalidArgumentException(\sprintf('Keyword "%s" already exists', $keyword));
     }
@@ -186,7 +181,7 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
    *
    * @return TValue
    */
-  public function getKeywordValue(string $keyword) {
+  public function getKeywordValue(string $keyword): bool|float|int|string|self|null|array {
     if (!$this->hasKeyword($keyword)) {
       throw new \InvalidArgumentException(\sprintf('No such keyword "%s"', $keyword));
     }
@@ -194,21 +189,16 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
     return $this->keywords[$keyword];
   }
 
-  /**
-   * @param mixed $default
-   *
-   * @return mixed
-   */
-  public function getKeywordValueOrDefault(string $keyword, $default) {
+  public function getKeywordValueOrDefault(string $keyword, mixed $default): mixed {
     return $this->hasKeyword($keyword) ? $this->keywords[$keyword] : $default;
   }
 
   /**
-   * @phpstan-param string|array<string> $path
+   * @phpstan-param string|list<string> $path
    *
    * @return TValue
    */
-  public function getKeywordValueAt($path) {
+  public function getKeywordValueAt(string|array $path): bool|float|int|string|self|null|array {
     if (is_string($path)) {
       $path = explode('/', ltrim($path, '/'));
     }
@@ -229,12 +219,9 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   }
 
   /**
-   * @phpstan-param string|array<string> $path
-   * @param mixed $default
-   *
-   * @return mixed
+   * @phpstan-param string|list<string> $path
    */
-  public function getKeywordValueAtOrDefault($path, $default) {
+  public function getKeywordValueAtOrDefault(string|array $path, mixed $default): mixed {
     if (is_string($path)) {
       $path = explode('/', ltrim($path, '/'));
     }
@@ -301,23 +288,23 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   /**
    * @inheritDoc
    */
-  #[\ReturnTypeWillChange]
-  public function jsonSerialize() {
+  public function jsonSerialize(): \stdClass {
     return (object) $this->toArray();
   }
 
   /**
    * @inheritDoc
    */
-  public function offsetExists($keyword): bool {
+  public function offsetExists(mixed $keyword): bool {
     return $this->hasKeyword($keyword);
   }
 
   /**
    * @inheritDoc
+   *
+   * @phpstan-return TValue
    */
-  #[\ReturnTypeWillChange]
-  public function offsetGet($keyword) {
+  public function offsetGet(mixed $keyword): bool|float|int|string|self|null|array {
     return $this->keywords[$keyword] ?? NULL;
   }
 
@@ -328,7 +315,7 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
    *   Array values can be scalars, NULL, or JsonSchema objects, and arrays
    *   containing values of these three types.
    */
-  public function offsetSet($keyword, $value): void {
+  public function offsetSet(mixed $keyword, mixed $value): void {
     if (!is_string($keyword)) {
       throw new \InvalidArgumentException(sprintf('Offset must be of type string, got %s', gettype($keyword)));
     }
@@ -351,7 +338,7 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
   /**
    * @inheritDoc
    */
-  public function offsetUnset($keyword): void {
+  public function offsetUnset(mixed $keyword): void {
     unset($this->keywords[$keyword]);
   }
 

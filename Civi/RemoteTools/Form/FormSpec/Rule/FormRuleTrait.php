@@ -19,8 +19,6 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\Form\FormSpec\Rule;
 
-use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
-
 trait FormRuleTrait {
 
   private ?FormRule $rule = NULL;
@@ -29,7 +27,7 @@ trait FormRuleTrait {
     return $this->rule;
   }
 
-  public function setRule(?FormRule $rule): FormElementInterface {
+  public function setRule(?FormRule $rule): static {
     $this->rule = $rule;
 
     return $this;

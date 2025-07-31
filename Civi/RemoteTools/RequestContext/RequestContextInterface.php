@@ -24,17 +24,9 @@ namespace Civi\RemoteTools\RequestContext;
  */
 interface RequestContextInterface {
 
-  /**
-   * @param mixed $default
-   *
-   * @return mixed
-   */
-  public function get(string $key, $default = NULL);
+  public function get(string $key, mixed $default = NULL): mixed;
 
-  /**
-   * @param mixed $value
-   */
-  public function set(string $key, $value): void;
+  public function set(string $key, mixed $value): void;
 
   /**
    * @return int

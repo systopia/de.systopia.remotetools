@@ -14,7 +14,7 @@ final class IdentityFieldDataTransformer implements FieldDataTransformerInterfac
   /**
    * @inheritDoc
    */
-  public function toEntityValue($data, AbstractFormField $field) {
+  public function toEntityValue(mixed $data, AbstractFormField $field): mixed {
     return $data;
   }
 

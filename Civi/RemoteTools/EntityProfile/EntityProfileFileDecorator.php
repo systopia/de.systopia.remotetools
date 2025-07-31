@@ -120,20 +120,16 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
   }
 
   /**
-   * @param mixed $value
-   *
    * @phpstan-assert-if-true array{filename: string, content: string} $value
    */
-  private function containsNewFile($value): bool {
+  private function containsNewFile(mixed $value): bool {
     return is_array($value) && is_string($value['filename'] ?? NULL) && is_string($value['content'] ?? NULL);
   }
 
   /**
-   * @param mixed $value
-   *
    * @phpstan-assert-if-true array{filename: string, url: string} $value
    */
-  private function containsPreviousFile($value): bool {
+  private function containsPreviousFile(mixed $value): bool {
     return is_array($value) && is_string($value['filename'] ?? NULL) && is_string($value['url'] ?? NULL);
   }
 

@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\ActionHandler;
 
 use Civi\Api4\Generic\AbstractAction;
+use Civi\Api4\Generic\Result;
 use Civi\RemoteTools\Exception\ActionHandlerNotFoundException;
 use Webmozart\Assert\Assert;
 
@@ -38,7 +39,7 @@ final class DefaultActionHandler implements ActionHandlerInterface {
    *
    * @throws \Civi\RemoteTools\Exception\ActionHandlerNotFoundException
    */
-  public function __call(string $name, array $arguments) {
+  public function __call(string $name, array $arguments): array|Result {
     $action = $arguments[0] ?? NULL;
     Assert::isInstanceOf($action, AbstractAction::class);
 

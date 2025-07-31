@@ -42,7 +42,7 @@ class FloatField extends AbstractNumberField {
     return $this->precision;
   }
 
-  public function setPrecision(?int $precision): self {
+  public function setPrecision(?int $precision): static {
     $this->precision = $precision;
 
     return $this;

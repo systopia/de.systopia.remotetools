@@ -36,7 +36,7 @@ final class QueryApplier {
   private int $offset = 0;
 
   /**
-   * @phpstan-var array<string>
+   * @phpstan-var array<string, string>
    */
   private array $orderBy = [];
 
@@ -46,7 +46,7 @@ final class QueryApplier {
   private array $where = [];
 
   /**
-   * @phpstan-var array<string>
+   * @phpstan-var list<string>
    */
   private array $select = [];
 
@@ -89,14 +89,14 @@ final class QueryApplier {
   }
 
   /**
-   * @phpstan-return array<string>
+   * @phpstan-return array<string, string>
    */
   public function getOrderBy(): array {
     return $this->orderBy;
   }
 
   /**
-   * @phpstan-param array<string> $orderBy
+   * @phpstan-param array<string, string> $orderBy
    */
   public function setOrderBy(array $orderBy): self {
     $this->orderBy = $orderBy;
@@ -105,7 +105,7 @@ final class QueryApplier {
   }
 
   /**
-   * @phpstan-return array<string>
+   * @phpstan-return list<string>
    */
   public function getSelect(): array {
     return $this->select;
@@ -128,7 +128,7 @@ final class QueryApplier {
   }
 
   /**
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    */
   public function setSelect(array $select): self {
     $this->select = $select;
@@ -139,16 +139,16 @@ final class QueryApplier {
   /**
    * @phpstan-param array<array<string, mixed>> $values
    *
-   * @phpstan-return array<string>
+   * @phpstan-return list<string>
    *   All field names that are not names of joined fields or pseudo constants.
    *   This method assumes that all entries in $values have the same array keys.
    */
   private function getStandardFieldNames(array $values): array {
-    return array_filter(
+    return array_values(array_filter(
       // @phpstan-ignore-next-line
       array_keys(reset($values) ?: []),
       fn (string $fieldName) => !str_contains('.', $fieldName) && !str_contains(':', $fieldName)
-    );
+    ));
   }
 
 }

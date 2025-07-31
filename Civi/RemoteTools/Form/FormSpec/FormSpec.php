@@ -59,10 +59,10 @@ final class FormSpec extends AbstractFormElementContainer {
   /**
    * @phpstan-var limitValidationT
    */
-  private $limitValidation = NULL;
+  private null|bool|string|array $limitValidation = NULL;
 
   /**
-   * @phpstan-var array<ValidatorInterface>
+   * @phpstan-var list<ValidatorInterface>
    */
   private array $validators = [];
 
@@ -97,7 +97,7 @@ final class FormSpec extends AbstractFormElementContainer {
    *   to persist forms in an incomplete state. See definition of
    *   "limitValidationT" for possible values.
    */
-  public function getLimitValidation() {
+  public function getLimitValidation(): null|bool|string|array {
     return $this->limitValidation;
   }
 
@@ -114,7 +114,7 @@ final class FormSpec extends AbstractFormElementContainer {
    *   If "_action" is the name of the submit buttons and the submit button
    *   with the value "save" is pressed then limited validation is performed.
    */
-  public function setLimitValidation($limitValidation): self {
+  public function setLimitValidation(null|bool|string|array $limitValidation): self {
     $this->limitValidation = $limitValidation;
 
     return $this;
@@ -127,7 +127,7 @@ final class FormSpec extends AbstractFormElementContainer {
   }
 
   /**
-   * @phpstan-return array<ValidatorInterface>
+   * @phpstan-return list<ValidatorInterface>
    */
   public function getValidators(): array {
     return $this->validators;

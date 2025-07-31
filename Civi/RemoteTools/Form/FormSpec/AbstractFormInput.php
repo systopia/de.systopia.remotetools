@@ -35,7 +35,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
   /**
    * @phpstan-var limitValidationT
    */
-  private $limitValidation = NULL;
+  private null|bool|string|array $limitValidation = NULL;
 
   public function __construct(string $name, string $label) {
     $this->name = $name;
@@ -53,7 +53,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
   /**
    * @return $this
    */
-  public function setName(string $name): self {
+  public function setName(string $name): static {
     $this->name = $name;
 
     return $this;
@@ -66,7 +66,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
   /**
    * @return $this
    */
-  public function setLabel(string $label): self {
+  public function setLabel(string $label): static {
     $this->label = $label;
 
     return $this;
@@ -79,7 +79,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
   /**
    * @return $this
    */
-  public function setDescription(string $description): self {
+  public function setDescription(string $description): static {
     $this->description = $description;
 
     return $this;
@@ -91,7 +91,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
    *   to persist forms in an incomplete state. See definition of
    *   "limitValidationT" for possible values.
    */
-  public function getLimitValidation() {
+  public function getLimitValidation(): null|bool|string|array {
     return $this->limitValidation;
   }
 
@@ -105,7 +105,7 @@ abstract class AbstractFormInput extends AbstractFormElement {
    *   possible values. Might be set to false to enforce normal validation for
    *   this input if limited validation is configured in FormSpec.
    */
-  public function setLimitValidation($limitValidation): self {
+  public function setLimitValidation(null|bool|string|array $limitValidation): static {
     $this->limitValidation = $limitValidation;
 
     return $this;

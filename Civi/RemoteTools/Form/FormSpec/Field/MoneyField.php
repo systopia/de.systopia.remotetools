@@ -45,7 +45,7 @@ final class MoneyField extends FloatField {
   /**
    * @return $this
    */
-  public function setCurrency(string $currency): self {
+  public function setCurrency(string $currency): static {
     $this->currency = $currency;
 
     return $this;

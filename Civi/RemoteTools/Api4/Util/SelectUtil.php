@@ -25,9 +25,9 @@ namespace Civi\RemoteTools\Api4\Util;
 final class SelectUtil {
 
   /**
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    *
-   * @phpstan-return array<string>
+   * @phpstan-return list<string>
    */
   public static function ensureFieldSelected(string $field, array $select): array {
     if (!self::isFieldSelected($field, $select)) {
@@ -46,7 +46,7 @@ final class SelectUtil {
    * returns TRUE if $select is empty and $field is not from a joined entity
    * (i.e. contains no "." or ":").
    *
-   * @phpstan-param array<string> $select
+   * @phpstan-param list<string> $select
    */
   public static function isFieldSelected(string $field, array $select): bool {
     return [] === $select && !FieldUtil::isJoinedField($field)

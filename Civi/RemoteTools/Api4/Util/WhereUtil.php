@@ -32,7 +32,7 @@ final class WhereUtil {
   /**
    * @phpstan-param whereT $where
    *
-   * @phpstan-return array<string>
+   * @phpstan-return list<string>
    *   Field names used in where.
    */
   public static function getFields(array $where): array {
@@ -49,7 +49,7 @@ final class WhereUtil {
       }
     }
 
-    return array_unique($fields);
+    return array_values(array_unique($fields));
   }
 
 }

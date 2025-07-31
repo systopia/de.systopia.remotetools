@@ -37,10 +37,9 @@ abstract class AbstractFormField extends AbstractFormInput {
   private bool $hasDefaultValue = FALSE;
 
   /**
-   * @var mixed
    * @phpstan-var T|null
    */
-  private $defaultValue = NULL;
+  private mixed $defaultValue = NULL;
 
   public function getType(): string {
     return 'field';
@@ -53,7 +52,7 @@ abstract class AbstractFormField extends AbstractFormInput {
   /**
    * @return $this
    */
-  public function setRequired(bool $required): self {
+  public function setRequired(bool $required): static {
     $this->required = $required;
 
     return $this;
@@ -66,7 +65,7 @@ abstract class AbstractFormField extends AbstractFormInput {
   /**
    * @return $this
    */
-  public function setReadOnly(bool $readOnly): self {
+  public function setReadOnly(bool $readOnly): static {
     $this->readOnly = $readOnly;
 
     return $this;
@@ -88,7 +87,7 @@ abstract class AbstractFormField extends AbstractFormInput {
    *
    * @see isRequired()
    */
-  public function setNullable(?bool $nullable): self {
+  public function setNullable(?bool $nullable): static {
     $this->nullable = $nullable;
 
     return $this;
@@ -105,31 +104,29 @@ abstract class AbstractFormField extends AbstractFormInput {
   /**
    * @return $this
    */
-  public function setHasDefaultValue(bool $hasDefaultValue): self {
+  public function setHasDefaultValue(bool $hasDefaultValue): static {
     $this->hasDefaultValue = $hasDefaultValue;
 
     return $this;
   }
 
   /**
-   * @return mixed
    * @phpstan-return T|null
    */
-  public function getDefaultValue() {
+  public function getDefaultValue(): mixed {
     return $this->defaultValue;
   }
 
   /**
    * Additionally sets "has default value" to TRUE.
    *
-   * @param mixed $defaultValue
    * @phpstan-param T|null $defaultValue
    *
    * @return $this
    *
    * @see hasDefaultValue()
    */
-  public function setDefaultValue($defaultValue): self {
+  public function setDefaultValue(mixed $defaultValue): static {
     $this->hasDefaultValue = TRUE;
     $this->defaultValue = $defaultValue;
 

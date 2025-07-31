@@ -24,6 +24,10 @@ parameters:
 	universalObjectCratesClasses:
 		- Civi\Core\Event\GenericHookEvent
 		- CRM_Core_Config
+		- CRM_Core_DAO
+	earlyTerminatingMethodCalls:
+		CRM_Queue_Runner:
+		  - runAllViaWeb
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
@@ -40,6 +44,9 @@ parameters:
 		# https://youtrack.jetbrains.com/issue/WI-63891/PHPStan-ignoreErrors-configuration-isnt-working-with-inspections
 		-
 			identifier: missingType.generics
+		-
+			path: */Civi/RemoteTools/Api4/Action/Traits/*
+			identifier: trait.unused
 
 		- '#^Method Civi\\RemoteTools\\Api4\\Action\\[^\s]+Action::getHandlerResult\(\) has Civi\\RemoteTools\\Exception\\ActionHandlerNotFoundException in PHPDoc @throws tag but it.s not thrown.$#'
 		- '#^Method Civi\\RemoteTools\\Api4\\Api4::createAction\(\) should return Civi\\Api4\\Generic\\AbstractAction but returns array|Civi\Api4\Generic\AbstractAction.$#'

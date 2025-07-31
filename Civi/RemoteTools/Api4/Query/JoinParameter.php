@@ -27,7 +27,7 @@ use Civi\RemoteTools\Api4\ApiParameterInterface;
 final class JoinParameter implements ApiParameterInterface {
 
   /**
-   * @var array<Join>
+   * @var list<Join>
    */
   private array $joins;
 
@@ -36,11 +36,12 @@ final class JoinParameter implements ApiParameterInterface {
   }
 
   public function __construct(Join ...$joins) {
+    /** @var list<Join> $joins */
     $this->joins = $joins;
   }
 
   /**
-   * @return array<Join>
+   * @return list<Join>
    */
   public function getJoins(): array {
     return $this->joins;

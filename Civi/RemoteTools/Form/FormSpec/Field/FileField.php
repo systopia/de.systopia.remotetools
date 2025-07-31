@@ -38,7 +38,7 @@ class FileField extends AbstractFormField {
     return $this->filename;
   }
 
-  public function setFilename(?string $filename): self {
+  public function setFilename(?string $filename): static {
     $this->filename = $filename;
 
     return $this;
@@ -62,7 +62,7 @@ class FileField extends AbstractFormField {
    *   The maximum file size in bytes. Might only be approximately if files are
    *   transferred Base64 encoded.
    */
-  public function setMaxFileSize(?int $maxFileSize): self {
+  public function setMaxFileSize(?int $maxFileSize): static {
     $this->maxFileSize = $maxFileSize;
 
     return $this;
@@ -72,7 +72,7 @@ class FileField extends AbstractFormField {
     return $this->url;
   }
 
-  public function setUrl(?string $url): self {
+  public function setUrl(?string $url): static {
     $this->url = $url;
 
     return $this;

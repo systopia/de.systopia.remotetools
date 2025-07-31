@@ -36,7 +36,7 @@ final class IdentityTrackerRemoteContactIdResolver implements RemoteContactIdRes
   /**
    * @inheritDoc
    */
-  public function getContactId($remoteAuthenticationToken): int {
+  public function getContactId(int|string $remoteAuthenticationToken): int {
     try {
       /** @var array<string, mixed>&array{id: int, values: array<int, array{id: int}>} $result */
       $result = $this->api3->execute('Contact', 'identify', [

@@ -22,13 +22,9 @@ namespace Civi\RemoteTools\Contact;
 interface RemoteContactIdResolverInterface {
 
   /**
-   * @param int|string $remoteAuthenticationToken
-   *
-   * @return int
-   *
    * @throws \Civi\RemoteTools\Exception\ResolveContactIdFailedException
    *   If a unique contact ID was not found or an error occurred.
    */
-  public function getContactId($remoteAuthenticationToken): int;
+  public function getContactId(int|string $remoteAuthenticationToken): int;
 
 }

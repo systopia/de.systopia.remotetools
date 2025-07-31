@@ -15,7 +15,7 @@ final class LimitValidationSchemaFactory {
   /**
    * @phpstan-param limitValidationT $limitValidation
    */
-  public static function createSchema($limitValidation): ?JsonSchema {
+  public static function createSchema(null|bool|string|array $limitValidation): ?JsonSchema {
     $condition = self::createCondition($limitValidation);
 
     if (NULL === $condition) {
@@ -135,10 +135,8 @@ final class LimitValidationSchemaFactory {
 
   /**
    * @phpstan-param limitValidationT $limitValidation
-   *
-   * @return bool|null|JsonSchema
    */
-  private static function createCondition($limitValidation) {
+  private static function createCondition(null|bool|string|array $limitValidation): bool|null|JsonSchema {
     if (NULL === $limitValidation) {
       return NULL;
     }

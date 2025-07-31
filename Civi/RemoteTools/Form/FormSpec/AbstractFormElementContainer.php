@@ -31,12 +31,12 @@ abstract class AbstractFormElementContainer {
   private string $title;
 
   /**
-   * @phpstan-var array<T>
+   * @phpstan-var list<T>
    */
   private array $elements = [];
 
   /**
-   * @phpstan-param array<T> $elements
+   * @phpstan-param list<T> $elements
    */
   public function __construct(string $title, array $elements = []) {
     $this->title = $title;
@@ -50,7 +50,7 @@ abstract class AbstractFormElementContainer {
   /**
    * @return $this
    */
-  public function setTitle(string $title): self {
+  public function setTitle(string $title): static {
     $this->title = $title;
 
     return $this;
@@ -61,14 +61,14 @@ abstract class AbstractFormElementContainer {
    *
    * @return $this
    */
-  public function addElement(FormElementInterface $element): self {
+  public function addElement(FormElementInterface $element): static {
     $this->elements[] = $element;
 
     return $this;
   }
 
   /**
-   * @phpstan-return array<T>
+   * @phpstan-return list<T>
    */
   public function getElements(): array {
     return $this->elements;
@@ -83,16 +83,16 @@ abstract class AbstractFormElementContainer {
    *
    * @return $this
    */
-  public function insertElement(FormElementInterface $element, int $index): self {
+  public function insertElement(FormElementInterface $element, int $index): static {
     array_splice($this->elements, $index, 0, [$element]);
 
     return $this;
   }
 
   /**
-   * @phpstan-param array<T> $elements
+   * @phpstan-param list<T> $elements
    */
-  public function setElements(array $elements): self {
+  public function setElements(array $elements): static {
     $this->elements = $elements;
 
     return $this;
@@ -126,7 +126,7 @@ abstract class AbstractFormElementContainer {
   }
 
   /**
-   * @phpstan-return array<string, array<SubmitButton>>
+   * @phpstan-return array<string, list<SubmitButton>>
    *   Mapping of button name to buttons with that name.
    */
   public function getSubmitButtons(): array {

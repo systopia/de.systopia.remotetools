@@ -49,7 +49,7 @@ class FormElementContainer extends AbstractFormElementContainer implements FormE
     return $this->collapsible;
   }
 
-  public function setCollapsible(bool $collapsible): self {
+  public function setCollapsible(bool $collapsible): static {
     $this->collapsible = $collapsible;
 
     return $this;
@@ -59,7 +59,7 @@ class FormElementContainer extends AbstractFormElementContainer implements FormE
     return $this->description;
   }
 
-  public function setDescription(?string $description): self {
+  public function setDescription(?string $description): static {
     $this->description = $description;
 
     return $this;
