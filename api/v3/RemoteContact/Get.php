@@ -13,7 +13,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-require_once 'remotetools.civix.php';
+declare(strict_types = 1);
+
 use CRM_Remotetools_ExtensionUtil as E;
 use Civi\RemoteContact\RemoteContactGetRequest;
 
@@ -27,18 +28,18 @@ use Civi\RemoteContact\RemoteContactGetRequest;
  * @return array
  *   API3 response
  */
-function civicrm_api3_remote_contact_get($params)
-{
-    unset($params['check_permissions']);
+function civicrm_api3_remote_contact_get($params) {
+  unset($params['check_permissions']);
 
-    // create Symfony execution event
-    $request = new RemoteContactGetRequest($params);
+  // create Symfony execution event
+  $request = new RemoteContactGetRequest($params);
 
-    Civi::dispatcher()->dispatch('civi.remotecontact.get', $request);
+  Civi::dispatcher()->dispatch('civi.remotecontact.get', $request);
 
-    if ($request->hasErrors()) {
-        return $request->createAPI3Error();
-    } else {
-        return $request->createAPI3Success('RemoteContact', 'get');
-    }
+  if ($request->hasErrors()) {
+    return $request->createAPI3Error();
+  }
+  else {
+    return $request->createAPI3Success('RemoteContact', 'get');
+  }
 }

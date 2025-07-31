@@ -13,14 +13,19 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-/*
+declare(strict_types = 1);
+
+/**
+ *
  * Will use the ID tracker to match the field 'external_identifier'
+ *
  */
 class CRM_Xcm_Matcher_IdTrackerRemoteIdMatcher extends CRM_Xcm_Matcher_IdTrackerMatcher {
 
-  const MATCHER_TYPE = 'remote_contact';
+  public const MATCHER_TYPE = 'remote_contact';
 
-  function __construct() {
+  public function __construct() {
     parent::__construct(self::MATCHER_TYPE, ['remote_contact_id']);
   }
+
 }
