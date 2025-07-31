@@ -13,7 +13,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
-require_once 'remotetools.civix.php';
+declare(strict_types = 1);
+
 use CRM_Remotetools_ExtensionUtil as E;
 use Civi\RemoteContact\RemoteContactGetRequest;
 
@@ -27,58 +28,61 @@ use Civi\RemoteContact\RemoteContactGetRequest;
  * @return array
  *   API3 response
  */
-function civicrm_api3_remote_contact_get_self($params)
-{
-    unset($params['check_permissions']);
+function civicrm_api3_remote_contact_get_self($params) {
+  unset($params['check_permissions']);
 
-    // create Symfony execution event
-    $request = new RemoteContactGetRequest($params);
-    $request->setSelfRequest(true);
+  // create Symfony execution event
+  $request = new RemoteContactGetRequest($params);
+  $request->setSelfRequest(TRUE);
 
-    // identify contact
-    if (empty($params['remote_contact_id'])) {
-        $request->addError(E::ts("A remote_contact_id needs to be given"));
-    } else {
-        $contact_id = CRM_Remotetools_Contact::getByKey($params['remote_contact_id']);
-        if (empty($contact_id)) {
-            $request->addError(E::ts("A contact with this remote_contact_id is not registered."));
-        } else {
-            // set contact ID to query
-            $request_data = &$request->getRequest();
-            $request_data['id'] = $contact_id;
-        }
+  // identify contact
+  if (empty($params['remote_contact_id'])) {
+    $request->addError(E::ts('A remote_contact_id needs to be given'));
+  }
+  else {
+    $contact_id = CRM_Remotetools_Contact::getByKey($params['remote_contact_id']);
+    if (empty($contact_id)) {
+      $request->addError(E::ts('A contact with this remote_contact_id is not registered.'));
     }
-
-    // check if the profile allows for get_self actions
-    $profile = $request->getProfile();
-    if ($profile) {
-        if (!$profile->isOwnDataProfile($request)) {
-            $request->addError(E::ts("Profile '%1' cannot be used for the RemoteContact.get_self action."));
-        }
+    else {
+      // set contact ID to query
+      $request_data = &$request->getRequest();
+      $request_data['id'] = $contact_id;
     }
+  }
 
-    Civi::dispatcher()->dispatch('civi.remotecontact.get', $request);
-
-    // prepare data for getsingle-style result
-    $contact_data = reset($request->getReply()['values']);
-    if (empty($contact_data)) {
-        $request->addError(E::ts("Your own contact could not be identified"));
-
-    } else {
-        // reformat data as getsingle-style result
-        $reply_data = &$request->getReply();
-        foreach ($contact_data as $key => $value) {
-            $reply_data[$key] = $value;
-        }
-        $reply_data['values'] = [];
-        unset($reply_data['count']);
-        unset($reply_data['id']);
+  // check if the profile allows for get_self actions
+  $profile = $request->getProfile();
+  if ($profile) {
+    if (!$profile->isOwnDataProfile($request)) {
+      $request->addError(E::ts("Profile '%1' cannot be used for the RemoteContact.get_self action."));
     }
+  }
 
-    if ($request->hasErrors()) {
-        return $request->createAPI3Error();
-    } else {
-        // extract the only contact
-        return $request->createAPI3Success('RemoteContact', 'get_self', $reply_data);
+  Civi::dispatcher()->dispatch('civi.remotecontact.get', $request);
+
+  // prepare data for getsingle-style result
+  $contact_data = reset($request->getReply()['values']);
+  if (empty($contact_data)) {
+    $request->addError(E::ts('Your own contact could not be identified'));
+
+  }
+  else {
+    // reformat data as getsingle-style result
+    $reply_data = &$request->getReply();
+    foreach ($contact_data as $key => $value) {
+      $reply_data[$key] = $value;
     }
+    $reply_data['values'] = [];
+    unset($reply_data['count']);
+    unset($reply_data['id']);
+  }
+
+  if ($request->hasErrors()) {
+    return $request->createAPI3Error();
+  }
+  else {
+    // extract the only contact
+    return $request->createAPI3Success('RemoteContact', 'get_self', $reply_data);
+  }
 }

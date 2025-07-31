@@ -127,4 +127,3 @@ function cv(string $cmd, string $decode = 'json') {
       throw new \RuntimeException("Bad decoder format ($decode)");
   }
 }
-

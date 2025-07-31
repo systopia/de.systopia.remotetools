@@ -13,74 +13,74 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * RemoteTools configuration page
  */
-class CRM_Remotetools_Form_Settings extends CRM_Core_Form
-{
-    public function buildQuickForm()
-    {
-        $this->setTitle(E::ts("RemoteTools Configuration"));
+class CRM_Remotetools_Form_Settings extends CRM_Core_Form {
 
-        // add form elements
-        $this->add(
-            'checkbox',
-            'remotecontact_matching_enabled',
-            E::ts("Remote Contact Matching Enabled")
-        );
-        $this->add(
-            'checkbox',
-            'remotecontact_matching_creates_contacts_enabled',
-            E::ts("Remote Contact Matching Creates New Contacts")
-        );
-        $this->add(
-            'select',
-            'remotecontact_matching_profile',
-            E::ts("Remote Contact Matching Profile"),
-            CRM_Xcm_Configuration::getProfileList()
-        );
+  public function buildQuickForm() {
+    $this->setTitle(E::ts('RemoteTools Configuration'));
 
+    // add form elements
+    $this->add(
+        'checkbox',
+        'remotecontact_matching_enabled',
+        E::ts('Remote Contact Matching Enabled')
+    );
+    $this->add(
+        'checkbox',
+        'remotecontact_matching_creates_contacts_enabled',
+        E::ts('Remote Contact Matching Creates New Contacts')
+    );
+    $this->add(
+        'select',
+        'remotecontact_matching_profile',
+        E::ts('Remote Contact Matching Profile'),
+        CRM_Xcm_Configuration::getProfileList()
+    );
 
-        $this->addButtons(
+    $this->addButtons(
+        [
             [
-                [
-                    'type'      => 'submit',
-                    'name'      => E::ts('Save'),
-                    'isDefault' => true,
-                ],
-            ]
-        );
+              'type'      => 'submit',
+              'name'      => E::ts('Save'),
+              'isDefault' => TRUE,
+            ],
+        ]
+    );
 
-        // set defaults
-        $this->setDefaults(
-            [
-                'remotecontact_matching_enabled' => Civi::settings()->get(
-                    'remotecontact_matching_enabled'
-                ),
-                'remotecontact_matching_creates_contacts_enabled' => Civi::settings()->get(
-                    'remotecontact_matching_creates_contacts_enabled'
-                ),
-                'remotecontact_matching_profile' => Civi::settings()->get(
-                    'remotecontact_matching_profile'
-                ),
-            ]
-        );
-        parent::buildQuickForm();
-    }
+    // set defaults
+    $this->setDefaults(
+        [
+          'remotecontact_matching_enabled' => Civi::settings()->get(
+                'remotecontact_matching_enabled'
+          ),
+          'remotecontact_matching_creates_contacts_enabled' => Civi::settings()->get(
+                'remotecontact_matching_creates_contacts_enabled'
+          ),
+          'remotecontact_matching_profile' => Civi::settings()->get(
+                'remotecontact_matching_profile'
+          ),
+        ]
+    );
+    parent::buildQuickForm();
+  }
 
-    public function postProcess()
-    {
-        // store values
-        $values  = $this->exportValues();
-        Civi::settings()->set('remotecontact_matching_enabled',
-                              CRM_Utils_Array::value('remotecontact_matching_enabled', $values, 0));
-        Civi::settings()->set('remotecontact_matching_creates_contacts_enabled',
-                              CRM_Utils_Array::value('remotecontact_matching_creates_contacts_enabled', $values, 0));
-        Civi::settings()->set('remotecontact_matching_profile',
-                              CRM_Utils_Array::value('remotecontact_matching_profile', $values, ''));
-        CRM_Core_Session::setStatus(E::ts("CiviRemote Configuration Updated"));
-        parent::postProcess();
-    }
+  public function postProcess() {
+    // store values
+    $values = $this->exportValues();
+    Civi::settings()->set('remotecontact_matching_enabled',
+                          CRM_Utils_Array::value('remotecontact_matching_enabled', $values, 0));
+    Civi::settings()->set('remotecontact_matching_creates_contacts_enabled',
+                          CRM_Utils_Array::value('remotecontact_matching_creates_contacts_enabled', $values, 0));
+    Civi::settings()->set('remotecontact_matching_profile',
+                          CRM_Utils_Array::value('remotecontact_matching_profile', $values, ''));
+    CRM_Core_Session::setStatus(E::ts('CiviRemote Configuration Updated'));
+    parent::postProcess();
+  }
+
 }
