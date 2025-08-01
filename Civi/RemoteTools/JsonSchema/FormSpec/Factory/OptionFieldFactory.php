@@ -21,14 +21,17 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\AbstractOptionField;
-use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\Util\JsonSchemaUtil;
 use Webmozart\Assert\Assert;
 
 final class OptionFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema {
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
     Assert::isInstanceOf($field, AbstractOptionField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\AbstractOptionField $field */
     $keywords = [

@@ -23,22 +23,22 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 
 /**
- * @extends AbstractFormField<list<array<string, scalar>>>
+ * This field type provides the possibility to enter multiple values of the same
+ * type defined by the item field. The name of the item field has no influence.
+ *
+ * @extends AbstractFormField<list<scalar|array<int|string, mixed>>>
  *
  * @codeCoverageIgnore
  *
  * @api
  */
-final class ArrayField extends AbstractFormField {
+final class FieldListField extends AbstractFormField {
 
   public const LAYOUT_VERTICAL = 'VerticalLayout';
 
   public const LAYOUT_TABLE_ROW = 'TableRow';
 
-  /**
-   * @var list<\Civi\RemoteTools\Form\FormSpec\AbstractFormField>
-   */
-  private array $fields;
+  private AbstractFormField $itemField;
 
   private string $itemLayout = self::LAYOUT_TABLE_ROW;
 
@@ -52,16 +52,15 @@ final class ArrayField extends AbstractFormField {
    */
   private ?int $minItems = NULL;
 
+  private bool $uniqueItems = FALSE;
+
   private ?string $addButtonLabel = NULL;
 
   private ?string $removeButtonLabel = NULL;
 
-  /**
-   * @param list<\Civi\RemoteTools\Form\FormSpec\AbstractFormField> $fields
-   */
-  public function __construct(string $name, string $label, array $fields) {
+  public function __construct(string $name, string $label, AbstractFormField $itemField) {
     parent::__construct($name, $label);
-    $this->fields = $fields;
+    $this->itemField = $itemField;
   }
 
   public function getDataType(): string {
@@ -69,33 +68,15 @@ final class ArrayField extends AbstractFormField {
   }
 
   public function getInputType(): string {
-    return 'array';
+    return 'fieldList';
   }
 
-  public function addField(AbstractFormField $field): static {
-    $this->fields[] = $field;
-
-    return $this;
+  public function getItemField(): AbstractFormField {
+    return $this->itemField;
   }
 
-  /**
-   * @return list<\Civi\RemoteTools\Form\FormSpec\AbstractFormField>
-   */
-  public function getFields(): array {
-    return $this->fields;
-  }
-
-  public function insertField(AbstractFormField $field, int $index): static {
-    array_splice($this->fields, $index, 0, [$field]);
-
-    return $this;
-  }
-
-  /**
-   * @param list<\Civi\RemoteTools\Form\FormSpec\AbstractFormField> $fields
-   */
-  public function setFields(array $fields): static {
-    $this->fields = $fields;
+  public function setItemField(AbstractFormField $itemField): self {
+    $this->itemField = $itemField;
 
     return $this;
   }
@@ -135,6 +116,24 @@ final class ArrayField extends AbstractFormField {
    */
   public function setMinItems(?int $minItems): static {
     $this->minItems = $minItems;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   *   If TRUE each item must be unique.
+   */
+  public function isUniqueItems(): bool {
+    return $this->uniqueItems;
+  }
+
+  /**
+   * @param bool $uniqueItems
+   *   If TRUE each item must be unique.
+   */
+  public function setUniqueItems(bool $uniqueItems): self {
+    $this->uniqueItems = $uniqueItems;
 
     return $this;
   }

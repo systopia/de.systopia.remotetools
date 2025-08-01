@@ -21,26 +21,30 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory\Control;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormInput;
-use Civi\RemoteTools\Form\FormSpec\Field\ArrayField;
+use Civi\RemoteTools\Form\FormSpec\Field\FieldListField;
 use Civi\RemoteTools\JsonForms\Control\JsonFormsArray;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
-use Civi\RemoteTools\JsonForms\JsonFormsControl;
 use Civi\RemoteTools\JsonForms\JsonFormsElement;
+use Civi\RemoteTools\JsonForms\JsonFormsLayout;
 use Webmozart\Assert\Assert;
 
-final class ArrayControlFactory extends AbstractControlFactory {
+final class FieldListControlFactory extends AbstractControlFactory {
 
   protected function createInputSchema(
     AbstractFormInput $input,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
-    Assert::isInstanceOf($input, ArrayField::class);
+    Assert::isInstanceOf($input, FieldListField::class);
 
-    $elements = [];
-    foreach ($input->getFields() as $itemField) {
-      $elements[] = $factory->createSchema($itemField);
+    $element = $factory->createSchema($input->getItemField());
+    if ($element instanceof JsonFormsLayout
+      && ('TableRow' === $input->getItemLayout() || !$this->hasLabelOrDescription($element))
+    ) {
+      $elements = $element->getElements();
     }
-    Assert::allIsInstanceOf($elements, JsonFormsControl::class);
+    else {
+      $elements = [$element];
+    }
 
     $options = ['itemLayout' => $input->getItemLayout()];
     if (NULL !== $input->getAddButtonLabel()) {
@@ -60,7 +64,12 @@ final class ArrayControlFactory extends AbstractControlFactory {
   }
 
   protected function supportsInput(AbstractFormInput $input): bool {
-    return $input instanceof ArrayField;
+    return $input instanceof FieldListField;
+  }
+
+  private function hasLabelOrDescription(JsonFormsLayout $layout): bool {
+    return '' !== $layout->getKeywordValueOrDefault('label', '')
+      || '' !== $layout->getKeywordValueOrDefault('description', '');
   }
 
 }

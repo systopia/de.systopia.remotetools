@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\FileField;
-use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaFile;
 use Webmozart\Assert\Assert;
@@ -32,7 +32,10 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
     return IntegerFieldFactory::getPriority() + 1;
   }
 
-  protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema {
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
     Assert::isInstanceOf($field, FileField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\FileField $field */
 
