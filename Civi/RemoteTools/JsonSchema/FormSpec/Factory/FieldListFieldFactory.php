@@ -21,16 +21,18 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
-use Civi\RemoteTools\Form\FormSpec\Field\ArrayField;
-use Civi\RemoteTools\Form\FormSpec\FormSpec;
-use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\Form\FormSpec\Field\FieldListField;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaArray;
 
-final class ArrayFieldFactory extends AbstractFieldJsonSchemaFactory {
+final class FieldListFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema {
-    assert($field instanceof ArrayField);
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
+    assert($field instanceof FieldListField);
 
     $keywords = [];
     if ($field->hasDefaultValue()) {
@@ -42,10 +44,14 @@ final class ArrayFieldFactory extends AbstractFieldJsonSchemaFactory {
       }
       $keywords['default'] = $default;
     }
+
     if ($field->isReadOnly()) {
+      $field->getItemField()->setReadOnly(TRUE);
       $keywords['readOnly'] = TRUE;
       $keywords['const'] = $default ?? NULL;
     }
+
+    $keywords['uniqueItems'] = $field->isUniqueItems();
     if (NULL !== $field->getMinItems()) {
       $keywords['minItems'] = $field->getMinItems();
     }
@@ -53,13 +59,13 @@ final class ArrayFieldFactory extends AbstractFieldJsonSchemaFactory {
       $keywords['maxItems'] = $field->getMaxItems();
     }
 
-    $items = $factory->createJsonSchema(new FormSpec('', $field->getFields()));
+    $items = $factory->createSchema($field->getItemField());
 
     return new JsonSchemaArray($items, $keywords, $field->isNullable());
   }
 
   public function supportsField(AbstractFormField $field): bool {
-    return $field instanceof ArrayField;
+    return $field instanceof FieldListField;
   }
 
 }

@@ -22,7 +22,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\AbstractNumberField;
 use Civi\RemoteTools\Form\FormSpec\Field\FloatField;
-use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaNumber;
 
@@ -32,7 +32,10 @@ final class NumberFieldFactory extends AbstractFieldJsonSchemaFactory {
     return -1;
   }
 
-  protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema {
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
     $keywords = [];
     assert(is_float($field->getDefaultValue()) || is_int($field->getDefaultValue())
       || NULL === $field->getDefaultValue());

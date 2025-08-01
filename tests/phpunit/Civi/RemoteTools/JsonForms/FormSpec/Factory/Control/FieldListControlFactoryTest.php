@@ -20,28 +20,30 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonForms\FormSpec\Factory\Control;
 
-use Civi\RemoteTools\Form\FormSpec\Field\ArrayField;
+use Civi\RemoteTools\Form\FormSpec\Field\FieldCollectionField;
+use Civi\RemoteTools\Form\FormSpec\Field\FieldListField;
 use Civi\RemoteTools\Form\FormSpec\Field\IntegerField;
 use Civi\RemoteTools\JsonForms\Control\JsonFormsArray;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\JsonFormsControl;
+use Civi\RemoteTools\JsonForms\Layout\JsonFormsGroup;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Civi\RemoteTools\JsonForms\FormSpec\Factory\Control\ArrayControlFactory
+ * @covers \Civi\RemoteTools\JsonForms\FormSpec\Factory\Control\FieldListControlFactory
  */
-final class ArrayControlFactoryTest extends TestCase {
+final class FieldListControlFactoryTest extends TestCase {
 
-  private ArrayControlFactory $factory;
+  private FieldListControlFactory $factory;
 
   protected function setUp(): void {
     parent::setUp();
-    $this->factory = new ArrayControlFactory();
+    $this->factory = new FieldListControlFactory();
   }
 
   public function testCreateSchema(): void {
-    $itemField = new IntegerField('integer', 'Integer');
-    $field = new ArrayField('test', 'Test', [$itemField]);
+    $itemField = new IntegerField('', 'Integer');
+    $field = new FieldListField('test', 'Test', $itemField);
     $itemFieldControl = new JsonFormsControl('#/properties/integer', 'Integer');
 
     $uiSchemaFactory = $this->createMock(ElementUiSchemaFactoryInterface::class);
@@ -56,9 +58,8 @@ final class ArrayControlFactoryTest extends TestCase {
   }
 
   public function testCreateSchemaWithOptions(): void {
-    $itemField = new IntegerField('integer', 'Integer');
-    $field = (new ArrayField('test', 'Test', []))
-      ->insertField($itemField, 0)
+    $itemField = new IntegerField('', 'Integer');
+    $field = (new FieldListField('test', 'Test', $itemField))
       ->setDescription('Description')
       ->setItemLayout('VerticalLayout')
       ->setAddButtonLabel('Add')
@@ -86,9 +87,47 @@ final class ArrayControlFactoryTest extends TestCase {
     );
   }
 
+  public function testCreateWithFieldCollectionField(): void {
+    $itemField = new FieldCollectionField('', 'Collection');
+    $field = new FieldListField('test', 'Test', $itemField);
+    $control = new JsonFormsControl('#/properties/abc', 'Abc');
+    $itemFieldElement = new JsonFormsGroup('Collection', [$control]);
+
+    $uiSchemaFactory = $this->createMock(ElementUiSchemaFactoryInterface::class);
+    $uiSchemaFactory->expects(static::once())->method('createSchema')
+      ->with($itemField)
+      ->willReturn($itemFieldElement);
+
+    // With "TableRow" the elements of the group are used as element of the array control.
+    static::assertEquals(
+      new JsonFormsArray('#/properties/test', 'Test', '', [$control], ['itemLayout' => 'TableRow']),
+      $this->factory->createSchema($field, $uiSchemaFactory)
+    );
+  }
+
+  public function testCreateWithVerticalLayoutAndFieldCollectionField(): void {
+    $itemField = new FieldCollectionField('', 'Collection');
+    $field = (new FieldListField('test', 'Test', $itemField))
+      ->setItemLayout(FieldListField::LAYOUT_VERTICAL);
+    $control = new JsonFormsControl('#/properties/abc', 'Abc');
+    $itemFieldElement = new JsonFormsGroup('Collection', [$control]);
+
+    $uiSchemaFactory = $this->createMock(ElementUiSchemaFactoryInterface::class);
+    $uiSchemaFactory->expects(static::once())->method('createSchema')
+      ->with($itemField)
+      ->willReturn($itemFieldElement);
+
+    // With "VerticalLayout" the group itself is used as element of the array control, if it has label or description.
+    static::assertEquals(
+      new JsonFormsArray('#/properties/test', 'Test', '', [$itemFieldElement], ['itemLayout' => 'VerticalLayout']),
+      $this->factory->createSchema($field, $uiSchemaFactory)
+    );
+  }
+
   public function testSupportsElement(): void {
-    static::assertTrue($this->factory->supportsElement(new ArrayField('test', 'Test', [])));
-    static::assertFalse($this->factory->supportsElement(new IntegerField('test', 'Test')));
+    $integerField = new IntegerField('test', 'Test');
+    static::assertTrue($this->factory->supportsElement(new FieldListField('test', 'Test', $integerField)));
+    static::assertFalse($this->factory->supportsElement($integerField));
   }
 
 }

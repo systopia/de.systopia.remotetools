@@ -21,7 +21,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\AbstractTextField;
-use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaString;
 use Webmozart\Assert\Assert;
@@ -32,7 +32,10 @@ final class StringFieldFactory extends AbstractFieldJsonSchemaFactory {
     return -1;
   }
 
-  protected function doCreateSchema(AbstractFormField $field, JsonSchemaFactoryInterface $factory): JsonSchema {
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
     $keywords = [];
     Assert::nullOrString($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
