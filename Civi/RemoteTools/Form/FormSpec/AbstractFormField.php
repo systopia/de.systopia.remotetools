@@ -28,6 +28,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
  */
 abstract class AbstractFormField extends AbstractFormInput {
 
+  private bool $hidden = FALSE;
+
   private bool $required = FALSE;
 
   private bool $readOnly = FALSE;
@@ -43,6 +45,16 @@ abstract class AbstractFormField extends AbstractFormInput {
 
   public function getType(): string {
     return 'field';
+  }
+
+  public function isHidden(): bool {
+    return $this->hidden;
+  }
+
+  public function setHidden(bool $hidden): static {
+    $this->hidden = $hidden;
+
+    return $this;
   }
 
   public function isRequired(): bool {
