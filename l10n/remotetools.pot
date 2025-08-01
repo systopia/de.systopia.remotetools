@@ -1,0 +1,208 @@
+#: CRM/Remotetools/Contact.php
+msgid "Couldn't identify contact"
+msgstr ""
+
+#: CRM/Remotetools/Contact.php
+msgid "Contact not found/doesn't exist, and contact creation is disabled. Sorry."
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "CiviRemote Configuration"
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "Remote Contact Matching Enabled"
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "Remote Contact Matching Creates New Contacts"
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "Remote Contact Matching Profile"
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "Save"
+msgstr ""
+
+#: CRM/Remotetools/Form/Settings.php
+msgid "CiviRemote Configuration Updated"
+msgstr ""
+
+#: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+msgid "[Example] first and last name"
+msgstr ""
+
+#: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
+msgid "CiviCRM ID"
+msgstr ""
+
+#: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php api/v3/RemoteContact/Match.php
+msgid "First Name"
+msgstr ""
+
+#: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php api/v3/RemoteContact/Match.php
+msgid "Last Name"
+msgstr ""
+
+#: CRM/Remotetools/SecureToken.php
+msgid "Couldn't generate token, related contact might be deleted or has no proper hash"
+msgstr ""
+
+#: CRM/Remotetools/Upgrader.php
+msgid "Used by CiviRemote to map CiviCRM contacts to remote users or contacts."
+msgstr ""
+
+#: CRM/Remotetools/Upgrader.php
+msgid "Remote Contact"
+msgstr ""
+
+#: CRM/Remotetools/Upgrader.php
+msgid "Multiple identity types 'remote_contact' contact exist in IdentityTracker's types! Please fix!"
+msgstr ""
+
+#: CRM/Remotetools/Upgrader.php
+msgid "Warning"
+msgstr ""
+
+#: Civi/RemoteContact/GetFieldsEvent.php
+msgid "The profile could not be determined."
+msgstr ""
+
+#: Civi/RemoteContact/RemoteContactGetRequest.php
+msgid "Data profile not found"
+msgstr ""
+
+#: Civi/RemoteTools/ActionHandler/AbstractProfileEntityActionsHandler.php
+msgid "Permission to create entity is missing"
+msgstr ""
+
+#: Civi/RemoteTools/ActionHandler/AbstractProfileEntityActionsHandler.php
+msgid "Permission to update entity is missing"
+msgstr ""
+
+#: Civi/RemoteTools/EntityProfile/AbstractRemoteEntityProfile.php
+msgid "Saved successfully"
+msgstr ""
+
+#: Civi/RemoteTools/EntityProfile/EntityProfilePermissionDecorator.php
+msgid "Is Deletion Allowed"
+msgstr ""
+
+#: Civi/RemoteTools/EntityProfile/EntityProfilePermissionDecorator.php
+msgid "Is remote contact allowed to delete the record."
+msgstr ""
+
+#: Civi/RemoteTools/EntityProfile/EntityProfilePermissionDecorator.php
+msgid "Is Update Allowed"
+msgstr ""
+
+#: Civi/RemoteTools/EntityProfile/EntityProfilePermissionDecorator.php
+msgid "Is remote contact allowed to update the record."
+msgstr ""
+
+#: Civi/RemoteTools/Form/Validation/ValidationResult.php
+msgid "Validation failed: %1"
+msgstr ""
+
+#: Civi/RemoteTools/JsonSchema/JsonSchemaFile.php
+msgid "The file must not be larger than %1."
+msgstr ""
+
+#: api/v3/RemoteContact/GetRoles.php api/v3/RemoteContact/Update.php
+msgid "Remote Contact ID"
+msgstr ""
+
+#: api/v3/RemoteContact/GetRoles.php api/v3/RemoteContact/Getfields.php api/v3/RemoteContact/Update.php
+msgid "Use the key that you were given by RemoteContact.match to access this contact's roles"
+msgstr ""
+
+#: api/v3/RemoteContact/GetRoles.php api/v3/RemoteContact/Update.php
+msgid "A contact with this key is not registered."
+msgstr ""
+
+#: api/v3/RemoteContact/GetSelf.php
+msgid "A remote_contact_id needs to be given"
+msgstr ""
+
+#: api/v3/RemoteContact/GetSelf.php
+msgid "A contact with this remote_contact_id is not registered."
+msgstr ""
+
+#: api/v3/RemoteContact/GetSelf.php
+msgid "Profile '%1' cannot be used for the RemoteContact.get_self action."
+msgstr ""
+
+#: api/v3/RemoteContact/GetSelf.php
+msgid "Your own contact could not be identified"
+msgstr ""
+
+#: api/v3/RemoteContact/Getfields.php
+msgid "Remote Contact Identification"
+msgstr ""
+
+#: api/v3/RemoteContact/Getfields.php
+msgid "Remote Contact Data Profile"
+msgstr ""
+
+#: api/v3/RemoteContact/Getfields.php
+msgid "Defines the data you will be receiving. If omitted, the system will try to assign a profile."
+msgstr ""
+
+#: api/v3/RemoteContact/Match.php
+msgid "Key Prefix (optional)"
+msgstr ""
+
+#: api/v3/RemoteContact/Match.php
+msgid "You can use a prefix to be added to the generated ID, so you can later identify where the ID came from. The value (up to eight chars) may contain: A-Z, 0-9, _-#"
+msgstr ""
+
+#: api/v3/RemoteContact/Match.php
+msgid "Contact Type"
+msgstr ""
+
+#: api/v3/RemoteContact/Match.php
+msgid "Email"
+msgstr ""
+
+#: api/v3/RemoteContact/Match.php
+msgid "Phone"
+msgstr ""
+
+#: managed/Navigation_civi_remote_settings.mgd.php
+msgid "CiviRemote"
+msgstr ""
+
+#: remotetools.php
+msgid "CiviRemote: Match and link contacts"
+msgstr ""
+
+#: remotetools.php
+msgid "Match and link contacts via remote contact ID."
+msgstr ""
+
+#: remotetools.php
+msgid "CiviRemote: Retrieve contacts"
+msgstr ""
+
+#: remotetools.php
+msgid "Retrieve information of remote contacts."
+msgstr ""
+
+#: remotetools.php
+msgid "CiviRemote: Retrieve own contact"
+msgstr ""
+
+#: remotetools.php
+msgid "Retrieve information of requesting remote contact."
+msgstr ""
+
+#: remotetools.php
+msgid "CiviRemote: Update contacts"
+msgstr ""
+
+#: remotetools.php
+msgid "Update information of remote contacts."
+msgstr ""
+

@@ -36,6 +36,7 @@
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
     <mixin>smarty-v2@1.0.1</mixin>
+    <mixin>mgd-php@1.0.0</mixin>
   </mixins>
   <upgrader>CRM_Remotetools_Upgrader</upgrader>
 </extension>

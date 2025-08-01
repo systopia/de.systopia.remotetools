@@ -116,7 +116,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
                 [
                   'name' => 'id',
                   'type' => CRM_Utils_Type::T_INT,
-                  'title' => E::ts('Contact ID'),
+                  'title' => 'Contact ID',
                   'localizable' => 0,
                   'api.filter' => 1,
                   'api.sort' => 1,
@@ -128,7 +128,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
                 [
                   'name' => 'contact_multi_test1',
                   'type' => CRM_Utils_Type::T_ENUM,
-                  'title' => E::ts('Type'),
+                  'title' => 'Type',
                   'options' => CRM_Remotetools_DataTools::getOptions('test_number_list'),
                   'localizable' => 0,
                   'serialize' => 1,
@@ -142,7 +142,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
                 [
                   'name' => 'contact_multi_test2',
                   'type' => CRM_Utils_Type::T_ENUM,
-                  'title' => E::ts('Type'),
+                  'title' => 'Type',
                   'options' => CRM_Remotetools_DataTools::getOptions('test_number_list'),
                   'localizable' => 0,
                   'serialize' => 1,

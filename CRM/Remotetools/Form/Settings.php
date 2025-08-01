@@ -18,12 +18,12 @@ declare(strict_types = 1);
 use CRM_Remotetools_ExtensionUtil as E;
 
 /**
- * RemoteTools configuration page
+ * CiviRemote configuration page
  */
 class CRM_Remotetools_Form_Settings extends CRM_Core_Form {
 
   public function buildQuickForm() {
-    $this->setTitle(E::ts('RemoteTools Configuration'));
+    $this->setTitle(E::ts('CiviRemote Configuration'));
 
     // add form elements
     $this->add(

@@ -51,9 +51,7 @@ class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base {
           'option_group_id' => 'contact_id_history_type',
           'value'           => 'remote_contact',
           'is_reserved'     => 1,
-          'description'     => E::ts(
-                'Used by the RemoteTools extension to map CiviCRM contacts to remote users oder contacts.'
-          ),
+          'description'     => E::ts('Used by CiviRemote to map CiviCRM contacts to remote users or contacts.'),
           'name'            => 'remote_contact',
           'label'           => E::ts('Remote Contact'),
         ]

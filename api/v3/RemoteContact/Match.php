@@ -29,7 +29,7 @@ function _civicrm_api3_remote_contact_match_spec(&$spec) {
     'api.required' => 0,
     'title'        => E::ts('Key Prefix (optional)'),
     // phpcs:disable Generic.Files.LineLength.TooLong
-    'description'  => E::ts('You can use a prefix to be added to the generated ID, so you can later identify where the ID came from. The value (up to 8 chars) can be A-Z, 0-9, _-#'),
+    'description'  => E::ts('You can use a prefix to be added to the generated ID, so you can later identify where the ID came from. The value (up to eight chars) may contain: A-Z, 0-9, _-#'),
     // phpcs:enable
   ];
   $spec['contact_type'] = [
