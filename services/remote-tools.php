@@ -42,8 +42,12 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityDeleterInterface;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoader;
 use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EventSubscriber\RemoteRequestInitSubscriber;
+use Civi\RemoteTools\Form\FormSpec\FormFieldFactory;
+use Civi\RemoteTools\Form\FormSpec\FormFieldFactoryInterface;
 use Civi\RemoteTools\Helper\FilePersister;
 use Civi\RemoteTools\Helper\FilePersisterInterface;
+use Civi\RemoteTools\Helper\FileUrlGenerator;
+use Civi\RemoteTools\Helper\FileUrlGeneratorInterface;
 use Civi\RemoteTools\Helper\SelectFactory;
 use Civi\RemoteTools\Helper\SelectFactoryInterface;
 use Civi\RemoteTools\Helper\WhereFactory;
@@ -81,6 +85,9 @@ $container->autowire(RequestContextInterface::class, RequestContext::class)
 
 $container->autowire(TransactionFactory::class);
 $container->autowire(FilePersisterInterface::class, FilePersister::class);
+$container->autowire(FileUrlGeneratorInterface::class, FileUrlGenerator::class);
+
+$container->autowire(FormFieldFactoryInterface::class, FormFieldFactory::class);
 
 $container->autowire(ActionHandlerProviderInterface::class, ActionHandlerProviderCollection::class)
   ->addArgument(new TaggedIteratorArgument(ActionHandlerProviderInterface::SERVICE_TAG));
