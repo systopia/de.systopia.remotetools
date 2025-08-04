@@ -1,10 +1,11 @@
 <?php
 /*
- * Copyright (C) 2024 SYSTOPIA GmbH
+ * Copyright (C) 2025 SYSTOPIA GmbH
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as published by
- *  the Free Software Foundation in version 3.
+ *  This program is free software: you can redistribute it and/or modify it under
+ *  the terms of the GNU Affero General Public License as published by the Free
+ *  Software Foundation, either version 3 of the License, or (at your option) any
+ *  later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,13 +23,9 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 
-interface FieldJsonSchemaFactoryInterface {
+interface RootFieldJsonSchemaFactoryInterface {
 
-  public const SERVICE_TAG = 'remote_tools.json_schema.form_spec.field_factory';
-
-  public static function getPriority(): int;
-
-  public function createSchema(AbstractFormField $field, RootFieldJsonSchemaFactoryInterface $factory): JsonSchema;
+  public function createSchema(AbstractFormField $field): JsonSchema;
 
   public function supportsField(AbstractFormField $field): bool;
 

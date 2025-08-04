@@ -29,6 +29,8 @@ use Civi\RemoteTools\JsonForms\FormSpec\UiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\FieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactory;
 use Civi\RemoteTools\JsonSchema\FormSpec\JsonSchemaFactoryInterface;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactory;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\Validation\OpisValidatorFactory;
 use Civi\RemoteTools\JsonSchema\Validation\Translation\CiviValidationTranslator;
 use Civi\RemoteTools\JsonSchema\Validation\Validator;
@@ -42,7 +44,7 @@ $container->autowire(ValidatorInterface::class, Validator::class);
 
 $container->autowire(TranslatorInterface::class, CiviValidationTranslator::class);
 
-$container->autowire(JsonSchemaFactoryInterface::class, JsonSchemaFactory::class)
+$container->autowire(RootFieldJsonSchemaFactoryInterface::class, RootFieldJsonSchemaFactory::class)
   ->addArgument(new TaggedIteratorArgument(
     FieldJsonSchemaFactoryInterface::SERVICE_TAG,
     NULL,
@@ -50,6 +52,8 @@ $container->autowire(JsonSchemaFactoryInterface::class, JsonSchemaFactory::class
     FALSE,
     'getPriority'
   ));
+
+$container->autowire(JsonSchemaFactoryInterface::class, JsonSchemaFactory::class);
 
 ServiceRegistrator::autowireAllImplementing(
   $container,

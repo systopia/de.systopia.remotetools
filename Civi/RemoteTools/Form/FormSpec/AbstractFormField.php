@@ -20,7 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 /**
- * @template T of scalar
+ * @template T of scalar|array<int|string, mixed> JSON serializable.
  *
  * @codeCoverageIgnore
  *
