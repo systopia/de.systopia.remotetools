@@ -18,6 +18,7 @@
   <version>1.1.0-dev</version>
   <develStage>dev</develStage>
   <compatibility>
+    <!-- When increased to 6.1, see todo in \Civi\RemoteTools\Helper\FileUrlGeneratorInterface -->
     <ver>5.57</ver>
   </compatibility>
   <comments>This is a collection of tools for secure remote access. It contains RemoteContact profiles, but also provides infrastructure for other extensions, like RemoteEvent.</comments>
