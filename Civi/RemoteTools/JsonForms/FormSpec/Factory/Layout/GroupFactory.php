@@ -36,11 +36,15 @@ final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
 
   protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($element, FormElementContainer::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\FormElementContainer $element */
-    $elements = array_map([$factory, 'createSchema'], $element->getElements());
+    $elements = array_map(
+      fn ($childElement) => $factory->createSchema($childElement, $scopePrefix),
+      $element->getElements()
+    );
 
     if ($element->isCollapsible()) {
       return new JsonFormsCloseableGroup($element->getTitle(), $elements, $element->getDescription());

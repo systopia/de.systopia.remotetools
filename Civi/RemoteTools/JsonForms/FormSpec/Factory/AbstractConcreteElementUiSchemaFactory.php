@@ -33,9 +33,10 @@ abstract class AbstractConcreteElementUiSchemaFactory implements ConcreteElement
 
   final public function createSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
-    $jsonFormsElement = $this->doCreateSchema($element, $factory);
+    $jsonFormsElement = $this->doCreateSchema($element, $scopePrefix, $factory);
 
     if (NULL !== $element->getRule()) {
       $jsonFormsElement['rule'] = RuleFactory::createJsonFormsRule($element->getRule());
@@ -46,6 +47,7 @@ abstract class AbstractConcreteElementUiSchemaFactory implements ConcreteElement
 
   abstract protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement;
 

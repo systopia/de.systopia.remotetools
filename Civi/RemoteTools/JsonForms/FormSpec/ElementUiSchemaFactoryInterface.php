@@ -24,6 +24,6 @@ use Civi\RemoteTools\JsonForms\JsonFormsElement;
 
 interface ElementUiSchemaFactoryInterface {
 
-  public function createSchema(FormElementInterface $element): JsonFormsElement;
+  public function createSchema(FormElementInterface $element, string $scopePrefix): JsonFormsElement;
 
 }

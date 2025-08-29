@@ -30,12 +30,13 @@ final class FileControlFactory extends AbstractControlFactory {
 
   protected function createInputSchema(
     AbstractFormInput $input,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($input, FileField::class);
 
     return new JsonFormsControl(
-      $this->getScope($input), $input->getLabel(), $input->getDescription(), ['format' => 'file'],
+      $this->getScope($input, $scopePrefix), $input->getLabel(), $input->getDescription(), ['format' => 'file'],
     );
   }
 

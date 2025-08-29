@@ -37,6 +37,7 @@ final class InternalLinkFactory extends AbstractConcreteElementUiSchemaFactory {
 
   protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($element, InternalLinkElement::class);

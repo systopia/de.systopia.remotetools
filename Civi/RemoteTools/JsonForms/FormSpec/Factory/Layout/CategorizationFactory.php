@@ -35,11 +35,15 @@ final class CategorizationFactory extends AbstractConcreteElementUiSchemaFactory
 
   protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($element, VerticalTabsContainer::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\VerticalTabsContainer $element */
-    $elements = array_map([$factory, 'createSchema'], $element->getElements());
+    $elements = array_map(
+      fn ($tab) => $factory->createSchema($tab, $scopePrefix),
+      $element->getElements()
+    );
 
     return new JsonFormsCategorization($elements);
   }

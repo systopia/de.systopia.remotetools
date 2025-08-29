@@ -21,6 +21,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\AbstractMultiOptionField;
+use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaArray;
 use Civi\RemoteTools\JsonSchema\Util\JsonSchemaUtil;
@@ -28,7 +29,10 @@ use Webmozart\Assert\Assert;
 
 final class MultiOptionFieldFactory extends AbstractFieldJsonSchemaFactory {
 
-  protected function doCreateSchema(AbstractFormField $field): JsonSchema {
+  protected function doCreateSchema(
+    AbstractFormField $field,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): JsonSchema {
     Assert::isInstanceOf($field, AbstractMultiOptionField::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Field\AbstractMultiOptionField $field */
 
@@ -41,6 +45,7 @@ final class MultiOptionFieldFactory extends AbstractFieldJsonSchemaFactory {
     if (NULL !== $field->getMaxItems()) {
       $keywords['maxItems'] = $field->getMaxItems();
     }
+    Assert::nullOrIsArray($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
     }

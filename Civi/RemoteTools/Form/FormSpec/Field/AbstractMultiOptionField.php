@@ -24,7 +24,7 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 /**
  * @template T of int|string
  *
- * @extends AbstractFormField<T>
+ * @extends AbstractFormField<list<T>>
  *
  * @codeCoverageIgnore
  *
