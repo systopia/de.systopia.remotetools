@@ -35,11 +35,15 @@ final class CategoryFactory extends AbstractConcreteElementUiSchemaFactory {
 
   protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($element, FormTab::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\FormTab $element */
-    $elements = array_map([$factory, 'createSchema'], $element->getElements());
+    $elements = array_map(
+      fn ($tab) => $factory->createSchema($tab, $scopePrefix),
+      $element->getElements()
+    );
 
     return new JsonFormsCategory($element->getTitle(), $elements, $element->getDescription());
   }

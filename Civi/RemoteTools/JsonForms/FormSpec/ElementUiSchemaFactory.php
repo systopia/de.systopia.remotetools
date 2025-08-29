@@ -36,10 +36,10 @@ final class ElementUiSchemaFactory implements ElementUiSchemaFactoryInterface {
     $this->factories = $factories;
   }
 
-  public function createSchema(FormElementInterface $element): JsonFormsElement {
+  public function createSchema(FormElementInterface $element, string $scopePrefix): JsonFormsElement {
     foreach ($this->factories as $factory) {
       if ($factory->supportsElement($element)) {
-        return $factory->createSchema($element, $this);
+        return $factory->createSchema($element, $scopePrefix, $this);
       }
     }
 

@@ -32,7 +32,10 @@ final class UiSchemaFactory implements UiSchemaFactoryInterface {
   }
 
   public function createUiSchema(FormSpec $formSpec): JsonFormsElement {
-    $elements = array_map([$this->factory, 'createSchema'], $formSpec->getElements());
+    $elements = array_map(
+      fn ($element) => $this->factory->createSchema($element, '#/properties'),
+      $formSpec->getElements()
+    );
 
     return new JsonFormsGroup($formSpec->getTitle(), $elements);
   }

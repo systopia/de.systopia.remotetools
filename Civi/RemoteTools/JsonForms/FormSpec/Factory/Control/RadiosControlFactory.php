@@ -28,10 +28,11 @@ final class RadiosControlFactory extends AbstractControlFactory {
 
   public function createInputSchema(
     AbstractFormInput $input,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     return new JsonFormsControl(
-      $this->getScope($input), $input->getLabel(), $input->getDescription(), ['format' => 'radio']
+      $this->getScope($input, $scopePrefix), $input->getLabel(), $input->getDescription(), ['format' => 'radio']
     );
   }
 

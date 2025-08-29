@@ -34,20 +34,22 @@ abstract class AbstractControlFactory extends AbstractConcreteElementUiSchemaFac
 
   final protected function doCreateSchema(
     FormElementInterface $element,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($element, AbstractFormInput::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\AbstractFormInput $element */
 
-    return $this->createInputSchema($element, $factory);
+    return $this->createInputSchema($element, $scopePrefix, $factory);
   }
 
-  final protected function getScope(AbstractFormInput $field): string {
-    return '#/properties/' . $field->getName();
+  final protected function getScope(AbstractFormInput $field, string $scopePrefix): string {
+    return $scopePrefix . '/' . $field->getName();
   }
 
   abstract protected function createInputSchema(
     AbstractFormInput $input,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement;
 

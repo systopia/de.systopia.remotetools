@@ -30,12 +30,13 @@ final class SubmitButtonFactory extends AbstractControlFactory {
 
   protected function createInputSchema(
     AbstractFormInput $input,
+    string $scopePrefix,
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     Assert::isInstanceOf($input, SubmitButton::class);
     /** @var \Civi\RemoteTools\Form\FormSpec\Button\SubmitButton $input */
     return new JsonFormsSubmitButton(
-      $this->getScope($input),
+      $this->getScope($input, $scopePrefix),
       $input->getValue(),
       $input->getLabel(),
       $input->getConfirmMessage()

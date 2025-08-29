@@ -26,16 +26,10 @@ use Civi\RemoteTools\JsonSchema\JsonSchemaString;
 
 final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
 
-  /**
-   * @phpstan-var iterable<FieldJsonSchemaFactoryInterface>
-   */
-  private iterable $schemaFactories;
+  private RootFieldJsonSchemaFactoryInterface $schemaFactory;
 
-  /**
-   * @phpstan-param iterable<FieldJsonSchemaFactoryInterface> $schemaFactories
-   */
-  public function __construct(iterable $schemaFactories) {
-    $this->schemaFactories = $schemaFactories;
+  public function __construct(RootFieldJsonSchemaFactoryInterface $schemaFactory) {
+    $this->schemaFactory = $schemaFactory;
   }
 
   public function createJsonSchema(FormSpec $formSpec): JsonSchema {
@@ -46,21 +40,7 @@ final class JsonSchemaFactory implements JsonSchemaFactoryInterface {
         $required[] = $field->getName();
       }
 
-      foreach ($this->schemaFactories as $fieldSchemaFactory) {
-        if ($fieldSchemaFactory->supportsField($field)) {
-          $properties[$field->getName()] = $fieldSchemaFactory->createSchema($field);
-          break;
-        }
-      }
-
-      if (!isset($properties[$field->getName()])) {
-        throw new \InvalidArgumentException(sprintf(
-          'Unsupported field type "%s" (field: %s, class: %s)',
-          $field->getInputType(),
-          $field->getName(),
-          get_class($field),
-        ));
-      }
+      $properties[$field->getName()] = $this->schemaFactory->createSchema($field);
     }
 
     $oneOf = [];

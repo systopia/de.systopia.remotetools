@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2024 SYSTOPIA GmbH
+ * Copyright (C) 2022 SYSTOPIA GmbH
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,30 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\JsonForms\FormSpec;
+namespace Civi\RemoteTools\JsonForms\Layout;
 
-use Civi\RemoteTools\Form\FormSpec\FormElementInterface;
-use Civi\RemoteTools\JsonForms\JsonFormsElement;
+use Civi\RemoteTools\JsonForms\JsonFormsLayout;
 
-interface ConcreteElementUiSchemaFactoryInterface {
+/**
+ * @codeCoverageIgnore
+ */
+class JsonFormsGroup extends JsonFormsLayout {
 
-  public const SERVICE_TAG = 'remote_tools.json_forms.form_spec.element_factory';
-
-  public static function getPriority(): int;
-
-  public function createSchema(
-    FormElementInterface $element,
-    string $scopePrefix,
-    ElementUiSchemaFactoryInterface $factory
-  ): JsonFormsElement;
-
-  public function supportsElement(FormElementInterface $element): bool;
+  public function __construct(
+    string $label,
+    array $elements,
+    ?string $description = NULL,
+    ?array $options = NULL,
+    array $keywords = []
+  ) {
+    parent::__construct(
+      'Group',
+      $label,
+      $elements,
+      $description,
+      $options,
+      $keywords
+    );
+  }
 
 }
