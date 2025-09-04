@@ -41,10 +41,12 @@ final class NumberFieldFactory extends AbstractFieldJsonSchemaFactory {
       || NULL === $field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
+      if ($field->isReadOnly()) {
+        $keywords['const'] = $keywords['default'];
+      }
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $field->getDefaultValue();
     }
     if ($field instanceof AbstractNumberField) {
       if (NULL !== $field->getMaximum()) {

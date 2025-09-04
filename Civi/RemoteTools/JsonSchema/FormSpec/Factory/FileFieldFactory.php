@@ -19,8 +19,10 @@ declare(strict_types = 1);
 
 namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 
+use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\FileField;
+use Civi\RemoteTools\Helper\FileUrlGeneratorInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaFile;
@@ -28,8 +30,17 @@ use Webmozart\Assert\Assert;
 
 final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
 
+  private Api4Interface $api4;
+
+  private FileUrlGeneratorInterface $fileUrlGenerator;
+
   public static function getPriority(): int {
     return IntegerFieldFactory::getPriority() + 1;
+  }
+
+  public function __construct(Api4Interface $api4, FileUrlGeneratorInterface $fileUrlGenerator) {
+    $this->api4 = $api4;
+    $this->fileUrlGenerator = $fileUrlGenerator;
   }
 
   protected function doCreateSchema(
@@ -44,24 +55,73 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
       $keywords['readOnly'] = TRUE;
     }
 
-    if ($field->hasDefaultValue() && NULL !== $field->getFilename() && NULL !== $field->getUrl()) {
-      $keywords['default'] = JsonSchema::fromArray([
-        'filename' => $field->getFilename(),
-        'url' => $field->getUrl(),
-      ]);
-      // If the field is read only, we cannot use the const keyword, because
-      // the URL might contain a hash that depends on the time. This is at least
-      // true for the /civicrm/file path.
-    }
-    elseif ($field->isReadOnly()) {
-      $keywords['const'] = NULL;
+    if ($field->hasDefaultValue()) {
+      if (NULL === $field->getDefaultValue()) {
+        $keywords['default'] = NULL;
+        if ($field->isReadOnly()) {
+          $keywords['const'] = NULL;
+        }
+      }
+      else {
+        Assert::integer($field->getDefaultValue());
+        $keywords['default'] = JsonSchema::fromArray(
+          // @phpstan-ignore method.deprecated, method.deprecated
+          $this->buildDefaultValue($field->getDefaultValue(), $field->getFilename(), $field->getUrl())
+        );
+        // If the field is read only, we cannot use the const keyword, because
+        // the URL might contain a hash that depends on the time. This is at least
+        // true for the /civicrm/file path.
+      }
     }
 
     return new JsonSchemaFile($field->getMaxFileSize(), $keywords, $field->isNullable());
   }
 
+  public function convertDefaultValuesInList(
+    AbstractFormField $field,
+    array $defaultValues,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): array {
+    foreach ($defaultValues as $index => $fileId) {
+      Assert::nullOrInteger($fileId);
+      if (NULL !== $fileId) {
+        $defaultValues[$index] = $this->buildDefaultValue($fileId);
+      }
+    }
+
+    return $defaultValues;
+  }
+
   public function supportsField(AbstractFormField $field): bool {
     return $field instanceof FileField;
+  }
+
+  /**
+   * @return array<string, mixed>
+   *
+   * @throws \CRM_Core_Exception
+   */
+  private function buildDefaultValue(int $fileId, ?string $filename = NULL, ?string $url = NULL): array {
+    /** @var array<string, int|string> $file */
+    $file = $this->api4->execute('File', 'get', [
+      'select' => [
+        'uri',
+        'file_name',
+        'mime_type',
+      ],
+      'where' => [['id', '=', $fileId]],
+    ])->single();
+
+    /** @var string $customFileUploadDir */
+    $customFileUploadDir = \CRM_Core_Config::singleton()->customFileUploadDir;
+
+    return [
+      '_id' => $fileId,
+      'filename' => $filename ?? $file['file_name'],
+      'filesize' => filesize($customFileUploadDir . $file['uri']),
+      'mimeType' => $file['mime_type'],
+      'url' => $url ?? $this->fileUrlGenerator->generateUrl($fileId, 2),
+    ];
   }
 
 }

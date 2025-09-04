@@ -36,10 +36,12 @@ final class IntegerFieldFactory extends AbstractFieldJsonSchemaFactory {
     Assert::nullOrInteger($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
+      if ($field->isReadOnly()) {
+        $keywords['const'] = $keywords['default'];
+      }
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $field->getDefaultValue();
     }
     if ($field instanceof AbstractNumberField) {
       if (NULL !== $field->getMaximum()) {

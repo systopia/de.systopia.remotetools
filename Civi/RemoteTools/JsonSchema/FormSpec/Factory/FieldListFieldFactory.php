@@ -25,6 +25,7 @@ use Civi\RemoteTools\Form\FormSpec\Field\FieldListField;
 use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaArray;
+use Webmozart\Assert\Assert;
 
 final class FieldListFieldFactory extends AbstractFieldJsonSchemaFactory {
 
@@ -40,15 +41,22 @@ final class FieldListFieldFactory extends AbstractFieldJsonSchemaFactory {
         $default = NULL;
       }
       else {
-        $default = JsonSchema::convertToJsonSchemaArray($field->getDefaultValue());
+        assert(is_array($field->getDefaultValue()));
+        $default = JsonSchema::convertToJsonSchemaArray(
+          $factory->convertDefaultValuesInList($field->getItemField(), $field->getDefaultValue())
+        );
       }
       $keywords['default'] = $default;
+      if ($field->isReadOnly() && (NULL === $default || [] === $default)) {
+        // We cannot use the const keyword if default isn't empty because it
+        // might contain time dependent data (e.g. hashes in file URLs).
+        $keywords['const'] = $default;
+      }
     }
 
     if ($field->isReadOnly()) {
       $field->getItemField()->setReadOnly(TRUE);
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $default ?? NULL;
     }
 
     $keywords['uniqueItems'] = $field->isUniqueItems();
@@ -59,9 +67,26 @@ final class FieldListFieldFactory extends AbstractFieldJsonSchemaFactory {
       $keywords['maxItems'] = $field->getMaxItems();
     }
 
-    $items = $factory->createSchema($field->getItemField());
+    $items = $factory->createSchema($field->getItemField()->unsetDefaultValue());
 
     return new JsonSchemaArray($items, $keywords, $field->isNullable());
+  }
+
+  public function convertDefaultValuesInList(
+    AbstractFormField $field,
+    array $defaultValues,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): array {
+    assert($field instanceof FieldListField);
+
+    foreach ($defaultValues as &$defaultValue) {
+      Assert::nullOrIsList($defaultValue);
+      if (NULL !== $defaultValue) {
+        $defaultValue = $factory->convertDefaultValuesInList($field->getItemField(), $defaultValue);
+      }
+    }
+
+    return $defaultValues;
   }
 
   public function supportsField(AbstractFormField $field): bool {

@@ -26,9 +26,6 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  * This field type provides the possibility to enter multiple values of the same
  * type defined by the item field. The name of the item field has no influence.
  *
- * @todo Make it possible to use a default value when a FileField is used as
- * item.
- *
  * @extends AbstractFormField<list<scalar|array<int|string, mixed>>>
  *
  * @codeCoverageIgnore

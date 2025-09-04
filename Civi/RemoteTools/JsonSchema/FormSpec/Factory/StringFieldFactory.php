@@ -40,10 +40,12 @@ final class StringFieldFactory extends AbstractFieldJsonSchemaFactory {
     Assert::nullOrString($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
+      if ($field->isReadOnly()) {
+        $keywords['const'] = $keywords['default'];
+      }
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $field->getDefaultValue();
     }
     if ($field instanceof AbstractTextField) {
       if (NULL !== $field->getMaxLength()) {

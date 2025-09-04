@@ -48,10 +48,12 @@ final class MultiOptionFieldFactory extends AbstractFieldJsonSchemaFactory {
     Assert::nullOrIsArray($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
+      if ($field->isReadOnly()) {
+        $keywords['const'] = $keywords['default'];
+      }
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $field->getDefaultValue();
     }
 
     Assert::notEmpty($field->getOptions(), sprintf('Options must not be empty (field: %s)', $field->getName()));

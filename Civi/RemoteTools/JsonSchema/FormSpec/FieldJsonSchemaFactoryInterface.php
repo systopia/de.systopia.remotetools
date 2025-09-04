@@ -30,6 +30,17 @@ interface FieldJsonSchemaFactoryInterface {
 
   public function createSchema(AbstractFormField $field, RootFieldJsonSchemaFactoryInterface $factory): JsonSchema;
 
+  /**
+   * @param list<mixed> $defaultValues
+   *
+   * @return list<mixed>
+   */
+  public function convertDefaultValuesInList(
+    AbstractFormField $field,
+    array $defaultValues,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): array;
+
   public function supportsField(AbstractFormField $field): bool;
 
 }

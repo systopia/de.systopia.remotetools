@@ -25,8 +25,36 @@ use Civi\RemoteTools\Form\FormSpec\Field\FieldCollectionField;
 use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
 use Civi\RemoteTools\JsonSchema\JsonSchemaObject;
+use Webmozart\Assert\Assert;
 
 final class FieldCollectionFieldFactory extends AbstractFieldJsonSchemaFactory {
+
+  public function convertDefaultValuesInList(
+    AbstractFormField $field,
+    array $defaultValues,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): array {
+    assert($field instanceof FieldCollectionField);
+
+    foreach ($field->getFields() as $collectionField) {
+      $fieldName = $collectionField->getName();
+      $fieldDefaultValues = [];
+      foreach ($defaultValues as $defaultValue) {
+        Assert::nullOrIsMap($defaultValue);
+        $fieldDefaultValues[] = $defaultValue[$fieldName] ?? NULL;
+      }
+      /** @var list<array<string, mixed>> $defaultValues */
+
+      $fieldDefaultValues = $factory->convertDefaultValuesInList($collectionField, $fieldDefaultValues);
+      foreach ($fieldDefaultValues as $index => $fieldDefaultValue) {
+        if (array_key_exists($fieldName, $defaultValues[$index])) {
+          $defaultValues[$index][$fieldName] = $fieldDefaultValue;
+        }
+      }
+    }
+
+    return $defaultValues;
+  }
 
   protected function doCreateSchema(
     AbstractFormField $field,
@@ -48,6 +76,9 @@ final class FieldCollectionFieldFactory extends AbstractFieldJsonSchemaFactory {
       }
       if (array_key_exists($collectionField->getName(), $defaults)) {
         $collectionField->setDefaultValue($defaults[$collectionField->getName()]);
+      }
+      else {
+        $collectionField->unsetDefaultValue();
       }
       if ($collectionField->isRequired()) {
         $required[] = $collectionField->getName();

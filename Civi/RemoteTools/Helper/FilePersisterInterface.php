@@ -20,6 +20,9 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Helper;
 
 /**
+ * @phpstan-type fileT array{filename: string, content: string}
+ *   The property 'content' contains the Base64 encoded file.
+ *
  * @apiService
  */
 interface FilePersisterInterface {
@@ -36,8 +39,7 @@ interface FilePersisterInterface {
   /**
    * Requires an open database transaction.
    *
-   * @phpstan-param array{filename: string, content: string} $file
-   *   The property 'content' contains the Base64 encoded file.
+   * @phpstan-param fileT $file
    *
    * @returns int ID of File entity.
    *
