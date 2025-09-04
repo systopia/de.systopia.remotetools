@@ -18,22 +18,22 @@
 
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\JsonSchema\FormSpec;
+namespace Civi\RemoteTools\Helper;
 
-use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
-use Civi\RemoteTools\JsonSchema\JsonSchema;
+/**
+ * @codeCoverageIgnore
+ */
+final class FileUrlGenerator implements FileUrlGeneratorInterface {
 
-interface RootFieldJsonSchemaFactoryInterface {
+  public function generateUrl(int $fileId, ?int $lifetimeHours): string {
+    // @phpstan-ignore function.alreadyNarrowedType
+    if (!method_exists(\Civi::class, 'url')) {
+      throw new \BadMethodCallException('UrlGenerator can not be used with this version of CiviCRM');
+    }
 
-  public function createSchema(AbstractFormField $field): JsonSchema;
+    $hash = \CRM_Core_BAO_File::generateFileHash(NULL, $fileId, \CRM_Utils_Time::time(), $lifetimeHours);
 
-  /**
-   * @param list<mixed> $defaultValues
-   *
-   * @return list<mixed>
-   */
-  public function convertDefaultValuesInList(AbstractFormField $field, array $defaultValues): array;
-
-  public function supportsField(AbstractFormField $field): bool;
+    return \Civi::url("frontend://civicrm/file?reset=1&id=$fileId&fcs=$hash", 'a')->__toString();
+  }
 
 }

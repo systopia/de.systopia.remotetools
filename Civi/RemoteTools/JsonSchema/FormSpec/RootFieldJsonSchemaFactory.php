@@ -37,23 +37,16 @@ final class RootFieldJsonSchemaFactory implements RootFieldJsonSchemaFactoryInte
   }
 
   public function createSchema(AbstractFormField $field): JsonSchema {
-    foreach ($this->schemaFactories as $schemaFactory) {
-      if ($schemaFactory->supportsField($field)) {
-        $schema = $schemaFactory->createSchema($field, $this);
-        if (NULL !== $field->getLimitValidation() && !$schema->hasKeyword('$limitValidation')) {
-          $schema['$limitValidation'] = LimitValidationSchemaFactory::createSchema($field->getLimitValidation());
-        }
-
-        return $schema;
-      }
+    $schema = $this->getSchemaFactory($field)->createSchema($field, $this);
+    if (NULL !== $field->getLimitValidation() && !$schema->hasKeyword('$limitValidation')) {
+      $schema['$limitValidation'] = LimitValidationSchemaFactory::createSchema($field->getLimitValidation());
     }
 
-    throw new \InvalidArgumentException(sprintf(
-      'Unsupported field type "%s" (field: %s, class: %s)',
-      $field->getInputType(),
-      $field->getName(),
-      get_class($field),
-    ));
+    return $schema;
+  }
+
+  public function convertDefaultValuesInList(AbstractFormField $field, array $defaultValues): array {
+    return $this->getSchemaFactory($field)->convertDefaultValuesInList($field, $defaultValues, $this);
   }
 
   public function supportsField(AbstractFormField $field): bool {
@@ -64,6 +57,21 @@ final class RootFieldJsonSchemaFactory implements RootFieldJsonSchemaFactoryInte
     }
 
     return FALSE;
+  }
+
+  private function getSchemaFactory(AbstractFormField $field): FieldJsonSchemaFactoryInterface {
+    foreach ($this->schemaFactories as $schemaFactory) {
+      if ($schemaFactory->supportsField($field)) {
+        return $schemaFactory;
+      }
+    }
+
+    throw new \InvalidArgumentException(sprintf(
+      'Unsupported field type "%s" (field: %s, class: %s)',
+      $field->getInputType(),
+      $field->getName(),
+      get_class($field),
+    ));
   }
 
 }

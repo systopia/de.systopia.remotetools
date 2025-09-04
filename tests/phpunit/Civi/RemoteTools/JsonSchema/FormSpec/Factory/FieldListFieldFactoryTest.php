@@ -79,10 +79,13 @@ final class FieldListFieldFactoryTest extends TestCase {
       })
       ->willReturn($itemSchema);
 
+    $rootFactory->expects(static::once())->method('convertDefaultValuesInList')
+      ->with($itemField, [123])
+      ->willReturn([123]);
+
     static::assertEquals(
       new JsonSchemaArray($itemSchema, [
         'default' => JsonSchema::convertToJsonSchemaArray([123]),
-        'const' => JsonSchema::convertToJsonSchemaArray([123]),
         'readOnly' => TRUE,
         'minItems' => 1,
         'maxItems' => 3,

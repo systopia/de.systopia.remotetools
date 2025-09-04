@@ -145,6 +145,13 @@ abstract class AbstractFormField extends AbstractFormInput {
     return $this;
   }
 
+  public function unsetDefaultValue(): static {
+    $this->hasDefaultValue = FALSE;
+    $this->defaultValue = NULL;
+
+    return $this;
+  }
+
   public function getDataTransformer(): FieldDataTransformerInterface {
     return IdentityFieldDataTransformer::getInstance();
   }

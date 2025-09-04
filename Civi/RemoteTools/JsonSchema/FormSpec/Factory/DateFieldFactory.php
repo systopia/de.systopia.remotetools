@@ -35,10 +35,12 @@ final class DateFieldFactory extends AbstractFieldJsonSchemaFactory {
     Assert::nullOrString($field->getDefaultValue());
     if ($field->hasDefaultValue()) {
       $keywords['default'] = $field->getDefaultValue();
+      if ($field->isReadOnly()) {
+        $keywords['const'] = $keywords['default'];
+      }
     }
     if ($field->isReadOnly()) {
       $keywords['readOnly'] = TRUE;
-      $keywords['const'] = $field->getDefaultValue();
     }
 
     return new JsonSchemaString($keywords, $field->isNullable());
