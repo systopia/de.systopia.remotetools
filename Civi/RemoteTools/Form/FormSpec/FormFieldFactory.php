@@ -60,9 +60,7 @@ final class FormFieldFactory implements FormFieldFactoryInterface {
     $formField->setDescription($field['help_pre'] ?? $field['description'] ?? '');
     $formField->setHidden('Hidden' === $field['input_type']);
 
-    if (TRUE === ($field['required'] ?? NULL)) {
-      $formField->setRequired(TRUE);
-    }
+    $formField->setRequired(TRUE === ($field['required'] ?? NULL));
 
     $this->setDefaultValue($formField, $field, $entityValues);
 
