@@ -66,9 +66,7 @@ final class FormFieldFactory implements FormFieldFactoryInterface {
 
     $this->setDefaultValue($formField, $field, $entityValues);
 
-    if (TRUE === ($field['readonly'] ?? NULL)) {
-      $formField->setReadOnly(TRUE);
-    }
+    $formField->setReadOnly(TRUE === ($field['readonly'] ?? NULL));
 
     return $formField;
   }
