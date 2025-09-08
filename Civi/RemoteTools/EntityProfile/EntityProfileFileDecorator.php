@@ -63,10 +63,6 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
       $contactId
     );
 
-    // If an existing file is replaced by a new one, the file on the filesystem
-    // and the File entity of the previous file is kept. This corresponds with
-    // the behavior of CiviCRM with custom file fields. (A file can only be
-    // removed explicitly.)
     $this->handleFiles($newValues, $oldValues, $entityFields, $contactId);
   }
 
@@ -91,22 +87,14 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
         else {
           unset($entityValues[$name]);
         }
-
-        continue;
       }
-
       // If it is a file field and $value doesn't neither contains a previous
       // file nor a new file, it is either NULL or has been handled by the
       // decorated profile.
       // (The validation prevents invalid values at this point.)
-      // @todo It's not possible to set a custom file field to NULL. (The previous value is unchanged.)
-      // This should be fixed in CiviCRM itself. However, at the time of writing
-      // the corresponding Drupal module has no remove option.
-      if (!$this->containsNewFile($value)) {
-        continue;
+      elseif ($this->containsNewFile($value)) {
+        $value = $this->filePersister->persistFileFromForm($value, NULL, $contactId);
       }
-
-      $value = $this->filePersister->persistFileFromForm($value, NULL, $contactId);
     }
   }
 
@@ -130,7 +118,10 @@ final class EntityProfileFileDecorator extends AbstractRemoteEntityProfileDecora
    * @phpstan-assert-if-true array{filename: string, url: string} $value
    */
   private function containsPreviousFile(mixed $value): bool {
-    return is_array($value) && is_string($value['filename'] ?? NULL) && is_string($value['url'] ?? NULL);
+    // When \Civi\RemoteTools\JsonSchema\FormSpec\Factory\FileFieldFactory gets
+    // used the value is the file ID when the file wasn't changed.
+    return is_int($value)
+      || (is_array($value) && is_string($value['filename'] ?? NULL) && is_string($value['url'] ?? NULL));
   }
 
 }

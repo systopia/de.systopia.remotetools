@@ -28,6 +28,8 @@ namespace Civi\RemoteTools\Form\FormSpec;
  */
 abstract class AbstractFormField extends AbstractFormInput {
 
+  private FieldDataTransformerChain $dataTransformer;
+
   private bool $hidden = FALSE;
 
   private bool $required = FALSE;
@@ -42,6 +44,11 @@ abstract class AbstractFormField extends AbstractFormInput {
    * @phpstan-var T|null
    */
   private mixed $defaultValue = NULL;
+
+  public function __construct(string $name, string $label) {
+    parent::__construct($name, $label);
+    $this->dataTransformer = new FieldDataTransformerChain([]);
+  }
 
   public function getType(): string {
     return 'field';
@@ -152,8 +159,27 @@ abstract class AbstractFormField extends AbstractFormInput {
     return $this;
   }
 
+  public function appendDataTransformer(FieldDataTransformerInterface $transformer): static {
+    $this->dataTransformer->appendTransformer($transformer);
+
+    return $this;
+  }
+
   public function getDataTransformer(): FieldDataTransformerInterface {
-    return IdentityFieldDataTransformer::getInstance();
+    return $this->dataTransformer;
+  }
+
+  public function prependDataTransformer(FieldDataTransformerInterface $transformer): static {
+    $this->dataTransformer->prependTransformer($transformer);
+
+    return $this;
+  }
+
+  public function setDataTransformer(FieldDataTransformerInterface $transformer): static {
+    $this->dataTransformer = $transformer instanceof FieldDataTransformerChain ? $transformer :
+      new FieldDataTransformerChain([$transformer]);
+
+    return $this;
   }
 
   public function getValidator(): FieldValidatorInterface {
