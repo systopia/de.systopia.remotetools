@@ -22,6 +22,10 @@ namespace Civi\RemoteTools\Form\FormSpec\Field;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 
 /**
+ * Note: For default values with CiviCRM <6.1 the properties url and filename
+ * have to be set. It's not possible to use default values inside a
+ * FieldListField with CiviCRM <6.1.
+ *
  * @extends AbstractFormField<int>
  *
  * @codeCoverageIgnore
@@ -41,10 +45,16 @@ class FileField extends AbstractFormField {
     return 'integer';
   }
 
+  /**
+   * @deprecated 1.1.0 Filename is determined via File entity.
+   */
   public function getFilename(): ?string {
     return $this->filename;
   }
 
+  /**
+   * @deprecated 1.1.0 Filename is determined via File entity.
+   */
   public function setFilename(?string $filename): static {
     $this->filename = $filename;
 
@@ -75,10 +85,16 @@ class FileField extends AbstractFormField {
     return $this;
   }
 
+  /**
+   * @deprecated 1.1.0 URL is determined automatically (requires CiviCRM >=6.1.0)
+   */
   public function getUrl(): ?string {
     return $this->url;
   }
 
+  /**
+   * @deprecated 1.1.0 URL is determined automatically (requires CiviCRM >=6.1.0)
+   */
   public function setUrl(?string $url): static {
     $this->url = $url;
 

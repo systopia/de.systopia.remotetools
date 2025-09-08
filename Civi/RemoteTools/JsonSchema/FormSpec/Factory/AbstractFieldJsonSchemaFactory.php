@@ -34,6 +34,14 @@ abstract class AbstractFieldJsonSchemaFactory implements FieldJsonSchemaFactoryI
     return $this->doCreateSchema($field, $factory);
   }
 
+  public function convertDefaultValuesInList(
+    AbstractFormField $field,
+    array $defaultValues,
+    RootFieldJsonSchemaFactoryInterface $factory
+  ): array {
+    return $defaultValues;
+  }
+
   abstract protected function doCreateSchema(
     AbstractFormField $field,
     RootFieldJsonSchemaFactoryInterface $factory

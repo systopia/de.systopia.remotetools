@@ -15,25 +15,20 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 declare(strict_types = 1);
 
-namespace Civi\RemoteTools\JsonSchema\FormSpec;
+namespace Civi\RemoteTools\Helper;
 
-use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
-use Civi\RemoteTools\JsonSchema\JsonSchema;
-
-interface RootFieldJsonSchemaFactoryInterface {
-
-  public function createSchema(AbstractFormField $field): JsonSchema;
+interface FileUrlGeneratorInterface {
 
   /**
-   * @param list<mixed> $defaultValues
+   * Requires CiviCRM >= 6.1.0.
    *
-   * @return list<mixed>
+   * @param int $fileId
+   * @param int|null $lifetimeHours
+   *   The number of hours the link shall be valid. If NULL, the checksum
+   *   timeout configured in CiviCRM will be used.
    */
-  public function convertDefaultValuesInList(AbstractFormField $field, array $defaultValues): array;
-
-  public function supportsField(AbstractFormField $field): bool;
+  public function generateUrl(int $fileId, ?int $lifetimeHours): string;
 
 }
