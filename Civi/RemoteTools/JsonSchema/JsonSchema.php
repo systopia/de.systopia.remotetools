@@ -280,6 +280,8 @@ class JsonSchema implements \ArrayAccess, \IteratorAggregate, \JsonSerializable 
 
   /**
    * @inheritDoc
+   *
+   * @return \ArrayIterator
    */
   public function getIterator(): \Traversable {
     return new \ArrayIterator($this->keywords);
