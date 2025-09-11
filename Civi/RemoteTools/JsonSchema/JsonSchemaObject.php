@@ -30,10 +30,12 @@ class JsonSchemaObject extends JsonSchema {
   public function __construct(array $properties, array $keywords = [], bool $nullable = FALSE) {
     $type = $nullable ? ['object', 'null'] : 'object';
 
-    parent::__construct([
-      'type' => $type,
-      'properties' => new JsonSchema($properties),
-    ] + $keywords);
+    $keywords['type'] = $type;
+    if ([] !== $properties) {
+      $keywords['properties'] = new JsonSchema($properties);
+    }
+
+    parent::__construct($keywords);
   }
 
 }
