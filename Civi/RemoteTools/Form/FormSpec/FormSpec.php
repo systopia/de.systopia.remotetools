@@ -66,6 +66,11 @@ final class FormSpec extends AbstractFormElementContainer {
    */
   private array $validators = [];
 
+  /**
+   * @var 'GET'|'POST' string
+   */
+  private string $submitMethod = 'POST';
+
   public function __construct(string $title, array $elements = []) {
     parent::__construct($title, $elements);
     $this->dataTransformers[] = new FormSpecDataTransformer($this);
@@ -135,6 +140,24 @@ final class FormSpec extends AbstractFormElementContainer {
 
   public function prependValidator(ValidatorInterface $validator): self {
     array_unshift($this->validators, $validator);
+
+    return $this;
+  }
+
+  /**
+   * The default submit method is 'POST'.
+   *
+   * @return 'GET'|'POST'
+   */
+  public function getSubmitMethod(): string {
+    return $this->submitMethod;
+  }
+
+  /**
+   * @param 'GET'|'POST' $submitMethod
+   */
+  public function setSubmitMethod(string $submitMethod): self {
+    $this->submitMethod = $submitMethod;
 
     return $this;
   }
