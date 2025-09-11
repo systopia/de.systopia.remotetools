@@ -51,6 +51,10 @@ namespace Civi\RemoteTools\Form\FormSpec;
  */
 final class FormSpec extends AbstractFormElementContainer {
 
+  public const SUBMIT_METHOD_GET = 'GET';
+
+  public const SUBMIT_METHOD_POST = 'POST';
+
   /**
    * @phpstan-var list<DataTransformerInterface>
    */
@@ -65,6 +69,11 @@ final class FormSpec extends AbstractFormElementContainer {
    * @phpstan-var list<ValidatorInterface>
    */
   private array $validators = [];
+
+  /**
+   * @var 'GET'|'POST' string
+   */
+  private string $submitMethod = self::SUBMIT_METHOD_POST;
 
   public function __construct(string $title, array $elements = []) {
     parent::__construct($title, $elements);
@@ -135,6 +144,30 @@ final class FormSpec extends AbstractFormElementContainer {
 
   public function prependValidator(ValidatorInterface $validator): self {
     array_unshift($this->validators, $validator);
+
+    return $this;
+  }
+
+  /**
+   * The default submit method is 'POST'.
+   *
+   * @return 'GET'|'POST'
+   */
+  public function getSubmitMethod(): string {
+    return $this->submitMethod;
+  }
+
+  /**
+   * @param 'GET'|'POST' $submitMethod
+   *
+   * @throws \InvalidArgumentException
+   */
+  public function setSubmitMethod(string $submitMethod): self {
+    if (!in_array($submitMethod, [self::SUBMIT_METHOD_GET, self::SUBMIT_METHOD_POST], TRUE)) {
+      throw new \InvalidArgumentException('Invalid submit method "' . $submitMethod . '"');
+    }
+
+    $this->submitMethod = $submitMethod;
 
     return $this;
   }
