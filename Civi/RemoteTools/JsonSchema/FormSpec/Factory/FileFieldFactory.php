@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\JsonSchema\FormSpec\Factory;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
 use Civi\RemoteTools\Form\FormSpec\Field\FileField;
+use Civi\RemoteTools\Form\FormSpec\FieldDataTransformerInterface;
 use Civi\RemoteTools\Helper\FileUrlGeneratorInterface;
 use Civi\RemoteTools\JsonSchema\FormSpec\RootFieldJsonSchemaFactoryInterface;
 use Civi\RemoteTools\JsonSchema\JsonSchema;
@@ -73,6 +74,34 @@ final class FileFieldFactory extends AbstractFieldJsonSchemaFactory {
         // true for the /civicrm/file path.
       }
     }
+
+    $field->prependDataTransformer(
+      new class implements FieldDataTransformerInterface {
+
+        public function toEntityValue(
+          mixed $data,
+          AbstractFormField $field,
+          ?array $defaultValuesInList = NULL
+        ): mixed {
+          if (is_array($data) && isset($data['_id'])) {
+            if (!in_array($data['_id'], $defaultValuesInList ?? [$field->getDefaultValue()], TRUE)) {
+              // Forbid IDs not previously used to prevent usage of "random" files.
+              throw new \InvalidArgumentException(
+                'The given file ID ' . print_r($data['_id'], TRUE) . ' does not match the previous one'
+              );
+            }
+
+            if (!isset($data['content'])) {
+              // File is not changed. Schema default value is submitted. Transform to file ID as field value.
+              return $data['_id'];
+            }
+          }
+
+          return $data;
+        }
+
+      }
+    );
 
     return new JsonSchemaFile($field->getMaxFileSize(), $keywords, $field->isNullable());
   }
