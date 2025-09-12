@@ -351,10 +351,13 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
     ?int $contactId
   ): array {
     $message = $this->profile->getSaveSuccessMessage($newValues, $oldValues, $formData, $contactId);
+    $result = ['message' => $message];
 
-    return [
-      'message' => $message,
-    ];
+    if (isset($newValues['id'])) {
+      $result['entityId'] = $newValues['id'];
+    }
+
+    return $result;
   }
 
   /**
