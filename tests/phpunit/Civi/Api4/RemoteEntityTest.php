@@ -326,13 +326,17 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
       ->setArguments(['x' => 'y'])
       ->setData(['name' => 'bar', 'title' => 'Bar'])
       ->execute();
-    static::assertSame(['message' => 'Saved successfully'], $result->getArrayCopy());
+    static::assertEquals(['message', 'entityId'], array_keys($result->getArrayCopy()));
+    static::assertSame('Saved successfully', $result['message']);
+    static::assertIsInt($result['entityId']);
+    $entityId = $result['entityId'];
 
     $result = Group::get(FALSE)
       ->addWhere('name', '=', 'bar')
       ->addWhere('title', '=', 'Bar')
       ->execute();
     static::assertCount(1, $result);
+    static::assertSame($entityId, $result->single()['id']);
   }
 
   /**
@@ -506,7 +510,10 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
       ->setId($group['id'])
       ->setData(['name' => 'xy'])
       ->execute();
-    static::assertSame(['message' => 'Saved successfully'], $result->getArrayCopy());
+    static::assertSame(
+      ['message' => 'Saved successfully', 'entityId' => $group['id']],
+      $result->getArrayCopy()
+    );
 
     $result = Group::get(FALSE)
       ->addWhere('name', '=', 'xy')
