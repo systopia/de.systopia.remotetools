@@ -319,7 +319,10 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       ->with($createdValues, NULL, $formData, self::RESOLVED_CONTACT_ID)
       ->willReturn('Ok');
 
-    static::assertSame(['message' => 'Ok'], $this->handler->submitCreateForm($actionMock));
+    static::assertEquals(
+      ['message' => 'Ok', 'entityId' => 12],
+      $this->handler->submitCreateForm($actionMock)
+    );
   }
 
   public function testGetUpdateForm(): void {
