@@ -1119,12 +1119,6 @@ parameters:
 			path: Civi/RemoteToolsRequest.php
 
 		-
-			message: '#^Method Civi\\RemoteToolsRequest\:\:setSorting\(\) never assigns null to &\$request_data so it can be removed from the by\-ref type\.$#'
-			identifier: parameterByRef.unusedType
-			count: 1
-			path: Civi/RemoteToolsRequest.php
-
-		-
 			message: '#^Method Civi\\RemoteToolsRequest\:\:wasExecuted\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1

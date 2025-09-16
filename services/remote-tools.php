@@ -44,6 +44,11 @@ use Civi\RemoteTools\EntityProfile\Helper\ProfileEntityLoaderInterface;
 use Civi\RemoteTools\EventSubscriber\RemoteRequestInitSubscriber;
 use Civi\RemoteTools\Form\FormSpec\FormFieldFactory;
 use Civi\RemoteTools\Form\FormSpec\FormFieldFactoryInterface;
+use Civi\RemoteTools\Helper\AttachmentsLoader;
+use Civi\RemoteTools\Helper\AttachmentsLoaderInterface;
+use Civi\RemoteTools\Helper\AttachmentsPersister;
+use Civi\RemoteTools\Helper\AttachmentsPersisterInterface;
+use Civi\RemoteTools\Helper\DaoEntityInfoProvider;
 use Civi\RemoteTools\Helper\FilePersister;
 use Civi\RemoteTools\Helper\FilePersisterInterface;
 use Civi\RemoteTools\Helper\FileUrlGenerator;
@@ -86,6 +91,9 @@ $container->autowire(RequestContextInterface::class, RequestContext::class)
 $container->autowire(TransactionFactory::class);
 $container->autowire(FilePersisterInterface::class, FilePersister::class);
 $container->autowire(FileUrlGeneratorInterface::class, FileUrlGenerator::class);
+$container->autowire(AttachmentsLoaderInterface::class, AttachmentsLoader::class);
+$container->autowire(AttachmentsPersisterInterface::class, AttachmentsPersister::class);
+$container->autowire(DaoEntityInfoProvider::class);
 
 $container->autowire(FormFieldFactoryInterface::class, FormFieldFactory::class);
 

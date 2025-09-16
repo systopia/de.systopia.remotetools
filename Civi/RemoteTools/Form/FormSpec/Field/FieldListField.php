@@ -21,6 +21,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\DataTransformer\FieldListFieldDataTransformer;
 
 /**
  * This field type provides the possibility to enter multiple values of the same
@@ -32,7 +33,7 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  *
  * @api
  */
-final class FieldListField extends AbstractFormField {
+class FieldListField extends AbstractFormField {
 
   public const LAYOUT_VERTICAL = 'VerticalLayout';
 
@@ -61,6 +62,7 @@ final class FieldListField extends AbstractFormField {
   public function __construct(string $name, string $label, AbstractFormField $itemField) {
     parent::__construct($name, $label);
     $this->itemField = $itemField;
+    $this->appendDataTransformer(FieldListFieldDataTransformer::getInstance());
   }
 
   public function getDataType(): string {

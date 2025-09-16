@@ -21,6 +21,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\DataTransformer\FieldCollectionFieldDataTransformer;
 
 /**
  * This field combines the input of multiple fields to a single property.
@@ -31,7 +32,7 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  *
  * @api
  */
-final class FieldCollectionField extends AbstractFormField {
+class FieldCollectionField extends AbstractFormField {
 
   /**
    * @var list<\Civi\RemoteTools\Form\FormSpec\AbstractFormField>
@@ -44,6 +45,7 @@ final class FieldCollectionField extends AbstractFormField {
   public function __construct(string $name, string $label, array $fields = []) {
     parent::__construct($name, $label);
     $this->fields = $fields;
+    $this->appendDataTransformer(FieldCollectionFieldDataTransformer::getInstance());
   }
 
   public function getDataType(): string {

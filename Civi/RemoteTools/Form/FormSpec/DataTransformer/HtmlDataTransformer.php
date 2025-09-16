@@ -32,7 +32,7 @@ final class HtmlDataTransformer implements FieldDataTransformerInterface {
   /**
    * @inheritDoc
    */
-  public function toEntityValue(mixed $data, AbstractFormField $field): mixed {
+  public function toEntityValue(mixed $data, AbstractFormField $field, ?array $defaultValuesInList = NULL): mixed {
     if (!is_string($data)) {
       return NULL;
     }
