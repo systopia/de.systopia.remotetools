@@ -20,3 +20,10 @@ parameters:
 		- '/^Parameter #2 \$event of method Civi\\Core\\CiviEventDispatcherInterface::dispatch\(\) expects Civi\\Core\\Event\|null, Civi\\RemoteContact\\.+ given.$/'
 		# Can be dropped once CiviCRM 5.68 is minimum requirement.
 		- '#^Static method CRM_Utils_File::makeFileName\(\) invoked with 2 parameters, 1 required.$#'
+
+		# Required with CiviCRM <6.3 because the return type hint changed from string to ?string.
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: Civi/RemoteTools/Helper/DaoEntityInfoProvider.php

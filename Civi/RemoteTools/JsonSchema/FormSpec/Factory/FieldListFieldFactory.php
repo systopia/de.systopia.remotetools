@@ -86,6 +86,8 @@ final class FieldListFieldFactory extends AbstractFieldJsonSchemaFactory {
       }
     }
 
+    // https://github.com/phpstan/phpstan/issues/13809
+    // @phpstan-ignore return.type
     return $defaultValues;
   }
 

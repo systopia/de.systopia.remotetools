@@ -611,12 +611,6 @@ parameters:
 			path: CRM/Remotetools/SecureToken.php
 
 		-
-			message: '#^Parameter \#1 \$string of function base64_encode expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Remotetools/SecureToken.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
@@ -631,18 +625,6 @@ parameters:
 		-
 			message: '#^Method CRM_Remotetools_Upgrader\:\:install\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Upgrader.php
-
-		-
-			message: '#^Method CRM_Remotetools_Upgrader\:\:upgrade_0001\(\) has Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: CRM/Remotetools/Upgrader.php
-
-		-
-			message: '#^Method CRM_Remotetools_Upgrader\:\:upgrade_0002\(\) has Exception in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
 			count: 1
 			path: CRM/Remotetools/Upgrader.php
 
@@ -802,7 +784,7 @@ parameters:
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
 		-
-			message: '#^In method "Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest", caught "Exception" must be rethrown\. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception\. More info\: http\://bit\.ly/failloud$#'
+			message: '#^In method "Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest", caught "Exception" must be rethrown\. Either catch a more specific exception, add a "throw" clause in the "catch" block to propagate the exception or add a "// @ignoreException" comment\.$#'
 			count: 1
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
@@ -1311,7 +1293,7 @@ parameters:
 			path: api/v3/RemoteContact/Match.php
 
 		-
-			message: '#^In function "civicrm_api3_remote_contact_match", caught "Exception" must be rethrown\. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception\. More info\: http\://bit\.ly/failloud$#'
+			message: '#^In function "civicrm_api3_remote_contact_match", caught "Exception" must be rethrown\. Either catch a more specific exception, add a "throw" clause in the "catch" block to propagate the exception or add a "// @ignoreException" comment\.$#'
 			count: 1
 			path: api/v3/RemoteContact/Match.php
 
