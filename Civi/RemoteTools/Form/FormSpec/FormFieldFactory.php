@@ -57,7 +57,7 @@ final class FormFieldFactory implements FormFieldFactoryInterface {
     string $formFieldNamePrefix = ''
   ): AbstractFormField {
     $formField = $this->doCreateFormField($field, $entityValues, $formFieldNamePrefix);
-    $formField->setDescription($field['help_pre'] ?? $field['description'] ?? '');
+    $formField->setDescription($field['help_pre'] ?? '');
     $formField->setHidden('Hidden' === $field['input_type']);
 
     $formField->setRequired(TRUE === ($field['required'] ?? NULL));
