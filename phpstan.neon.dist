@@ -51,9 +51,13 @@ parameters:
 			path: */Civi/RemoteTools/Api4/Action/Traits/*
 			identifier: trait.unused
 
+		# Required because of polyfill implementation in
+		# vendor/civicrm/civicrm-packages/kcfinder/core/bootstrap.php
+		# that only has one parameter.
+		- '#^Function json_encode invoked with 2 parameters, 1 required.$#'
+
 		- '#^Method Civi\\RemoteTools\\Form\\FormSpec\\FieldDataTransformerInterface<[^>]+>::toEntityValue\(\) invoked with 3 parameters, 2 required.$#'
 		- '#^Method .+::toEntityValue\(\) has parameter \$defaultValuesInList with no value type specified in iterable type array.$#'
-		- '#^Method Civi\\RemoteTools\\Api4\\Action\\[^\s]+Action::getHandlerResult\(\) has Civi\\RemoteTools\\Exception\\ActionHandlerNotFoundException in PHPDoc @throws tag but it.s not thrown.$#'
 		- '#^Method Civi\\RemoteTools\\Api4\\Api4::createAction\(\) should return Civi\\Api4\\Generic\\AbstractAction but returns array|Civi\Api4\Generic\AbstractAction.$#'
 
 		- '#^Method Civi\\RemoteTools\\Fixture\\[^\s]+Fixture::[^\s]+ should return array\{id: int\} but returns array.$#'
