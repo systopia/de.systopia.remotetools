@@ -135,6 +135,18 @@ msgstr "Ist Änderung erlaubt"
 msgid "Is remote contact allowed to update the record."
 msgstr "Darf der entfernte Kontakt den Eintrag ändern."
 
+#: Civi/RemoteTools/Form/FormSpec/Field/AttachmentsField.php
+msgid "Description"
+msgstr "Beschreibung"
+
+#: Civi/RemoteTools/Form/FormSpec/Field/AttachmentsField.php
+msgid "File"
+msgstr "Datei"
+
+#: Civi/RemoteTools/Form/FormSpec/FormFieldFactory.php
+msgid "%1 in %2"
+msgstr "%1 in %2"
+
 #: Civi/RemoteTools/Form/Validation/ValidationResult.php
 msgid "Validation failed: %1"
 msgstr "Validierung fehlgeschlagen: %1"
