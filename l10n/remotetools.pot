@@ -102,6 +102,18 @@ msgstr ""
 msgid "Is remote contact allowed to update the record."
 msgstr ""
 
+#: Civi/RemoteTools/Form/FormSpec/Field/AttachmentsField.php
+msgid "Description"
+msgstr ""
+
+#: Civi/RemoteTools/Form/FormSpec/Field/AttachmentsField.php
+msgid "File"
+msgstr ""
+
+#: Civi/RemoteTools/Form/FormSpec/FormFieldFactory.php
+msgid "%1 in %2"
+msgstr ""
+
 #: Civi/RemoteTools/Form/Validation/ValidationResult.php
 msgid "Validation failed: %1"
 msgstr ""
