@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec\Field;
 
 use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
+use Civi\RemoteTools\Form\FormSpec\Field\Traits\OptionFieldTrait;
 
 /**
  * @template T of int|string
@@ -32,11 +33,7 @@ use Civi\RemoteTools\Form\FormSpec\AbstractFormField;
  */
 abstract class AbstractOptionField extends AbstractFormField {
 
-  /**
-   * @phpstan-var array<T, string>
-   *   Maps values to labels.
-   */
-  private array $options;
+  use OptionFieldTrait;
 
   /**
    * @param array<T, string> $options
@@ -45,35 +42,6 @@ abstract class AbstractOptionField extends AbstractFormField {
   public function __construct(string $name, string $label, array $options) {
     parent::__construct($name, $label);
     $this->options = $options;
-  }
-
-  /**
-   * @phpstan-param T $value
-   */
-  public function addOption(int|string $value, string $label): static {
-    $this->options[$value] = $label;
-
-    return $this;
-  }
-
-  /**
-   * @phpstan-return array<T, string>
-   *   Maps values to labels.
-   */
-  public function getOptions(): array {
-    return $this->options;
-  }
-
-  /**
-   * @param array<T, string> $options
-   *   Maps values to labels.
-   *
-   * @return $this
-   */
-  public function setOptions(array $options): static {
-    $this->options = $options;
-
-    return $this;
   }
 
 }
