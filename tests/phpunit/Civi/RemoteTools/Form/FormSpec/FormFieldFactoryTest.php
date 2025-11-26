@@ -357,7 +357,7 @@ final class FormFieldFactoryTest extends TestCase {
     $field = [
       'name' => 'test',
       'label' => 'Test',
-      'description' => 'Description',
+      'help_pre' => 'Help',
       'data_type' => 'Integer',
       'input_type' => 'Number',
       'serialize' => 1,
@@ -365,7 +365,7 @@ final class FormFieldFactoryTest extends TestCase {
 
     static::assertEquals(
       (new FieldListField('test', 'Test', new IntegerField('test', 'Test')))
-        ->setDescription('Description'),
+        ->setDescription('Help'),
       $this->factory->createFormField($field, [])
     );
   }
