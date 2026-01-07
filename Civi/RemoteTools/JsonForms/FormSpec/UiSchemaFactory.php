@@ -37,7 +37,12 @@ final class UiSchemaFactory implements UiSchemaFactoryInterface {
       $formSpec->getElements()
     );
 
-    return new JsonFormsGroup($formSpec->getTitle(), $elements, NULL, ['submitMethod' => $formSpec->getSubmitMethod()]);
+    $options = [
+      'cssClasses' => $formSpec->getCssClasses(),
+      'submitMethod' => $formSpec->getSubmitMethod(),
+    ];
+
+    return new JsonFormsGroup($formSpec->getTitle() ?? '', $elements, NULL, $options);
   }
 
 }

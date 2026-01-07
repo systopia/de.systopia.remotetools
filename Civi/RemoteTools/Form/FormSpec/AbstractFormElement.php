@@ -20,8 +20,11 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 use Civi\RemoteTools\Form\FormSpec\Rule\FormRuleTrait;
+use Civi\RemoteTools\Form\FormSpec\Traits\CssClassesTrait;
 
 abstract class AbstractFormElement implements FormElementInterface {
+
+  use CssClassesTrait;
 
   use FormRuleTrait;
 

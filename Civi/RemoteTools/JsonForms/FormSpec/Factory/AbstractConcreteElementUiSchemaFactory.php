@@ -24,6 +24,7 @@ use Civi\RemoteTools\JsonForms\FormSpec\ConcreteElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\ElementUiSchemaFactoryInterface;
 use Civi\RemoteTools\JsonForms\FormSpec\RuleFactory;
 use Civi\RemoteTools\JsonForms\JsonFormsElement;
+use Civi\RemoteTools\JsonSchema\JsonSchema;
 
 abstract class AbstractConcreteElementUiSchemaFactory implements ConcreteElementUiSchemaFactoryInterface {
 
@@ -37,6 +38,13 @@ abstract class AbstractConcreteElementUiSchemaFactory implements ConcreteElement
     ElementUiSchemaFactoryInterface $factory
   ): JsonFormsElement {
     $jsonFormsElement = $this->doCreateSchema($element, $scopePrefix, $factory);
+
+    if ([] !== $element->getCssClasses() && !isset($jsonFormsElement['options']['cssClasses'])) {
+      /** @var \Civi\RemoteTools\JsonSchema\JsonSchema $options */
+      // @phpstan-ignore voku.Coalesce
+      $options = $jsonFormsElement['options'] ??= new JsonSchema([]);
+      $options['cssClasses'] = $element->getCssClasses();
+    }
 
     if (NULL !== $element->getRule()) {
       $jsonFormsElement['rule'] = RuleFactory::createJsonFormsRule($element->getRule());
