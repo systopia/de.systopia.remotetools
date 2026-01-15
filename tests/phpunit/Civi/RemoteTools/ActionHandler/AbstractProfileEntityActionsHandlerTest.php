@@ -617,9 +617,11 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
       });
 
     $this->api4Mock->expects(static::never())->method('updateEntity');
-    $this->profileMock->expects(static::never())->method('onPostUpdate');
 
     $newEntityValues = $entityValues;
+    $this->profileMock->expects(static::once())->method('onPostUpdate')
+      ->with($newEntityValues, $entityValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
+
     $this->profileMock->method('getSaveSuccessMessage')
       ->with($newEntityValues, $entityValues, $formData, self::RESOLVED_CONTACT_ID)
       ->willReturn('Ok');

@@ -309,15 +309,15 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       // For values that are not part of $newEntityValues we use the previous
       // ones. Fields updated by triggers might be outdated, though.
       $updatedValues += $entityValues;
-
-      $this->profile->onPostUpdate(
-        $updatedValues,
-        $entityValues,
-        $entityFields,
-        $formSpec,
-        $action->getResolvedContactId()
-      );
     }
+
+    $this->profile->onPostUpdate(
+      $updatedValues,
+      $entityValues,
+      $entityFields,
+      $formSpec,
+      $action->getResolvedContactId()
+    );
 
     return $this->convertToSubmitFormActionResult(
       $updatedValues,
