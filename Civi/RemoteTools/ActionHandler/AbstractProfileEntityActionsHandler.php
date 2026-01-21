@@ -295,15 +295,21 @@ abstract class AbstractProfileEntityActionsHandler implements RemoteEntityAction
       $action->getResolvedContactId()
     );
 
-    $updatedValues = $this->api4->updateEntity(
-      $this->profile->getEntityName(),
-      $action->getId(),
-      $newEntityValues,
-      ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
-    )->single();
-    // For values that are not part of $newEntityValues we use the previous
-    // ones. Fields updated by triggers might be outdated, though.
-    $updatedValues += $entityValues;
+    if ([] === $newEntityValues) {
+      // Nothing to update. (API call would fail without values.)
+      $updatedValues = $entityValues;
+    }
+    else {
+      $updatedValues = $this->api4->updateEntity(
+        $this->profile->getEntityName(),
+        $action->getId(),
+        $newEntityValues,
+        ['checkPermissions' => $this->profile->isCheckApiPermissions($action->getResolvedContactId())],
+      )->single();
+      // For values that are not part of $newEntityValues we use the previous
+      // ones. Fields updated by triggers might be outdated, though.
+      $updatedValues += $entityValues;
+    }
 
     $this->profile->onPostUpdate(
       $updatedValues,

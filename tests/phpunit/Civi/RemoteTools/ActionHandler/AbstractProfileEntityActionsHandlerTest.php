@@ -559,6 +559,77 @@ final class AbstractProfileEntityActionsHandlerTest extends TestCase {
   }
 
   /**
+   * Test behavior when there are no values to set after call of onPreUpdate().
+   */
+  public function testSubmitUpdateFormNoUpdateValues(): void {
+    $actionMock = $this->createActionMock(RemoteSubmitUpdateFormAction::class);
+    $actionMock->setId(12);
+    $formData = ['foo' => 'bar', 'bar' => 'baz'];
+    $actionMock->setData($formData);
+
+    $entityValues = ['foo' => 'f', 'bar' => 'b'];
+    $entityFields = [
+      'foo' => ['name' => 'foo'],
+      'bar' => ['name' => 'bar'],
+    ];
+
+    $this->mockGetSelectFieldNames(['foo', 'bar']);
+    $this->mockIsUpdateGranted($entityValues, GrantResult::newPermitted());
+
+    $this->mockApi4Execute('Entity', 'get', [
+      'select' => ['foo', 'bar'],
+      'join' => [],
+      'where' => [['id', '=', 12]],
+      'checkPermissions' => FALSE,
+    ], new Result([$entityValues]));
+
+    $this->mockApi4Execute('Entity', 'getFields', [
+      'loadOptions' => FALSE,
+      'values' => ['id' => 12],
+      'checkPermissions' => FALSE,
+    ], new Result(array_values($entityFields)));
+
+    $formSpec = new FormSpec('Title');
+    $formSpec->addElement(new TextField('foo', 'Foo'));
+    $formSpec->addElement((new TextField('bar', 'Bar'))->setReadOnly(TRUE));
+
+    $this->profileMock->method('getUpdateFormSpec')
+      ->with($entityValues, $entityFields, self::RESOLVED_CONTACT_ID)
+      ->willReturn($formSpec);
+
+    $validatorMock = $this->createMock(ValidatorInterface::class);
+    $formSpec->appendValidator($validatorMock);
+    $validatorMock->expects(static::once())->method('validate')
+      ->with($formData, $entityValues, self::RESOLVED_CONTACT_ID)
+      ->willReturn(ValidationResult::new());
+
+    // Read only field "bar" should be dropped.
+    $dataTransformerMock = $this->createMock(DataTransformerInterface::class);
+    $dataTransformerMock->expects(static::once())->method('toEntityValues')
+      ->with(['foo' => 'bar'], $entityValues, self::RESOLVED_CONTACT_ID)
+      ->willReturn(['foo' => 'bar2']);
+    $formSpec->setDataTransformer($dataTransformerMock);
+
+    $this->profileMock->expects(static::once())->method('onPreUpdate')
+      ->with(['foo' => 'bar2'], $entityValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID)
+      ->willReturnCallback(function (array &$newValues) {
+        $newValues = [];
+      });
+
+    $this->api4Mock->expects(static::never())->method('updateEntity');
+
+    $newEntityValues = $entityValues;
+    $this->profileMock->expects(static::once())->method('onPostUpdate')
+      ->with($newEntityValues, $entityValues, $entityFields, $formSpec, self::RESOLVED_CONTACT_ID);
+
+    $this->profileMock->method('getSaveSuccessMessage')
+      ->with($newEntityValues, $entityValues, $formData, self::RESOLVED_CONTACT_ID)
+      ->willReturn('Ok');
+
+    static::assertSame(['message' => 'Ok'], $this->handler->submitUpdateForm($actionMock));
+  }
+
+  /**
    * Intersection types are not supported by phpstan in template.
    *
    * @template T of \Civi\Api4\Generic\AbstractAction //&\Civi\RemoteTools\Api4\Action\RemoteActionInterface
