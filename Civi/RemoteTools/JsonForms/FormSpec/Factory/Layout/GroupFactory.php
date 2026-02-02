@@ -47,10 +47,10 @@ final class GroupFactory extends AbstractConcreteElementUiSchemaFactory {
     );
 
     if ($element->isCollapsible()) {
-      return new JsonFormsCloseableGroup($element->getTitle(), $elements, $element->getDescription());
+      return new JsonFormsCloseableGroup($element->getTitle() ?? '', $elements, $element->getDescription());
     }
 
-    return new JsonFormsGroup($element->getTitle(), $elements, $element->getDescription());
+    return new JsonFormsGroup($element->getTitle() ?? '', $elements, $element->getDescription());
   }
 
 }

@@ -28,6 +28,24 @@ interface FormElementInterface {
 
   public function getType(): string;
 
+  public function addCssClass(string $cssClass): static;
+
+  public function hasCssClass(string $cssClass): bool;
+
+  public function removeCssClass(string $cssClass): static;
+
+  /**
+   * @return list<string>
+   *   CSS classes that will be set when rendered to HTML.
+   */
+  public function getCssClasses(): array;
+
+  /**
+   * @param list<string> $cssClasses
+   *   CSS classes that will be set when rendered to HTML.
+   */
+  public function setCssClasses(array $cssClasses): static;
+
   public function getRule(): ?FormRule;
 
   /**

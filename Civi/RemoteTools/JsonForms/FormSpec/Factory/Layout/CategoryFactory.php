@@ -45,7 +45,7 @@ final class CategoryFactory extends AbstractConcreteElementUiSchemaFactory {
       $element->getElements()
     );
 
-    return new JsonFormsCategory($element->getTitle(), $elements, $element->getDescription());
+    return new JsonFormsCategory($element->getTitle() ?? '', $elements, $element->getDescription());
   }
 
 }

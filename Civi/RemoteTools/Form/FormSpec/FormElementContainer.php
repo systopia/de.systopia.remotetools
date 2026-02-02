@@ -36,7 +36,7 @@ class FormElementContainer extends AbstractFormElementContainer implements FormE
 
   private ?string $description;
 
-  public function __construct(string $title, array $elements = [], ?string $description = NULL) {
+  public function __construct(?string $title = NULL, array $elements = [], ?string $description = NULL) {
     parent::__construct($title, $elements);
     $this->description = $description;
   }

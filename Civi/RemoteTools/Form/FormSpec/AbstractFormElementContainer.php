@@ -20,6 +20,7 @@ declare(strict_types = 1);
 namespace Civi\RemoteTools\Form\FormSpec;
 
 use Civi\RemoteTools\Form\FormSpec\Button\SubmitButton;
+use Civi\RemoteTools\Form\FormSpec\Traits\CssClassesTrait;
 
 /**
  * @template T of FormElementInterface
@@ -28,7 +29,9 @@ use Civi\RemoteTools\Form\FormSpec\Button\SubmitButton;
  */
 abstract class AbstractFormElementContainer {
 
-  private string $title;
+  use CssClassesTrait;
+
+  private ?string $title;
 
   /**
    * @phpstan-var list<T>
@@ -38,19 +41,19 @@ abstract class AbstractFormElementContainer {
   /**
    * @phpstan-param list<T> $elements
    */
-  public function __construct(string $title, array $elements = []) {
+  public function __construct(?string $title = NULL, array $elements = []) {
     $this->title = $title;
     $this->elements = $elements;
   }
 
-  public function getTitle(): string {
+  public function getTitle(): ?string {
     return $this->title;
   }
 
   /**
    * @return $this
    */
-  public function setTitle(string $title): static {
+  public function setTitle(?string $title): static {
     $this->title = $title;
 
     return $this;
