@@ -3,23 +3,18 @@ includes:
 
 parameters:
 	scanDirectories:
-		- ci/vendor/civicrm/civicrm-core/api
-		- ci/vendor/civicrm/civicrm-core/CRM
-		- ci/vendor/civicrm/civicrm-packages/HTML
+		- vendor/civicrm/civicrm-core/api
+		- vendor/civicrm/civicrm-core/CRM
+		- vendor/civicrm/civicrm-packages/HTML
 	bootstrapFiles:
-		- ci/vendor/autoload.php
-	# Because we test with different versions in CI we have unmatched errors
+		- vendor/autoload.php
+	# Because we test with different versions in CI we may have unmatched errors.
 	reportUnmatchedIgnoredErrors: false
 	ignoreErrors:
-		# This error appears in CI for unknown reason...
-		- '#^Call to an undefined method CRM_Remotetools_Form_Settings::setDefaults\(\).$#'
 		# Errors we get when using "prefer-lowest"
+
+		# Required with symfony/event-dispatcher <4.4.27
 		- '#::getSubscribedEvents\(\) return type has no value type specified in iterable type array.$#'
-		- '#Call to deprecated method assertArraySubset\(\)#'
-		# Can be dropped once CiviCRM 5.63 is minimum requirement.
-		- '/^Parameter #2 \$event of method Civi\\Core\\CiviEventDispatcherInterface::dispatch\(\) expects Civi\\Core\\Event\|null, Civi\\RemoteContact\\.+ given.$/'
-		# Can be dropped once CiviCRM 5.68 is minimum requirement.
-		- '#^Static method CRM_Utils_File::makeFileName\(\) invoked with 2 parameters, 1 required.$#'
 
 		# Required with CiviCRM <6.3 because the return type hint changed from string to ?string.
 		-

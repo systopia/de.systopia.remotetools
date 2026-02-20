@@ -17,20 +17,16 @@ declare(strict_types = 1);
 
 use Civi\Test\Api3TestTrait;
 use Civi\Test\HeadlessInterface;
-use Civi\Test\HookInterface;
 use Civi\Test\TransactionalInterface;
-
 use CRM_Remotetools_ExtensionUtil as E;
+use PHPUnit\Framework\TestCase;
 
 /**
  * This is the test base class with lots of utility functions
  *
  * @group headless
  */
-abstract class CRM_Remotetools_TestBase extends \PHPUnit\Framework\TestCase implements
-    HeadlessInterface,
-    HookInterface,
-    TransactionalInterface {
+abstract class CRM_Remotetools_TestBase extends TestCase implements HeadlessInterface, TransactionalInterface {
   use Api3TestTrait {
     callAPISuccess as protected traitCallAPISuccess;
   }

@@ -20,13 +20,23 @@
     },
     "require": {
         "php": "^8.1",
+        "civicrm/civicrm-core": ">=5.76",
+        "civicrm/civicrm-packages": ">=5.76",
         "symfony/html-sanitizer": ">=6",
         "symfony/mime": ">=4.4",
+        "systopia/de.systopia.identitytracker": "^1.5",
+        "systopia/de.systopia.xcm": "^1.15",
         "systopia/expression-language-ext": "~0.1",
-        "systopia/opis-json-schema-ext": "~0.4",
+        "systopia/opis-json-schema-ext": "~0.6 >=0.6.2",
         "webmozart/assert": "^1.11"
     },
+    "autoload": {
+      "classmap": ["ComposerHelper.php"]
+    },
     "scripts": {
+        "pre-update-cmd": [
+            "Remotetools\\ComposerHelper::preUpdate"
+        ],
         "composer-phpcs": [
             "@composer --working-dir=tools/phpcs"
         ],
@@ -62,6 +72,9 @@
     "require-dev": {
         "psr/simple-cache": "^1 || ^2 || ^3",
         "symfony/event-dispatcher-contracts": "^1 || ^2 || ^3"
+    },
+    "conflict": {
+        "pear/mail_mime": "<1.10.2"
     },
     "extra": {
         "branch-alias": {

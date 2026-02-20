@@ -8,6 +8,7 @@ parameters:
 		- managed
 		- services
 		- tests
+		- remotetools.php
 	excludePaths:
 		analyse:
 			- CRM/Remotetools/CustomData.php
@@ -18,6 +19,7 @@ parameters:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
+		- mixin
 		- ../de.systopia.identitytracker/CRM
 		- ../de.systopia.xcm/CRM
 	bootstrapFiles:
@@ -29,8 +31,10 @@ parameters:
 		- CRM_Core_Config
 		- CRM_Core_DAO
 	earlyTerminatingMethodCalls:
+		CRM_Utils_System:
+			- civiExit
 		CRM_Queue_Runner:
-		  - runAllViaWeb
+			- runAllViaWeb
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true

@@ -46,7 +46,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
   /**
    * Add the profile's fields to the fields collection
    *
-   * @param $fields_collection GetFieldsEvent
+   * @param \Civi\RemoteContact\GetFieldsEvent $fields_collection
    */
   public function addFields($fields_collection) {
     // implement this to add your fields
@@ -55,7 +55,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
   /**
    * Initialise the profile. This is a good place to do some sanity checks
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    *
    */
@@ -66,7 +66,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
   /**
    * Is this profile suitable for the RemoteContat.get_self method?
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    *
    * @return boolean
@@ -81,14 +81,14 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * Make sure that the sorting works,
    *  e.g. by translating custom fields
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    */
   public function adjustSorting($request) {
     $field_mapping = $this->getExternalToInternalFieldMapping();
     $old_sorting_tuples = $request->getSorting();
     $new_sorting_tuples = [];
-    foreach ($old_sorting_tuples as list($field_name, $order)) {
+    foreach ($old_sorting_tuples as [$field_name, $order]) {
       if (isset($field_mapping[$field_name])) {
         $new_sorting_tuples[] = [$field_mapping[$field_name], $order];
       }
@@ -104,7 +104,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * Get the list of (internal) fields to be returned.
    *  This can be overwritten by the profile
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    *
    * @return array
@@ -118,7 +118,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * If the profile wants to restrict any fields
    *  This is meant to be overwritten by the profile
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    *
    * @param array $request_data
@@ -134,7 +134,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *  the internal ones,
    *   e.g. ['my_super_field' => 'custom_23']
    *
-   * @return array
+   * @return array<string, string>
    *   [external field name => internal field name]
    */
   public function getExternalToInternalFieldMapping() {
@@ -146,7 +146,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *  the internal ones,
    *   e.g. ['custom_23' => 'my_super_field']
    *
-   * @return array
+   * @return array<string, string>
    *   [external field name => internal field name]
    */
   public function getInternalToExternalFieldMapping() {
@@ -202,7 +202,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
   /**
    * This is a point where the profile can re-format the results
    *
-   * @param $request RemoteContactGetRequest
+   * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    *
    * @param array $reply_records

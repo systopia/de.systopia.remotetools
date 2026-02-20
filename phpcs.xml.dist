@@ -8,6 +8,7 @@
     <file>CRM</file>
     <file>tests</file>
     <file>services</file>
+    <file>remotetools.php</file>
 
     <exclude-pattern>/CRM/Remotetools/DAO/.*\.php$</exclude-pattern>
     <exclude-pattern>CRM/Remotetools/CustomData.php</exclude-pattern>
