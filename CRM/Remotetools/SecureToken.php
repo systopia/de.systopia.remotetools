@@ -16,6 +16,7 @@
 declare(strict_types = 1);
 
 use CRM_Remotetools_ExtensionUtil as E;
+use Webmozart\Assert\Assert;
 
 /**
  * SecureToken function to be used in links
@@ -28,18 +29,20 @@ class CRM_Remotetools_SecureToken {
   /**
    * Generic token generation with payload
    *
-   * @param mixed $payload
-   *   any serialisable data
+   * @phpstan-param mixed $payload
+   *   any serializable data
    *
-   * @param string $hash_key to be used
+   * @param string $hashKey to be used
    *
    * @return string
    *   token (URL proof)
    */
-  public static function generateToken($payload, $hash_key) {
-    $encoded_raw_payload = base64_encode(json_encode($payload));
-    $signature = substr(hash('sha512', $encoded_raw_payload . $hash_key), 0, self::SIGNATURE_LENGTH);
-    return "{$encoded_raw_payload}-{$signature}";
+  public static function generateToken(mixed $payload, string $hashKey): string {
+    $payloadJson = json_encode($payload);
+    Assert::string($payloadJson);
+    $encodedRawPayload = base64_encode($payloadJson);
+    $signature = substr(hash('sha512', $encodedRawPayload . $hashKey), 0, self::SIGNATURE_LENGTH);
+    return "{$encodedRawPayload}-{$signature}";
   }
 
   /**
@@ -115,7 +118,7 @@ class CRM_Remotetools_SecureToken {
    *   return the entity ID if the token is valid and has not expired
    */
   public static function decodeEntityToken($entity_name, $token, $usage = NULL) {
-    list($encoded_raw_payload, $signature) = explode('-', $token, 2);
+    [$encoded_raw_payload, $signature] = explode('-', $token, 2);
     $payload = json_decode(base64_decode($encoded_raw_payload), TRUE);
 
     // verify payload
@@ -172,7 +175,7 @@ class CRM_Remotetools_SecureToken {
    *   is the token valid?
    */
   public static function verifySignature($token, $hash_key) {
-    list($encoded_raw_payload, $signature) = explode('-', $token, 2);
+    [$encoded_raw_payload, $signature] = explode('-', $token, 2);
     $expected_signature = substr(hash('sha512', $encoded_raw_payload . $hash_key), 0, self::SIGNATURE_LENGTH);
     return $signature == $expected_signature;
   }
