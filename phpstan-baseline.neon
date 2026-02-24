@@ -258,32 +258,14 @@ parameters:
 			path: CRM/Remotetools/RemoteContactProfile.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:adjustSorting\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:adjustSorting\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:applyRestrictions\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:applyRestrictions\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile.php
 
@@ -306,38 +288,14 @@ parameters:
 			path: CRM/Remotetools/RemoteContactProfile.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getAvailableProfiles\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getExternalToInternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getInternalToExternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getProfileList\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:getReturnFields\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile.php
 
@@ -350,18 +308,6 @@ parameters:
 		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:initProfile\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile\:\:isOwnDataProfile\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile.php
 
@@ -408,20 +354,8 @@ parameters:
 			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:applyRestrictions\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:applyRestrictions\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
 
@@ -444,18 +378,6 @@ parameters:
 			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
 
 		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:getReturnFields\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:getReturnFields\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -464,18 +386,6 @@ parameters:
 		-
 			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:initProfile\(\) has no return type specified\.$#'
 			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName\:\:isOwnDataProfile\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: CRM/Remotetools/RemoteContactProfile/OwnFirstNameLastName.php
 
@@ -1338,48 +1248,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: tests/phpunit/CRM/Remotetools/MultivalueCustomFieldsTest.php
-
-		-
-			message: '#^Cannot access offset ''values'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:addFields\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:addFields\(\) has parameter \$fields_collection with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactProfile@anonymous/tests/phpunit/CRM/Remotetools/RemoteContactTestBase\.php\:107\:\:getExternalToInternalFieldMapping\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactTestBase\:\:remoteContactQuery\(\) has parameter \$query with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Method CRM_Remotetools_RemoteContactTestBase\:\:remoteContactQuery\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
-
-		-
-			message: '#^Property CRM_Remotetools_RemoteContactTestBase\:\:\$known_profiles type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: tests/phpunit/CRM/Remotetools/RemoteContactTestBase.php
 
 		-
 			message: '#^Cannot access offset ''id'' on array\|int\.$#'

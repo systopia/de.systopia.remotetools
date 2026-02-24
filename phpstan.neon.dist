@@ -8,6 +8,7 @@ parameters:
 		- managed
 		- services
 		- tests
+		- remotetools.php
 	excludePaths:
 		analyse:
 			- CRM/Remotetools/CustomData.php
@@ -18,6 +19,7 @@ parameters:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
+		- mixin
 		- ../de.systopia.identitytracker/CRM
 		- ../de.systopia.xcm/CRM
 	bootstrapFiles:
@@ -29,8 +31,10 @@ parameters:
 		- CRM_Core_Config
 		- CRM_Core_DAO
 	earlyTerminatingMethodCalls:
+		CRM_Utils_System:
+			- civiExit
 		CRM_Queue_Runner:
-		  - runAllViaWeb
+			- runAllViaWeb
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
@@ -50,11 +54,6 @@ parameters:
 		-
 			path: */Civi/RemoteTools/Api4/Action/Traits/*
 			identifier: trait.unused
-
-		# Required because of polyfill implementation in
-		# vendor/civicrm/civicrm-packages/kcfinder/core/bootstrap.php
-		# that only has one parameter.
-		- '#^Function json_encode invoked with 2 parameters, 1 required.$#'
 
 		- '#^Method Civi\\RemoteTools\\Form\\FormSpec\\FieldDataTransformerInterface<[^>]+>::toEntityValue\(\) invoked with 3 parameters, 2 required.$#'
 		- '#^Method .+::toEntityValue\(\) has parameter \$defaultValuesInList with no value type specified in iterable type array.$#'

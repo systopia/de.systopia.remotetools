@@ -16,24 +16,13 @@
 declare(strict_types = 1);
 
 use Civi\RemoteContact\GetRemoteContactProfiles;
-use Civi\Test\Api3TestTrait;
-use Civi\Test\HeadlessInterface;
-use Civi\Test\HookInterface;
-use Civi\Test\TransactionalInterface;
-use CRM_Remotetools_ExtensionUtil as E;
 
 /**
  * This is the test base class with lots of utility functions
  *
  * @group headless
  */
-abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_TestBase implements
-    HeadlessInterface,
-    HookInterface,
-    TransactionalInterface {
-  use Api3TestTrait {
-    callAPISuccess as protected traitCallAPISuccess;
-  }
+abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_TestBase {
 
   /**
    * Run a RemoteContact.get query
@@ -41,17 +30,22 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
    * @param string $profile name
    *   the profile name (required)
    *
-   * @param array $query
+   * @param array<string, mixed> $query
    *   the query parameters
+   *
+   * @return array<int, array<string, mixed>>
    */
   public function remoteContactQuery(string $profile, array $query = []): array {
     $query['profile'] = $profile;
+    /** @var array{values: array<int, array<string, mixed>>} $result */
     $result = $this->traitCallAPISuccess('RemoteContact', 'get', $query);
     return $result['values'];
   }
 
   /**
-   * @var array list of known profiles to be used with registerRemoteContactProfile */
+   * @var array<string, \CRM_Remotetools_RemoteContactProfile>
+   *   list of known profiles to be used with registerRemoteContactProfile
+   */
   private static array $known_profiles = [];
 
   /**
@@ -110,7 +104,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
             return 'testMultiValueCustomProfile';
           }
 
-          public function addFields($fields_collection) {
+          public function addFields($fields_collection): void {
             $fields_collection->setFieldSpec(
                 'id',
                 [
