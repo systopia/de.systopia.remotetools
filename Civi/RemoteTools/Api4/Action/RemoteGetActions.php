@@ -29,7 +29,7 @@ final class RemoteGetActions extends GetActions {
   /**
    * @phpstan-return array{}
    */
-  public function entityFields() {
+  public function entityFields(?string $entityName = NULL, ?string $actionName = NULL) {
     // Probably required because we do not pass the isInternal flag
     // in RemoteGetFields::run_() ...
     return [];
