@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\Helper;
 use Civi\Core\Transaction\Manager as TransactionManager;
 use Civi\RemoteTools\Api4\Api4Interface;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
+use CRM_Remotetools_ExtensionUtil as E;
 
 final class FilePersister implements FilePersisterInterface {
 
@@ -46,25 +47,29 @@ final class FilePersister implements FilePersisterInterface {
   }
 
   public function persistFile(string $filename, string $content, ?string $description, ?int $contactId): int {
-    $safeFilename = \CRM_Utils_File::makeFileName($filename, TRUE);
-    /** @var string $customFileUploadDir */
-    // Since CiviCRM 6.1 this property is type hinted, so this can be reduced to a single line sometime in the future.
     $customFileUploadDir = $this->config->customFileUploadDir;
-    $filePath = $customFileUploadDir . $safeFilename;
 
+    $tmpFile = tempnam(sys_get_temp_dir(), E::SHORT_NAME);
     $this->transactionManager->getBaseFrame()->addCallback(
       \CRM_Core_Transaction::PHASE_PRE_ROLLBACK,
-      fn() => !file_exists($filePath) || @unlink($filePath)
+      fn() => !file_exists($tmpFile) || @unlink($tmpFile)
     );
+    file_put_contents($tmpFile, $content);
 
-    file_put_contents($filePath, $content);
     $fileValues = $this->api4->createEntity('File', [
-      'uri' => $safeFilename,
-      'mime_type' => $this->mimeTypeGuesser->guessMimeType($filePath) ?? 'application/octet-stream',
+      'file_name' => $filename,
+      'move_file' => $tmpFile,
+      'mime_type' => $this->mimeTypeGuesser->guessMimeType($tmpFile) ?? 'application/octet-stream',
       'created_id' => $contactId,
       'upload_date' => date('Y-m-d H:i:s'),
       'description' => $description,
     ])->single();
+
+    $civiFilePath = $customFileUploadDir . '/' . $fileValues['uri'];
+    $this->transactionManager->getBaseFrame()->addCallback(
+      \CRM_Core_Transaction::PHASE_PRE_ROLLBACK,
+      fn() => !is_file($civiFilePath) || @unlink($civiFilePath)
+    );
 
     return $fileValues['id'];
   }
