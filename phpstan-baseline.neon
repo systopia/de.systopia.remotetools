@@ -492,6 +492,12 @@ parameters:
 			path: CRM/Remotetools/SecureToken.php
 
 		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: CRM/Remotetools/SecureToken.php
+
+		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 4
