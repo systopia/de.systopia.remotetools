@@ -25,8 +25,8 @@ use SebastianBergmann\Exporter\Exporter;
 trait ArrayAssertTrait {
 
   /**
-   * @phpstan-param array<mixed> $expected
-   * @phpstan-param array<mixed> $actual
+   * @param array<scalar|null> $expected
+   * @param array<scalar|null> $actual
    */
   public static function assertArrayHasAllValues(array $expected, array $actual): void {
     $missingValues = array_diff($expected, $actual);
@@ -37,7 +37,7 @@ trait ArrayAssertTrait {
   }
 
   /**
-   * @phpstan-param array<int|string> $expectedKeys
+   * @param array<int|string> $expectedKeys
    * @param mixed[] $actual
    */
   public static function assertArrayHasSameKeys(array $expectedKeys, array $actual): void {
@@ -48,8 +48,8 @@ trait ArrayAssertTrait {
   }
 
   /**
-   * @param mixed[] $expected
-   * @param mixed[] $actual
+   * @param array<scalar|null> $expected
+   * @param array<scalar|null> $actual
    */
   public static function assertArrayHasSameValues(array $expected, array $actual): void {
     foreach (array_unique($expected, SORT_REGULAR) as $expectedValue) {

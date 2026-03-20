@@ -54,6 +54,7 @@ final class LimitValidationSchemaFactory {
           break;
 
         case '!=':
+          // @phpstan-ignore offsetAccess.nonOffsetAccessible
           $properties[$fieldName]['not']['const'] = $value;
           break;
 
@@ -110,6 +111,7 @@ final class LimitValidationSchemaFactory {
             throw new \InvalidArgumentException('Expected array for operator "NOT IN", got ' . gettype($value));
           }
 
+          // @phpstan-ignore offsetAccess.nonOffsetAccessible
           $properties[$fieldName]['not']['enum'] = $value;
           break;
 
