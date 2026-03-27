@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadOnlyEntityProfile;
 use Civi\RemoteTools\EntityProfile\TestRemoteGroupReadWriteEntityProfile;
+use Civi\RemoteTools\Helper\FilePersister;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -44,6 +45,9 @@ function _remotetools_test_civicrm_container(ContainerBuilder $container): void 
 
   $container->autowire(TestRemoteGroupReadWriteEntityProfile::class)
     ->addTag(TestRemoteGroupReadWriteEntityProfile::SERVICE_TAG);
+
+  $container->autowire(FilePersister::class . '.test', FilePersister::class)
+    ->setPublic(TRUE);
 }
 
 function addExtensionToClassLoader(string $extension): void {
