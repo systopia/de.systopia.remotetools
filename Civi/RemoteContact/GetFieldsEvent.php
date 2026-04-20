@@ -31,13 +31,13 @@ use Civi\RemoteToolsRequest;
 class GetFieldsEvent extends RemoteToolsRequest {
   /**
    * @var array holds the list of the RemoteContact.get field specs */
-  protected $field_specs;
+  protected array $field_specs;
 
   /**
    * @var \CRM_Remotetools_RemoteContactProfile caches the profile involved */
-  protected $profile = NULL;
+  protected ?\CRM_Remotetools_RemoteContactProfile $profile = NULL;
 
-  public function __construct($request) {
+  public function __construct(array $request) {
     parent::__construct($request);
     $this->field_specs = [];
   }
@@ -48,7 +48,7 @@ class GetFieldsEvent extends RemoteToolsRequest {
    * @return array
    *   the key => spec list
    */
-  public function getFieldSpecs() {
+  public function getFieldSpecs(): array {
     return $this->field_specs;
   }
 
@@ -60,7 +60,7 @@ class GetFieldsEvent extends RemoteToolsRequest {
    * @param array $spec
    *   the field spec
    */
-  public function setFieldSpec($field_name, $spec) {
+  public function setFieldSpec(string $field_name, array $spec): void {
     $this->field_specs[$field_name] = $spec;
   }
 
@@ -70,7 +70,7 @@ class GetFieldsEvent extends RemoteToolsRequest {
    * @param string $field_name
    *   the field name
    */
-  public function removeFieldSpec($field_name) {
+  public function removeFieldSpec(string $field_name): void {
     unset($this->field_specs[$field_name]);
   }
 
@@ -79,7 +79,7 @@ class GetFieldsEvent extends RemoteToolsRequest {
    *
    * @return \CRM_Remotetools_RemoteContactProfile
    */
-  public function getProfile() {
+  public function getProfile(): ?\CRM_Remotetools_RemoteContactProfile {
     if ($this->profile === NULL) {
       $profile_name = $this->getRequestParameter('profile');
       if (empty($profile_name)) {
@@ -101,7 +101,7 @@ class GetFieldsEvent extends RemoteToolsRequest {
    * @param $fields_collection GetFieldsEvent
    *   the request to execute
    */
-  public static function addProfileFields($fields_collection) {
+  public static function addProfileFields(GetFieldsEvent $fields_collection): void {
     if (!$fields_collection->hasErrors()) {
       $profile = $fields_collection->getProfile();
       if ($profile) {
