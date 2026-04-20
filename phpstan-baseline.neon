@@ -1256,12 +1256,6 @@ parameters:
 			path: tests/phpunit/CRM/Remotetools/MultivalueCustomFieldsTest.php
 
 		-
-			message: '#^Cannot access offset ''id'' on array\|int\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: tests/phpunit/CRM/Remotetools/TestBase.php
-
-		-
 			message: '#^Cannot access offset string on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
