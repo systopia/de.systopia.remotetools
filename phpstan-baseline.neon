@@ -922,12 +922,6 @@ parameters:
 			path: api/v3/RemoteContact/Getfields.php
 
 		-
-			message: '#^Implicit array creation is not allowed \- variable \$fields does not exist\.$#'
-			identifier: variable.implicitArray
-			count: 1
-			path: api/v3/RemoteContact/Getfields.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 3

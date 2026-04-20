@@ -73,6 +73,7 @@ function civicrm_api3_remote_contact_getfields(array $params): array {
   Civi::dispatcher()->dispatch('civi.remotecontact.getfields', $fields_collection);
 
   // set results and return
+  $fields = [];
   $fields['values'] = $fields_collection->getFieldSpecs();
   return $fields;
 }
