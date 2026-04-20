@@ -390,12 +390,6 @@ parameters:
 			path: CRM/Remotetools/SecureToken.php
 
 		-
-			message: '#^Casting to int something that''s already int\.$#'
-			identifier: cast.useless
-			count: 2
-			path: CRM/Remotetools/SecureToken.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 4

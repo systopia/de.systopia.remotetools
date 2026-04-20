@@ -192,11 +192,11 @@ class CRM_Remotetools_SecureToken {
   protected static function getContactHash(string $entity_name, int $entity_id) {
     // first, get the contact ID
     if (strtolower($entity_name) == 'contact') {
-      $contact_id = (int) $entity_id;
+      $contact_id = $entity_id;
     }
     else {
       // todo: add exeptions (like activity)?
-      $contact_id = (int) civicrm_api3($entity_name, 'getvalue', ['id' => (int) $entity_id, 'return' => 'contact_id']);
+      $contact_id = (int) civicrm_api3($entity_name, 'getvalue', ['id' => $entity_id, 'return' => 'contact_id']);
     }
 
     // now that we have the contact ID, we can get the hash
