@@ -100,7 +100,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
     $this->registerRemoteContactProfile(self::MULTI_VALUE_CUSTOM_PROFILE,
         new class() extends CRM_Remotetools_RemoteContactProfile {
 
-          public function getProfileID() {
+          public function getProfileID(): string {
             return 'testMultiValueCustomProfile';
           }
 

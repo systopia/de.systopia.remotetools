@@ -16,7 +16,9 @@
 declare(strict_types = 1);
 
 use CRM_Remotetools_ExtensionUtil as E;
+use Civi\RemoteContact\GetFieldsEvent;
 use Civi\RemoteContact\GetRemoteContactProfiles;
+use Civi\RemoteContact\RemoteContactGetRequest;
 
 /**
  * RemoteContactProfile:
@@ -30,7 +32,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return string
    *   profile ID
    */
-  abstract public function getProfileID();
+  abstract public function getProfileID(): string;
 
   /**
    * Get the profile's (human readable) name
@@ -38,7 +40,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return string
    *   profile ID
    */
-  public function getProfileName() {
+  public function getProfileName(): string {
     // please override
     return $this->getProfileID();
   }
@@ -48,7 +50,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *
    * @param \Civi\RemoteContact\GetFieldsEvent $fields_collection
    */
-  public function addFields($fields_collection) {
+  public function addFields(GetFieldsEvent $fields_collection): void {
     // implement this to add your fields
   }
 
@@ -59,7 +61,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *   the request to execute
    *
    */
-  public function initProfile($request) {
+  public function initProfile(RemoteContactGetRequest $request): void {
     // implement this to format the results before delivery
   }
 
@@ -72,7 +74,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return boolean
    *   does this profile only return the data of the caller?
    */
-  public function isOwnDataProfile($request) {
+  public function isOwnDataProfile(RemoteContactGetRequest $request): bool {
     // overwrite to make available to get_self
     return FALSE;
   }
@@ -84,7 +86,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @param \Civi\RemoteContact\RemoteContactGetRequest $request
    *   the request to execute
    */
-  public function adjustSorting($request) {
+  public function adjustSorting(RemoteContactGetRequest $request): void {
     $field_mapping = $this->getExternalToInternalFieldMapping();
     $old_sorting_tuples = $request->getSorting();
     $new_sorting_tuples = [];
@@ -109,7 +111,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *
    * @return array
    */
-  public function getReturnFields($request) {
+  public function getReturnFields(RemoteContactGetRequest $request): array {
     // get the list of fields this profile wants/needs
     return array_keys($this->getInternalToExternalFieldMapping());
   }
@@ -125,7 +127,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *    the request parameters, to be edited in place
    *
    */
-  public function applyRestrictions($request, &$request_data) {
+  public function applyRestrictions(RemoteContactGetRequest $request, array &$request_data): void {
     // implement this to apply any restrictions (e.g. contact attributes/IDs) to the request
   }
 
@@ -137,7 +139,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return array<string, string>
    *   [external field name => internal field name]
    */
-  public function getExternalToInternalFieldMapping() {
+  public function getExternalToInternalFieldMapping(): array {
     return [];
   }
 
@@ -149,7 +151,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return array<string, string>
    *   [external field name => internal field name]
    */
-  public function getInternalToExternalFieldMapping() {
+  public function getInternalToExternalFieldMapping(): array {
     return array_flip($this->getExternalToInternalFieldMapping());
   }
 
@@ -162,7 +164,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return array
    *   list of internal field names
    */
-  public function mapExternalFields($field_names) {
+  public function mapExternalFields(array $field_names): array {
     $internal_field_names = [];
     $mapping = $this->getExternalToInternalFieldMapping();
     foreach ($field_names as $field_name) {
@@ -185,7 +187,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return array
    *   list of external field names
    */
-  public function mapInternalFields($field_names) {
+  public function mapInternalFields(array $field_names): array {
     $external_field_names = [];
     $mapping = $this->getInternalToExternalFieldMapping();
     foreach ($field_names as $field_name) {
@@ -208,7 +210,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @param array $reply_records
    *    the current reply records to edit in-place
    */
-  public function filterResult($request, &$reply_records) {
+  public function filterResult(RemoteContactGetRequest $request, array &$reply_records): void {
     // implement this to format the results before delivery
   }
 
@@ -221,7 +223,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
   /**
    * Get all registered profiles
    */
-  public static function getAvailableProfiles() {
+  public static function getAvailableProfiles(): array {
     // trigger event
     $profile_search = new GetRemoteContactProfiles();
     Civi::dispatcher()->dispatch('civi.remotecontact.getprofiles', $profile_search);
@@ -238,7 +240,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return \CRM_Remotetools_RemoteContactProfile|null
    *   the profile
    */
-  public static function getProfileByName($profile_name) {
+  public static function getProfileByName(string $profile_name): ?\CRM_Remotetools_RemoteContactProfile {
     // trigger event
     $profile_search = new GetRemoteContactProfiles($profile_name);
     Civi::dispatcher()->dispatch('civi.remotecontact.getprofiles', $profile_search);
@@ -254,7 +256,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    *
    * @param \Civi\RemoteContact\GetRemoteContactProfiles $profiles
    */
-  public static function registerKnownProfiles($profiles) {
+  public static function registerKnownProfiles(GetRemoteContactProfiles $profiles): void {
     $known_profiles = [];
 
     foreach ($known_profiles as $name => $class) {
@@ -270,7 +272,7 @@ abstract class CRM_Remotetools_RemoteContactProfile {
    * @return array
    *   list of profile ID => name
    */
-  public static function getProfileList() {
+  public static function getProfileList(): array {
     $list = [];
 
     $profiles = self::getAvailableProfiles();
