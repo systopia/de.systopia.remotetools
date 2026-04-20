@@ -586,12 +586,6 @@ parameters:
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
 		-
-			message: '#^Method Civi\\RemoteToolsDispatcher\:\:addUniqueListener\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteToolsDispatcher.php
-
-		-
 			message: '#^Method Civi\\RemoteToolsDispatcher\:\:addUniqueListener\(\) has parameter \$listener with no signature specified for callable\.$#'
 			identifier: missingType.callable
 			count: 1

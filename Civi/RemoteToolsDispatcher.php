@@ -27,7 +27,7 @@ namespace Civi;
 class RemoteToolsDispatcher {
   /**
    * @var \Civi\Core\CiviEventDispatcherInterface */
-  protected $dispatcher;
+  protected \Civi\Core\CiviEventDispatcherInterface $dispatcher;
 
   public function __construct() {
     $this->dispatcher = \Civi::dispatcher();
@@ -41,7 +41,7 @@ class RemoteToolsDispatcher {
    * @param int $priority
    *                            listener will be triggered in the chain (defaults to 0)
    */
-  public function addUniqueListener($eventName, $listener, $priority = 0) {
+  public function addUniqueListener(string $eventName, callable $listener, int $priority = 0): void {
     // first remove to avoid duplicate registrations
     $this->dispatcher->removeListener($eventName, $listener);
 
