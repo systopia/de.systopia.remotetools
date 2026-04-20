@@ -22,7 +22,7 @@ use CRM_Remotetools_ExtensionUtil as E;
  */
 class CRM_Remotetools_Form_Settings extends CRM_Core_Form {
 
-  public function buildQuickForm() {
+  public function buildQuickForm(): void {
     $this->setTitle(E::ts('CiviRemote Configuration'));
 
     // add form elements
@@ -70,7 +70,7 @@ class CRM_Remotetools_Form_Settings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
-  public function postProcess() {
+  public function postProcess(): void {
     // store values
     $values = $this->exportValues();
     Civi::settings()->set('remotecontact_matching_enabled',

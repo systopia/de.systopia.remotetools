@@ -204,18 +204,6 @@ parameters:
 			path: CRM/Remotetools/DataTools.php
 
 		-
-			message: '#^Method CRM_Remotetools_Form_Settings\:\:buildQuickForm\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Form/Settings.php
-
-		-
-			message: '#^Method CRM_Remotetools_Form_Settings\:\:postProcess\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Form/Settings.php
-
-		-
 			message: '#^Empty array passed to foreach\.$#'
 			identifier: foreach.emptyArray
 			count: 1
