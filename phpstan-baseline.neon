@@ -36,12 +36,6 @@ parameters:
 			path: CRM/Remotetools/Contact.php
 
 		-
-			message: '#^Method CRM_Remotetools_Contact\:\:storeRemoteKey\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Contact.php
-
-		-
 			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
 			identifier: booleanNot.exprNotBoolean
 			count: 2
