@@ -15,6 +15,8 @@
 
 declare(strict_types = 1);
 
+use Civi\RemoteContact\RemoteContactGetRequest;
+
 /**
  * RemoteContact: exchange contact data with a remote system
  */
@@ -26,7 +28,7 @@ class CRM_Remotetools_RemoteContactQueryTools {
    * @param $request RemoteContactGetRequest
    *   the request to execute
    */
-  public static function processMultivalueOrSearch($request) {
+  public static function processMultivalueOrSearch(RemoteContactGetRequest $request): void {
     // if there is already an error, we do nothing
     if ($request->hasErrors()) {
       return;
@@ -97,7 +99,7 @@ class CRM_Remotetools_RemoteContactQueryTools {
    *     'values'                   => the query
    *
    */
-  protected static function extractMutltivalueSQLQueries($multivalue_search_or_queries, $request) {
+  protected static function extractMutltivalueSQLQueries(array $multivalue_search_or_queries, RemoteContactGetRequest $request): array {
     // here we will store the extracted queries
     $extracted_queries = [];
 
@@ -159,7 +161,7 @@ class CRM_Remotetools_RemoteContactQueryTools {
    * @param $request RemoteContactGetRequest
    *   the request
    */
-  protected static function applySqlQueries($sql_queries, $request) {
+  protected static function applySqlQueries(array $sql_queries, RemoteContactGetRequest $request): void {
     // todo: is there already a id restriction?
     // todo: maybe later we'll also have an 'OR' mode
     $SQL_WHERE_PART_JOIN = ' AND ';
