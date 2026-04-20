@@ -71,12 +71,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    * @param \CRM_Remotetools_RemoteContactProfile $instance
    */
   public function addInstance(\CRM_Remotetools_RemoteContactProfile $instance): void {
-    if ($instance instanceof \CRM_Remotetools_RemoteContactProfile) {
-      $this->profile_instances[] = $instance;
-    }
-    else {
-      throw new \Exception('Provided instance not of class CRM_Remotetools_RemoteContactProfile');
-    }
+    $this->profile_instances[] = $instance;
   }
 
   /**

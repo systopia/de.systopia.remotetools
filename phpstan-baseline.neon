@@ -515,17 +515,6 @@ parameters:
 			path: Civi/RemoteContact/GetFieldsEvent.php
 
 		-
-			message: '#^Do not throw the \\Exception base class\.$#'
-			count: 1
-			path: Civi/RemoteContact/GetRemoteContactProfiles.php
-
-		-
-			message: '#^Instanceof between CRM_Remotetools_RemoteContactProfile and CRM_Remotetools_RemoteContactProfile will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: Civi/RemoteContact/GetRemoteContactProfiles.php
-
-		-
 			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
 			identifier: notEqual.notAllowed
 			count: 1
