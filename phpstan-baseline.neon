@@ -60,14 +60,20 @@ parameters:
 			path: CRM/Remotetools/ContactRoles.php
 
 		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 1
+			path: CRM/Remotetools/ContactRoles.php
+
+		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
 			path: CRM/Remotetools/ContactRoles.php
 
 		-
-			message: '#^Method CRM_Remotetools_ContactRoles\:\:addRoles\(\) has parameter \$role_names with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^Method CRM_Remotetools_ContactRoles\:\:addRoles\(\) has parameter \$role_names with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
 			count: 1
 			path: CRM/Remotetools/ContactRoles.php
 
