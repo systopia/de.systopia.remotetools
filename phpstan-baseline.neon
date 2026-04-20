@@ -425,18 +425,6 @@ parameters:
 			path: CRM/Remotetools/Upgrader.php
 
 		-
-			message: '#^Method CRM_Remotetools_Upgrader\:\:disable\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Upgrader.php
-
-		-
-			message: '#^Method CRM_Remotetools_Upgrader\:\:install\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: CRM/Remotetools/Upgrader.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
