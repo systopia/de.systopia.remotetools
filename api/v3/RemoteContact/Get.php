@@ -22,13 +22,13 @@ use Civi\RemoteContact\RemoteContactGetRequest;
  * RemoteContact.get implementation,
  *  analogous to Contact.get, but requiring the remote_contact_id parameter
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *   API call parameters
  *
- * @return array
+ * @return array<string, mixed>
  *   API3 response
  */
-function civicrm_api3_remote_contact_get($params) {
+function civicrm_api3_remote_contact_get(array $params): array {
   unset($params['check_permissions']);
 
   // create Symfony execution event

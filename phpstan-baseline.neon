@@ -694,96 +694,30 @@ parameters:
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
 		-
-			message: '#^Identical\: Possible insane comparison between null and CRM_Remotetools_RemoteContactProfile\.$#'
-			identifier: voku.Identical
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
 			message: '#^In method "Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest", caught "Exception" must be rethrown\. Either catch a more specific exception, add a "throw" clause in the "catch" block to propagate the exception or add a "// @ignoreException" comment\.$#'
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:addProfileRequirements\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:addProfileRequirements\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:executeRequest\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:filterResult\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:filterResult\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:getProfile\(\) should return CRM_Remotetools_RemoteContactProfile but returns CRM_Remotetools_RemoteContactProfile\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:initProfile\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:initProfile\(\) has parameter \$request with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:isSelfRequest\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:setSelfRequest\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Civi/RemoteContact/RemoteContactGetRequest.php
-
-		-
-			message: '#^Method Civi\\RemoteContact\\RemoteContactGetRequest\:\:setSelfRequest\(\) has parameter \$is_self_request with no type specified\.$#'
-			identifier: missingType.parameter
 			count: 1
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
 		-
 			message: '#^Only booleans are allowed in a negated boolean, CRM_Remotetools_RemoteContactProfile\|null given\.$#'
 			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, CRM_Remotetools_RemoteContactProfile\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 3
+			path: Civi/RemoteContact/RemoteContactGetRequest.php
+
+		-
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$reply \(array\) does not accept array\|int\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
 
 		-
-			message: '#^Property Civi\\RemoteContact\\RemoteContactGetRequest\:\:\$profile \(CRM_Remotetools_RemoteContactProfile\) does not accept CRM_Remotetools_RemoteContactProfile\|null\.$#'
+			message: '#^Property Civi\\RemoteToolsRequest\:\:\$result \(array\|null\) does not accept array\|int\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: Civi/RemoteContact/RemoteContactGetRequest.php
@@ -1077,44 +1011,14 @@ parameters:
 			path: Civi/RemoteToolsRequest.php
 
 		-
-			message: '#^Function civicrm_api3_remote_contact_get\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Get.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_get\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Get.php
-
-		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
 			identifier: empty.notAllowed
 			count: 1
 			path: api/v3/RemoteContact/GetRoles.php
 
 		-
-			message: '#^Function _civicrm_api3_remote_contact_get_roles_spec\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: api/v3/RemoteContact/GetRoles.php
-
-		-
-			message: '#^Function _civicrm_api3_remote_contact_get_roles_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/GetRoles.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_get_roles\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/GetRoles.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_get_roles\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^Parameter \#1 \$remote_key of static method CRM_Remotetools_Contact\:\:getByKey\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: api/v3/RemoteContact/GetRoles.php
 
@@ -1125,20 +1029,14 @@ parameters:
 			path: api/v3/RemoteContact/GetSelf.php
 
 		-
-			message: '#^Function civicrm_api3_remote_contact_get_self\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/GetSelf.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_get_self\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/GetSelf.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, CRM_Remotetools_RemoteContactProfile given\.$#'
+			message: '#^Only booleans are allowed in an if condition, CRM_Remotetools_RemoteContactProfile\|null given\.$#'
 			identifier: if.condNotBoolean
+			count: 1
+			path: api/v3/RemoteContact/GetSelf.php
+
+		-
+			message: '#^Parameter \#1 \$remote_key of static method CRM_Remotetools_Contact\:\:getByKey\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: api/v3/RemoteContact/GetSelf.php
 
@@ -1155,14 +1053,8 @@ parameters:
 			path: api/v3/RemoteContact/Getfields.php
 
 		-
-			message: '#^Function civicrm_api3_remote_contact_getfields\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: api/v3/RemoteContact/Getfields.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_getfields\(\) has parameter \$params with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^Function civicrm_api3_remote_contact_getfields\(\) should return array\<string, mixed\> but returns array\|int\.$#'
+			identifier: return.type
 			count: 1
 			path: api/v3/RemoteContact/Getfields.php
 
@@ -1185,31 +1077,19 @@ parameters:
 			path: api/v3/RemoteContact/Getfields.php
 
 		-
-			message: '#^Function _civicrm_api3_remote_contact_match_spec\(\) has no return type specified\.$#'
-			identifier: missingType.return
+			message: '#^Parameter \#1 \$string of function strtolower expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
-			path: api/v3/RemoteContact/Match.php
-
-		-
-			message: '#^Function _civicrm_api3_remote_contact_match_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Match.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_match\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Match.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_match\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Match.php
+			path: api/v3/RemoteContact/Getfields.php
 
 		-
 			message: '#^In function "civicrm_api3_remote_contact_match", caught "Exception" must be rethrown\. Either catch a more specific exception, add a "throw" clause in the "catch" block to propagate the exception or add a "// @ignoreException" comment\.$#'
+			count: 1
+			path: api/v3/RemoteContact/Match.php
+
+		-
+			message: '#^Parameter \#2 \$prefix of static method CRM_Remotetools_Contact\:\:match\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: api/v3/RemoteContact/Match.php
 
@@ -1220,32 +1100,14 @@ parameters:
 			path: api/v3/RemoteContact/Update.php
 
 		-
-			message: '#^Function _civicrm_api3_remote_contact_update_spec\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: api/v3/RemoteContact/Update.php
-
-		-
-			message: '#^Function _civicrm_api3_remote_contact_update_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Update.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_update\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Update.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_update\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: api/v3/RemoteContact/Update.php
-
-		-
-			message: '#^Function civicrm_api3_remote_contact_update\(\) should return array but returns array\|int\.$#'
+			message: '#^Function civicrm_api3_remote_contact_update\(\) should return array\<string, mixed\> but returns array\|int\.$#'
 			identifier: return.type
+			count: 1
+			path: api/v3/RemoteContact/Update.php
+
+		-
+			message: '#^Parameter \#1 \$remote_key of static method CRM_Remotetools_Contact\:\:getByKey\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: api/v3/RemoteContact/Update.php
 

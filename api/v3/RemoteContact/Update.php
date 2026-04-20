@@ -20,10 +20,10 @@ use CRM_Remotetools_ExtensionUtil as E;
 /**
  * RemoteContact.update specs
  *
- * @param array $spec
+ * @param array<string, array<string, mixed>> $spec
  *   API specification blob
  */
-function _civicrm_api3_remote_contact_update_spec(&$spec) {
+function _civicrm_api3_remote_contact_update_spec(array &$spec): void {
   $spec['remote_contact_id'] = [
     'name'         => 'remote_contact_id',
     'title'        => E::ts('Remote Contact ID'),
@@ -36,13 +36,13 @@ function _civicrm_api3_remote_contact_update_spec(&$spec) {
  * RemoteContact.get implementation,
  *  analogous to Contact.create, but requiring the remote_contact_id parameter
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *   API call parameters
  *
- * @return array
+ * @return array<string, mixed>
  *   API3 response
  */
-function civicrm_api3_remote_contact_update($params) {
+function civicrm_api3_remote_contact_update(array $params): array {
   unset($params['check_permissions']);
 
   // identify contact

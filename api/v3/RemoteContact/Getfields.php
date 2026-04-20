@@ -22,8 +22,14 @@ use Civi\RemoteContact\GetFieldsEvent;
 /**
  *
  * RemoteContact.getfields
+ *
+ * @param array<string, mixed> $params
+ *   API call parameters
+ *
+ * @return array<string, mixed>
+ *   API3 response
  */
-function civicrm_api3_remote_contact_getfields($params) {
+function civicrm_api3_remote_contact_getfields(array $params): array {
   unset($params['check_permissions']);
 
   // we only support 'get' actions
