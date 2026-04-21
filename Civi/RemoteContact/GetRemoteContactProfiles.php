@@ -38,7 +38,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
   /**
    * RemoteContactGetRequest constructor.
    *
-   * @param null $name_filter
+   * @param string|null $name_filter
    */
   public function __construct(?string $name_filter = NULL) {
     parent::__construct([]);

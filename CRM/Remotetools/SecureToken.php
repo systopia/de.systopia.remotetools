@@ -62,10 +62,10 @@ class CRM_Remotetools_SecureToken {
    * @param integer $entity_id
    *   CiviCRM ID
    *
-   * @param string $expires
+   * @param string|null $expires
    *   strtotime()-readable timestamp
    *
-   * @param string $usage
+   * @param string|null $usage
    *   what should this token be used for
    *
    * @return string
@@ -111,7 +111,7 @@ class CRM_Remotetools_SecureToken {
    * @param string $token
    *   the token received
    *
-   * @param string $usage
+   * @param string|null $usage
    *   what should this token be used for
    *
    * @return null|integer

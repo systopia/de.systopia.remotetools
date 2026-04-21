@@ -122,7 +122,7 @@ class RemoteToolsRequest extends Event {
    * @param string $name
    *   parameter name
    *
-   * @param mixed $default
+   * @param mixed|null $default
    *   default return value, if not set
    */
   public function getOriginalRequestParameter(string $name, mixed $default = NULL): mixed {
@@ -142,7 +142,7 @@ class RemoteToolsRequest extends Event {
   /**
    * Get the current sorting instructions as an array
    *
-   * @param array $request_data
+   * @param array|null $request_data
    *   the API request. If empty, the original request will be used
    *
    * @return array
@@ -163,7 +163,7 @@ class RemoteToolsRequest extends Event {
    * @param array $sorting_tuples
    *   list of [field_name, 'ASC'|'DESC']  tuples
    *
-   * @param array $request_data
+   * @param array|null $request_data
    *   the API request. If empty, the compiled request will be used
    *
    */
@@ -198,7 +198,7 @@ class RemoteToolsRequest extends Event {
    * @param string $name
    *   parameter name
    *
-   * @param mixed $default
+   * @param mixed|null $default
    *   default return value, if not set
    */
   public function getRequestParameter(string $name, mixed $default = NULL): mixed {
@@ -270,7 +270,7 @@ class RemoteToolsRequest extends Event {
    * @param string $name
    *   parameter name
    *
-   * @param mixed $value
+   * @param mixed|null $value
    *   default return value, if not set
    */
   public function setRequestOption(string $name, mixed $value): void {
