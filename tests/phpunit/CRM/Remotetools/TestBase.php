@@ -84,6 +84,7 @@ abstract class CRM_Remotetools_TestBase extends TestCase implements HeadlessInte
 
     // create contact
     $result = $this->traitCallAPISuccess('Contact', 'create', $contact_data);
+    static::assertIsArray($result);
     $contact = $this->traitCallAPISuccess('Contact', 'getsingle', ['id' => $result['id']]);
     CRM_Remotetools_CustomData::labelCustomFields($contact);
     return $contact;
@@ -228,6 +229,7 @@ abstract class CRM_Remotetools_TestBase extends TestCase implements HeadlessInte
       'campaign_type_id' => 1,
       'status_id' => 1,
     ]);
+    static::assertIsArray($campaign);
     return $this->traitCallAPISuccess('Campaign', 'getsingle', ['id' => $campaign['id']]);
   }
 
