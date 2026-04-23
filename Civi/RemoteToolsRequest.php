@@ -37,42 +37,42 @@ class RemoteToolsRequest extends Event {
 
   /**
    * @var array original request paramters */
-  protected array $original_request = [];
+  protected $original_request = [];
 
   /**
    * @var array request paramters */
-  protected array $request = [];
+  protected $request = [];
 
   /**
    * @var array|null the result of the request */
-  protected ?array $result = NULL;
+  protected $result = NULL;
 
   /**
    * @var array the reply to be returned */
-  protected array $reply = [];
+  protected $reply = [];
 
   /**
    * @var array holds the list of error messages */
-  protected array $error_list = [];
+  protected $error_list = [];
 
   /**
    * @var array holds the list of warning messages */
-  protected array $warning_list = [];
+  protected $warning_list = [];
 
   /**
    * @var array holds the list of info/status messages */
-  protected array $info_list = [];
+  protected $info_list = [];
 
   /**
    * @var integer the contact ID of the caller */
-  protected ?int $caller_contact_id = NULL;
+  protected $caller_contact_id = NULL;
 
   /**
    * Create RemoteToolsRequest with the original query
    *
    * @param array $original_request
    */
-  public function __construct(array $original_request) {
+  public function __construct($original_request) {
     $this->original_request = $original_request;
     $this->request = $original_request;
 
@@ -86,7 +86,7 @@ class RemoteToolsRequest extends Event {
    * @return int
    *   a contact ID, 0 (zero) if not found/identified
    */
-  public function getCallerContactID(): int {
+  public function getCallerContactID() {
     if (!isset($this->caller_contact_id)) {
       if (empty($this->getRequest()['remote_contact_id'])) {
         // no ID given
@@ -112,7 +112,7 @@ class RemoteToolsRequest extends Event {
    *
    * @param integer $contact_id
    */
-  public function setCallerContactID(int $contact_id): void {
+  public function setCallerContactID($contact_id) {
     $this->caller_contact_id = $contact_id;
   }
 
@@ -125,7 +125,7 @@ class RemoteToolsRequest extends Event {
    * @param mixed|null $default
    *   default return value, if not set
    */
-  public function getOriginalRequestParameter(string $name, mixed $default = NULL): mixed {
+  public function getOriginalRequestParameter($name, $default = NULL) {
     return $this->original_request[$name] ?? $default;
   }
 
@@ -135,7 +135,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   request data
    */
-  public function getOriginalRequest(): array {
+  public function getOriginalRequest() {
     return $this->original_request;
   }
 
@@ -148,7 +148,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   list of [field_name, 'ASC'|'DESC']  tuples
    */
-  public function getSorting(?array $request_data = NULL): array {
+  public function getSorting($request_data = NULL) {
     // use original request
     if (empty($request_data) || !is_array($request_data)) {
       $request_data = $this->original_request;
@@ -167,7 +167,7 @@ class RemoteToolsRequest extends Event {
    *   the API request. If empty, the compiled request will be used
    *
    */
-  public function setSorting(array $sorting_tuples, ?array &$request_data = NULL): void {
+  public function setSorting($sorting_tuples, &$request_data = NULL) {
     // use original request
     if (empty($request_data) || !is_array($request_data)) {
       $request_data = &$this->request;
@@ -181,7 +181,7 @@ class RemoteToolsRequest extends Event {
    * @param array $mapping
    *   string -> string mapping
    */
-  public function mapParameters(array $mapping = []): void {
+  public function mapParameters($mapping = []) {
     foreach ($mapping as $old_key => $new_key) {
       if ($old_key != $new_key) {
         if (isset($this->request[$old_key])) {
@@ -201,7 +201,7 @@ class RemoteToolsRequest extends Event {
    * @param mixed|null $default
    *   default return value, if not set
    */
-  public function getRequestParameter(string $name, mixed $default = NULL): mixed {
+  public function getRequestParameter($name, $default = NULL) {
     return $this->request[$name] ?? $default;
   }
 
@@ -214,7 +214,7 @@ class RemoteToolsRequest extends Event {
    * @return mixed
    *   previous value, or null if not set
    */
-  public function removeRequestParameter(string $name): mixed {
+  public function removeRequestParameter($name) {
     $old_value = $this->request[$name] ?? NULL;
     unset($this->request[$name]);
     return $old_value;
@@ -235,7 +235,7 @@ class RemoteToolsRequest extends Event {
    * @return mixed
    *   the option value, or null if not set
    */
-  public function getRequestOption(string $name, bool $json_parse = TRUE, string $explode_string = ','): mixed {
+  public function getRequestOption($name, $json_parse = TRUE, $explode_string = ',') {
     // get the value
     $value = NULL;
     if (isset($this->request['options'][$name])) {
@@ -273,7 +273,7 @@ class RemoteToolsRequest extends Event {
    * @param mixed|null $value
    *   default return value, if not set
    */
-  public function setRequestOption(string $name, mixed $value): void {
+  public function setRequestOption($name, $value) {
     unset($this->request['options'][$name]);
     unset($this->request["option.{$name}"]);
     $this->request['options'][$name] = $value;
@@ -290,7 +290,7 @@ class RemoteToolsRequest extends Event {
    * @return array|null|string
    *   list of requested IDs
    */
-  public function getRequestedEntityIDs(): array|string|null {
+  public function getRequestedEntityIDs() {
     return \CRM_Remotetools_DataTools::getIDs($this->request, 'id');
   }
 
@@ -301,7 +301,7 @@ class RemoteToolsRequest extends Event {
    * @param array $entity_ids
    *   list of entity IDs
    */
-  public function restrictToEntityIds(array $entity_ids): void {
+  public function restrictToEntityIds($entity_ids) {
     \CRM_Remotetools_DataTools::restrictToIds($this->request, $entity_ids, 'id');
   }
 
@@ -311,7 +311,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   request data
    */
-  public function &getRequest(): array {
+  public function &getRequest() {
     return $this->request;
   }
 
@@ -321,7 +321,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   reply data
    */
-  public function &getReply(): array {
+  public function &getReply() {
     return $this->reply;
   }
 
@@ -329,14 +329,14 @@ class RemoteToolsRequest extends Event {
    * Check whether the underlying query was executed
    * Caution: does not imply execution was succesfull
    */
-  public function wasExecuted(): bool {
+  public function wasExecuted() {
     return $this->result !== NULL;
   }
 
   /**
    * Get the list of fields currently requested to be returned
    */
-  public function getOriginalReturnFields(): array {
+  public function getOriginalReturnFields() {
     $return = $this->original_request['return'] ?? [];
     if (is_array($return)) {
       return $return;
@@ -352,7 +352,7 @@ class RemoteToolsRequest extends Event {
   /**
    * Get the list of fields currently requested to be returned
    */
-  public function getReturnFields(): ?array {
+  public function getReturnFields() {
     $return_string = $this->request['return'] ?? NULL;
     if ($return_string) {
       return explode(',', $return_string);
@@ -367,7 +367,7 @@ class RemoteToolsRequest extends Event {
    * @return bool
    *   true if there is errors
    */
-  public function hasErrors(): bool {
+  public function hasErrors() {
     return !empty($this->error_list);
   }
 
@@ -380,7 +380,7 @@ class RemoteToolsRequest extends Event {
    * @param string $reference
    *   a reference, e.g. e a field name
    */
-  public function addError(string $message, string $reference = ''): void {
+  public function addError($message, $reference = '') {
     $this->error_list[] = [$message, $reference];
   }
 
@@ -390,7 +390,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   complete error list
    */
-  public function getErrors(): array {
+  public function getErrors() {
     return $this->error_list;
   }
 
@@ -399,7 +399,7 @@ class RemoteToolsRequest extends Event {
    * @return bool
    *   true if there is errors
    */
-  public function hasWarnings(): bool {
+  public function hasWarnings() {
     return !empty($this->warning_list);
   }
 
@@ -412,7 +412,7 @@ class RemoteToolsRequest extends Event {
    * @param string $reference
    *   a reference, e.g. e a field name
    */
-  public function addWarning(string $message, string $reference = ''): void {
+  public function addWarning($message, $reference = '') {
     $this->warning_list[] = [$message, $reference];
   }
 
@@ -425,7 +425,7 @@ class RemoteToolsRequest extends Event {
    * @param string $reference
    *   a reference, e.g. e a field name
    */
-  public function addStatus(string $message, string $reference = ''): void {
+  public function addStatus($message, $reference = '') {
     $this->info_list[] = [$message, $reference];
   }
 
@@ -436,7 +436,7 @@ class RemoteToolsRequest extends Event {
    *   severity: status|warning|error
    *   reference: (optional) message reference, e.g. field name
    */
-  public function getStatusMessageList(): array {
+  public function getStatusMessageList() {
     $messages = [];
     foreach ($this->error_list as $error) {
       $messages[] = [
@@ -472,7 +472,7 @@ class RemoteToolsRequest extends Event {
    * @return array
    *   [reference => message/error] list
    */
-  public function getReferencedStatusList(array $classes = ['error']): array {
+  public function getReferencedStatusList($classes = ['error']) {
     $result = [];
     foreach ($this->getStatusMessageList() as $message) {
       if (in_array($message['severity'], $classes) && !empty($message['reference'])) {
@@ -485,7 +485,7 @@ class RemoteToolsRequest extends Event {
   /**
    * Generate an API3 error
    */
-  public function createAPI3Error(): array {
+  public function createAPI3Error() {
     $first_error = reset($this->error_list);
     return civicrm_api3_create_error($first_error[0], ['status_messages' => $this->getStatusMessageList()]);
   }
@@ -493,7 +493,7 @@ class RemoteToolsRequest extends Event {
   /**
    * Generate an API3 error
    */
-  public function createAPI3Success(string $entity, string $action, array $extraReturnValues = []): array {
+  public function createAPI3Success($entity, $action, $extraReturnValues = []) {
     // add status messages
     $extraReturnValues['status_messages'] = $this->getStatusMessageList();
 
@@ -509,7 +509,7 @@ class RemoteToolsRequest extends Event {
    *
    *
    */
-  public static function createStaticAPI3Error(string $error_message): array {
+  public static function createStaticAPI3Error($error_message) {
     return civicrm_api3_create_error($error_message, [
       'status_messages' => [
             [
