@@ -99,7 +99,10 @@ class CRM_Remotetools_RemoteContactQueryTools {
    *     'values'                   => the query
    *
    */
-  protected static function extractMutltivalueSQLQueries(array $multivalue_search_or_queries, RemoteContactGetRequest $request): array {
+  protected static function extractMutltivalueSQLQueries(
+    array $multivalue_search_or_queries,
+    RemoteContactGetRequest $request
+  ): array {
     // here we will store the extracted queries
     $extracted_queries = [];
 

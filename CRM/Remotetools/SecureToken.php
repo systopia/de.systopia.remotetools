@@ -74,7 +74,12 @@ class CRM_Remotetools_SecureToken {
    * @throws \Exception
    *   If the related contact does not exist, is deleted, or has no proper 32 character hash.
    */
-  public static function generateEntityToken(string $entity_name, int $entity_id, ?string $expires = NULL, ?string $usage = NULL): string {
+  public static function generateEntityToken(
+    string $entity_name,
+    int $entity_id,
+    ?string $expires = NULL,
+    ?string $usage = NULL
+  ): string {
     // build the payload
     if (empty($expires)) {
       $expires = 0;
