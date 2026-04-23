@@ -25,8 +25,7 @@ namespace Civi;
  * Abstract event class to provide some basic functions
  */
 class RemoteToolsDispatcher {
-  /**
-   * @var \Civi\Core\CiviEventDispatcherInterface */
+
   protected \Civi\Core\CiviEventDispatcherInterface $dispatcher;
 
   public function __construct() {
