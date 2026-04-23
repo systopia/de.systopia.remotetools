@@ -16,6 +16,8 @@
 declare(strict_types = 1);
 
 use CRM_Remotetools_ExtensionUtil as E;
+use Civi\RemoteContact\GetFieldsEvent;
+use Civi\RemoteContact\RemoteContactGetRequest;
 
 /**
  * EXAMPLE: a very simple contact profile:
@@ -32,7 +34,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    * @return string
    *   profile ID
    */
-  public function getProfileID() {
+  public function getProfileID(): string {
     return 'simple_first_name_last_name';
   }
 
@@ -42,7 +44,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    * @return string
    *   profile ID
    */
-  public function getProfileName() {
+  public function getProfileName(): string {
     return E::ts('[Example] first and last name');
   }
 
@@ -55,7 +57,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    * @return boolean
    *   does this profile only return the data of the caller?
    */
-  public function isOwnDataProfile($request) {
+  public function isOwnDataProfile(RemoteContactGetRequest $request): bool {
     return TRUE;
   }
 
@@ -66,7 +68,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    *   the request to execute
    *
    */
-  public function initProfile($request) {
+  public function initProfile(RemoteContactGetRequest $request): void {
     // implement this to format the results before delivery
   }
 
@@ -79,7 +81,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    *
    * @return array
    */
-  public function getReturnFields($request) {
+  public function getReturnFields(RemoteContactGetRequest $request): array {
     // get the list of fields this profile wants/needs
     return ['first_name', 'last_name'];
   }
@@ -95,7 +97,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    *    the request parameters, to be edited in place
    *
    */
-  public function applyRestrictions($request, &$request_data) {
+  public function applyRestrictions(RemoteContactGetRequest $request, array &$request_data): void {
     $request_data['contact_type'] = 'Individual';
     $request_data['sequential'] = 0;
   }
@@ -109,7 +111,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    * @param array $reply_records
    *    the current reply records to edit in-place
    */
-  public function filterResult($request, &$reply_records) {
+  public function filterResult(RemoteContactGetRequest $request, array &$reply_records): void {
     foreach (array_keys($reply_records) as $index) {
       $reply_records[$index] = [
         'civicrm_id' => $reply_records[$index]['id'] ?? '',
@@ -124,7 +126,7 @@ class CRM_Remotetools_RemoteContactProfile_OwnFirstNameLastName extends CRM_Remo
    *
    * @param $fields_collection GetFieldsEvent
    */
-  public function addFields($fields_collection) {
+  public function addFields(GetFieldsEvent $fields_collection): void {
     $fields_collection->setFieldSpec('civicrm_id',
          [
            'name' => 'civicrm_id',

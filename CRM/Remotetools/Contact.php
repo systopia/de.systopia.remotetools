@@ -30,7 +30,7 @@ class CRM_Remotetools_Contact {
    *
    * @return integer|null contact ID or null if not found
    */
-  public static function getByKey($remote_key) {
+  public static function getByKey(string $remote_key): ?int {
     // check if exists:
     $query = CRM_Core_DAO::executeQuery("
             SELECT entity_id AS contact_id
@@ -63,7 +63,7 @@ class CRM_Remotetools_Contact {
    *
    * @throws Exception if the contact could not be matched or created
    */
-  public static function match($data, $prefix = '') {
+  public static function match(array $data, string $prefix = ''): string {
     // check if matching is enabled
     if (!Civi::settings()->get('remotecontact_matching_enabled')) {
       throw new Exception('RemoteContact matching is disabled');
@@ -128,7 +128,7 @@ class CRM_Remotetools_Contact {
    * @return string
    *   new key
    */
-  public static function generateRemoteKey($prefix) {
+  public static function generateRemoteKey(string $prefix): string {
     // contact found: generate key
     $new_key = strtoupper(substr(sha1(random_bytes(32)), 0, 16));
 
@@ -150,7 +150,7 @@ class CRM_Remotetools_Contact {
    * @return integer
    *   number of times the key exists
    */
-  public static function remoteKeyExists($key_candidate) {
+  public static function remoteKeyExists(string $key_candidate): int {
     // check if exists:
     return (int) CRM_Core_DAO::singleValueQuery("
             SELECT COUNT(*)
@@ -165,7 +165,7 @@ class CRM_Remotetools_Contact {
    * @param string $new_key
    * @param integer $contact_id
    */
-  public static function storeRemoteKey($new_key, $contact_id) {
+  public static function storeRemoteKey(string $new_key, int $contact_id): void {
     CRM_Core_DAO::executeQuery("
          INSERT INTO civicrm_value_contact_id_history(entity_id,identifier_type,identifier,used_since)
          VALUES(%1, 'remote_contact', %2, NOW());", [

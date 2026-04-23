@@ -62,10 +62,10 @@ class CRM_Remotetools_SecureToken {
    * @param integer $entity_id
    *   CiviCRM ID
    *
-   * @param string $expires
+   * @param string|null $expires
    *   strtotime()-readable timestamp
    *
-   * @param string $usage
+   * @param string|null $usage
    *   what should this token be used for
    *
    * @return string
@@ -74,7 +74,12 @@ class CRM_Remotetools_SecureToken {
    * @throws \Exception
    *   If the related contact does not exist, is deleted, or has no proper 32 character hash.
    */
-  public static function generateEntityToken($entity_name, $entity_id, $expires = NULL, $usage = NULL) {
+  public static function generateEntityToken(
+    string $entity_name,
+    int $entity_id,
+    ?string $expires = NULL,
+    ?string $usage = NULL
+  ): string {
     // build the payload
     if (empty($expires)) {
       $expires = 0;
@@ -111,13 +116,13 @@ class CRM_Remotetools_SecureToken {
    * @param string $token
    *   the token received
    *
-   * @param string $usage
+   * @param string|null $usage
    *   what should this token be used for
    *
    * @return null|integer
    *   return the entity ID if the token is valid and has not expired
    */
-  public static function decodeEntityToken($entity_name, $token, $usage = NULL) {
+  public static function decodeEntityToken(string $entity_name, string $token, ?string $usage = NULL): ?int {
     [$encoded_raw_payload, $signature] = explode('-', $token, 2);
     $payload = json_decode(base64_decode($encoded_raw_payload), TRUE);
 
@@ -174,7 +179,7 @@ class CRM_Remotetools_SecureToken {
    * @return boolean
    *   is the token valid?
    */
-  public static function verifySignature($token, $hash_key) {
+  public static function verifySignature(string $token, string $hash_key): bool {
     [$encoded_raw_payload, $signature] = explode('-', $token, 2);
     $expected_signature = substr(hash('sha512', $encoded_raw_payload . $hash_key), 0, self::SIGNATURE_LENGTH);
     return $signature == $expected_signature;
@@ -189,14 +194,14 @@ class CRM_Remotetools_SecureToken {
    * @param integer $entity_id
    *  ID of the entity
    */
-  protected static function getContactHash($entity_name, $entity_id) {
+  protected static function getContactHash(string $entity_name, int $entity_id) {
     // first, get the contact ID
     if (strtolower($entity_name) == 'contact') {
-      $contact_id = (int) $entity_id;
+      $contact_id = $entity_id;
     }
     else {
       // todo: add exeptions (like activity)?
-      $contact_id = (int) civicrm_api3($entity_name, 'getvalue', ['id' => (int) $entity_id, 'return' => 'contact_id']);
+      $contact_id = (int) civicrm_api3($entity_name, 'getvalue', ['id' => $entity_id, 'return' => 'contact_id']);
     }
 
     // now that we have the contact ID, we can get the hash

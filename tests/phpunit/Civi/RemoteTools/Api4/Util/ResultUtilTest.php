@@ -46,6 +46,7 @@ final class ResultUtilTest extends TestCase {
     static::assertSame(['foo' => 'bar'], $to->getArrayCopy());
     // Before CiviCRM 6 count was the same as countMatched(). Now it's the same as countFetched().
     // https://github.com/civicrm/civicrm-core/commit/c5ead539ad5271db8a7a583efd3eea03ac04204b#diff-9facf00b48a5316db8c1e7e67a6a68053248d342d4e74099cf971f1ba899e7feL186
+    // @phpstan-ignore staticMethod.alreadyNarrowedType
     static::assertCount(count($from), $to);
     static::assertSame(1, $to->countFetched());
     static::assertSame(2, $to->countMatched());

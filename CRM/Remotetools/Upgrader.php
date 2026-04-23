@@ -25,7 +25,7 @@ class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base {
   /**
    * Installation procedure
    */
-  public function install() {
+  public function install(): void {
     // create custom data structures
     $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
     $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
@@ -78,7 +78,7 @@ class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base {
   /**
    * Extension is being disabled
    */
-  public function disable() {
+  public function disable(): void {
     // Remove XCM matcher
     $matchers = ['CRM_Xcm_Matcher_IdTrackerRemoteIdMatcher'];
     foreach ($matchers as $matcher_name) {
@@ -98,7 +98,7 @@ class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base {
    * @return TRUE on success
    * @throws Exception
    */
-  public function upgrade_0001() {
+  public function upgrade_0001(): bool {
     $this->ctx->log->info('Adding remote roles.');
     $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
     $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
@@ -112,7 +112,7 @@ class CRM_Remotetools_Upgrader extends CRM_Extension_Upgrader_Base {
    * @return TRUE on success
    * @throws Exception
    */
-  public function upgrade_0002() {
+  public function upgrade_0002(): bool {
     $this->ctx->log->info('Adding XCM RemoteContact ID matcher.');
     $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
     $customData->syncOptionGroup(E::path('resources/option_group_rules.json'));

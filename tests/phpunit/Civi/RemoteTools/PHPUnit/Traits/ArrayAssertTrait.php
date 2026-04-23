@@ -41,6 +41,7 @@ trait ArrayAssertTrait {
    * @param mixed[] $actual
    */
   public static function assertArrayHasSameKeys(array $expectedKeys, array $actual): void {
+    // @phpstan-ignore staticMethod.alreadyNarrowedType
     Assert::assertCount(count($expectedKeys), $actual);
     foreach ($expectedKeys as $expectedKey) {
       Assert::assertArrayHasKey($expectedKey, $actual);

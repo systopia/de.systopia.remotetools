@@ -31,12 +31,12 @@ class CRM_Remotetools_DataTools {
    * @return array list of key => (localised) label
    */
   public static function getOptions(
-    $option_group_id,
-    $localise = FALSE,
-    $params = [],
-    $use_name = FALSE,
-    $sort = 'weight asc'
-  ) {
+    int|string $option_group_id,
+    bool $localise = FALSE,
+    array $params = [],
+    bool $use_name = FALSE,
+    string $sort = 'weight asc'
+  ): array {
     // todo: caching!
 
     $option_list = [];
@@ -76,7 +76,7 @@ class CRM_Remotetools_DataTools {
    * @return array
    *   list of [field_name, 'ASC'|'DESC']  tuples
    */
-  public static function getSortingTuples($request_data) {
+  public static function getSortingTuples(array $request_data): array {
     // extract current sorting string
     $current_sorting_string = '';
     if (!empty($request_data['option.sort']) && is_string($request_data['option.sort'])) {
@@ -111,7 +111,7 @@ class CRM_Remotetools_DataTools {
    * @param array $request_data
    *   the API request
    */
-  public static function setSortingString($sorting_tuples, &$request_data): void {
+  public static function setSortingString(array $sorting_tuples, array &$request_data): void {
     $sorting_chunks = [];
     foreach ($sorting_tuples as $sorting_tuple) {
       if (!empty($sorting_tuple[0])) {
@@ -150,7 +150,7 @@ class CRM_Remotetools_DataTools {
    * @return array|null|string
    *   list of requested IDs
    */
-  public static function getIDs($request, $field_name = 'id') {
+  public static function getIDs(array $request, string $field_name = 'id'): array|string|null {
     if (isset($request[$field_name])) {
       $id_param = $request[$field_name];
       if (is_string($id_param)) {
@@ -193,7 +193,7 @@ class CRM_Remotetools_DataTools {
    * @param $field_name string
    *   name of the field, default is 'id'
    */
-  public static function restrictToIds(&$request, $ids, $field_name = 'id') {
+  public static function restrictToIds(array &$request, array $ids, string $field_name = 'id'): void {
     if (empty($ids)) {
       // this basically means: restrict to empty set:
       $request[$field_name] = 0;

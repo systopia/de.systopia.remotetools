@@ -20,10 +20,10 @@ use CRM_Remotetools_ExtensionUtil as E;
 /**
  * RemoteContact.match specs
  *
- * @param array $spec
+ * @param array<string, array<string, mixed>> $spec
  *   API specification blob
  */
-function _civicrm_api3_remote_contact_match_spec(&$spec) {
+function _civicrm_api3_remote_contact_match_spec(array &$spec): void {
   $spec['key_prefix'] = [
     'name'         => 'key_prefix',
     'api.required' => 0,
@@ -67,13 +67,13 @@ function _civicrm_api3_remote_contact_match_spec(&$spec) {
 /**
  * RemoteContact.match implementation
  *
- * @param array $params
+ * @param array<string, mixed> $params
  *   API call parameters
  *
- * @return array
+ * @return array<string, mixed>
  *   API3 response
  */
-function civicrm_api3_remote_contact_match($params) {
+function civicrm_api3_remote_contact_match(array $params): array {
   unset($params['check_permissions']);
   $null = NULL;
 

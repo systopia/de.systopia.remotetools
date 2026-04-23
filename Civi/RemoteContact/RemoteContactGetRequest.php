@@ -31,16 +31,16 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
   /**
    * @var \CRM_Remotetools_RemoteContactProfile the profile to be used
    */
-  protected $profile = NULL;
+  protected ?\CRM_Remotetools_RemoteContactProfile $profile = NULL;
 
   /**
    * @var bool is this a RemoteContact.get_self request to view your own data? */
-  protected $is_self_request = FALSE;
+  protected bool $is_self_request = FALSE;
 
   /**
    * Is this a request about one's own data?
    */
-  public function isSelfRequest() {
+  public function isSelfRequest(): bool {
     return $this->is_self_request;
   }
 
@@ -50,7 +50,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    * @param $is_self_request boolean
    *
    */
-  public function setSelfRequest($is_self_request) {
+  public function setSelfRequest(bool $is_self_request): void {
     $this->is_self_request = $is_self_request;
   }
 
@@ -59,7 +59,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    *
    * @return \CRM_Remotetools_RemoteContactProfile
    */
-  public function getProfile() {
+  public function getProfile(): ?\CRM_Remotetools_RemoteContactProfile {
     if ($this->profile === NULL) {
       $profile_name = $this->getRequestParameter('profile');
       if (empty($profile_name)) {
@@ -88,7 +88,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    * @param $request RemoteContactGetRequest
    *   the request to execute
    */
-  public static function initProfile($request) {
+  public static function initProfile(RemoteContactGetRequest $request): void {
     if (!$request->hasErrors()) {
       $profile = $request->getProfile();
       if ($profile) {
@@ -103,7 +103,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    * @param $request RemoteContactGetRequest
    *   the request to execute
    */
-  public static function addProfileRequirements($request) {
+  public static function addProfileRequirements(RemoteContactGetRequest $request): void {
     if (!$request->hasErrors()) {
       $profile = $request->getProfile();
       if ($profile) {
@@ -146,7 +146,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    * @param $request RemoteContactGetRequest
    *   the request to execute
    */
-  public static function executeRequest($request) {
+  public static function executeRequest(RemoteContactGetRequest $request): void {
     if (!$request->hasErrors()) {
       try {
         // only execute if there is a profile
@@ -183,7 +183,7 @@ class RemoteContactGetRequest extends RemoteToolsRequest {
    * @param $request RemoteContactGetRequest
    *   the request to execute
    */
-  public static function filterResult($request) {
+  public static function filterResult(RemoteContactGetRequest $request): void {
     if (!$request->hasErrors()) {
       $profile = $request->getProfile();
       if ($profile) {

@@ -50,7 +50,7 @@ class CRM_Remotetools_ContactRoles {
    * @return boolean
    *   roles list [[name => label]]
    */
-  public static function hasRole($contact_id, $role_name): bool {
+  public static function hasRole(int $contact_id, string $role_name): bool {
     $roles = self::getRoles($contact_id);
     return isset($roles[$role_name]);
   }
@@ -64,7 +64,7 @@ class CRM_Remotetools_ContactRoles {
    * @phpstan-return array<string, string>
    *  roles list [name => label]
    */
-  public static function getRoles($contact_id): array {
+  public static function getRoles(int $contact_id): array {
     $contact_id = (int) $contact_id;
     if (!isset(self::$contact_roles_cache[$contact_id])) {
       $roles = Contact::get(FALSE)
@@ -94,7 +94,7 @@ class CRM_Remotetools_ContactRoles {
    * @params $role_names array
    *  roles names (not labels)
    */
-  public static function addRoles($contact_id, $role_names): void {
+  public static function addRoles(int $contact_id, array $role_names): void {
     // check if we have to do anything...
     $given_roles = self::getRoles($contact_id);
     $roles_to_add = [];

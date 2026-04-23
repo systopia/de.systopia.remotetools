@@ -29,18 +29,18 @@ use Civi\RemoteToolsRequest;
 class GetRemoteContactProfiles extends RemoteToolsRequest {
   /**
    * @var string looking for a specific one? */
-  protected $name_filter = NULL;
+  protected ?string $name_filter = NULL;
 
   /**
    * @var array list of CRM_Remotetools_RemoteContactProfile instances matching the name_filter */
-  protected $profile_instances = [];
+  protected array $profile_instances = [];
 
   /**
    * RemoteContactGetRequest constructor.
    *
-   * @param null $name_filter
+   * @param string|null $name_filter
    */
-  public function __construct($name_filter = NULL) {
+  public function __construct(?string $name_filter = NULL) {
     parent::__construct([]);
     if ($name_filter) {
       // make sure this is a regex
@@ -57,7 +57,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    *
    * @param $instance_name
    */
-  public function matchesName($instance_name) {
+  public function matchesName(string $instance_name) {
     if ($this->name_filter) {
       return preg_match($this->name_filter, $instance_name);
     }
@@ -70,13 +70,8 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    * Add a remote contact profile instance to the list
    * @param \CRM_Remotetools_RemoteContactProfile $instance
    */
-  public function addInstance($instance) {
-    if ($instance instanceof \CRM_Remotetools_RemoteContactProfile) {
-      $this->profile_instances[] = $instance;
-    }
-    else {
-      throw new \Exception('Provided instance not of class CRM_Remotetools_RemoteContactProfile');
-    }
+  public function addInstance(\CRM_Remotetools_RemoteContactProfile $instance): void {
+    $this->profile_instances[] = $instance;
   }
 
   /**
@@ -85,7 +80,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    * @return integer
    *   count
    */
-  public function getInstanceCount() {
+  public function getInstanceCount(): int {
     return count($this->profile_instances);
   }
 
@@ -95,7 +90,7 @@ class GetRemoteContactProfiles extends RemoteToolsRequest {
    * @return array
    *   all instances gathered
    */
-  public function getInstances() {
+  public function getInstances(): array {
     return $this->profile_instances;
   }
 
