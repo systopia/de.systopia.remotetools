@@ -39,7 +39,7 @@ class CRM_Remotetools_Contact {
               AND identifier = %1
             LIMIT 1", [1 => [$remote_key, 'String']]);
     if ($query->fetch() && $query->contact_id) {
-      return $query->contact_id;
+      return (int) $query->contact_id;
     }
     else {
       return NULL;
