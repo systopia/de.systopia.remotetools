@@ -59,7 +59,7 @@ class CRM_Remotetools_SecureToken {
    * @param string $entity_name
    *   CiviCRM entity (must be supported)
    *
-   * @param integer $entity_id
+   * @param int|string $entity_id
    *   CiviCRM ID
    *
    * @param string|null $expires
@@ -76,10 +76,11 @@ class CRM_Remotetools_SecureToken {
    */
   public static function generateEntityToken(
     string $entity_name,
-    int $entity_id,
+    int|string $entity_id,
     ?string $expires = NULL,
     ?string $usage = NULL
   ): string {
+    $entity_id = (int) $entity_id;
     // build the payload
     if (empty($expires)) {
       $expires = 0;
