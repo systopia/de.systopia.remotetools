@@ -34,6 +34,9 @@ namespace Civi\RemoteTools\ActionHandler;
  * multiple times with different combinations of "entity_name" and
  * "profile_name".
  *
+ * Instead of the attribute "entity_name" the entity name can also be specified
+ * in a public class constant named "ENTITY_NAME".
+ *
  * @see \Civi\Api4\Generic\Result
  * @see \Civi\RemoteTools\DependencyInjection\Compiler\ActionHandlerPass
  * @see \Civi\RemoteTools\Api4\Action\ProfileAwareActionInterface
