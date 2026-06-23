@@ -65,7 +65,7 @@ final class ActionHandlerPass implements CompilerPassInterface {
               // @todo: Only fail if there is a duplicate with the highest priority.
               throw new \RuntimeException(
                 sprintf(
-                  'Duplicate action handler (entity name: %s, action name: %s, profile name: %s',
+                  'Duplicate action handler (entity name: %s, action name: %s, profile name: %s)',
                   $entityName,
                   $actionName,
                   $profileName
