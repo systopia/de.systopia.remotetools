@@ -22,6 +22,7 @@ namespace Civi\RemoteTools\EventSubscriber;
 use Civi\API\Event\AuthorizeEvent;
 use Civi\RemoteTools\Api4\Action\RemoteActionInterface;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProviderInterface;
+use Civi\RemoteTools\Exception\ResolveContactIdFailedException;
 use Civi\RemoteTools\RequestContext\RequestContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -60,6 +61,21 @@ class RemoteRequestInitSubscriber implements EventSubscriberInterface {
       $this->requestContext->setRemoteContactId($request->getRemoteContactId());
       $this->requestContext->setResolvedContactId($this->resolveContactId($request));
     }
+    if (
+      is_array($request) && str_starts_with($request['entity'], 'Remote')
+      && array_key_exists('remote_contact_id', $request['params'])
+    ) {
+      $remoteContactId = $request['params']['remote_contact_id'];
+      $this->requestContext->setRemote(TRUE);
+      $this->requestContext->setRemoteContactId($remoteContactId);
+      try {
+        // @phpstan-ignore argument.type
+        $this->requestContext->setResolvedContactId($this->resolveContactIdForApi3($request));
+      }
+      catch (ResolveContactIdFailedException) {
+        // @ignoreException Don't change existing behavior for APIv3 requests
+      }
+    }
   }
 
   /**
@@ -72,6 +88,26 @@ class RemoteRequestInitSubscriber implements EventSubscriberInterface {
 
     return $this->remoteContactIdResolverProvider->get($request)
       ->getContactId($request->getRemoteContactId());
+  }
+
+  /**
+   * @phpstan-param array{
+   *   id: int,
+   *   entity: string,
+   *   action: string,
+   *   params: array{remote_contact_id: ?string, ...},
+   * } $request
+   *
+   * @throws \Civi\RemoteTools\Exception\ResolveContactIdFailedException
+   */
+  private function resolveContactIdForApi3(array $request): ?int {
+    $remoteContactId = $request['params']['remote_contact_id'];
+    if (NULL === $remoteContactId || '' === $remoteContactId) {
+      return NULL;
+    }
+
+    return $this->remoteContactIdResolverProvider->getByApi3Request($request)
+      ->getContactId($remoteContactId);
   }
 
 }
