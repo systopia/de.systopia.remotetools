@@ -22,9 +22,18 @@ namespace Civi\RemoteTools\EventSubscriber;
 use Civi\API\Event\AuthorizeEvent;
 use Civi\RemoteTools\Api4\Action\RemoteActionInterface;
 use Civi\RemoteTools\Contact\RemoteContactIdResolverProviderInterface;
+use Civi\RemoteTools\Exception\ResolveContactIdFailedException;
 use Civi\RemoteTools\RequestContext\RequestContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @phpstan-type api3RemoteRequestT array{
+ *   id: int,
+ *   entity: string,
+ *   action: string,
+ *   params: array{remote_contact_id: ?string, ...},
+ * }
+ */
 class RemoteRequestInitSubscriber implements EventSubscriberInterface {
 
   private RemoteContactIdResolverProviderInterface $remoteContactIdResolverProvider;
@@ -60,6 +69,29 @@ class RemoteRequestInitSubscriber implements EventSubscriberInterface {
       $this->requestContext->setRemoteContactId($request->getRemoteContactId());
       $this->requestContext->setResolvedContactId($this->resolveContactId($request));
     }
+    elseif ($this->isApi3RemoteRequest($request)) {
+      $this->requestContext->setRemote(TRUE);
+      $this->requestContext->setRemoteContactId($request['params']['remote_contact_id']);
+      try {
+        $this->requestContext->setResolvedContactId($this->resolveContactIdForApi3($request));
+      }
+      catch (ResolveContactIdFailedException) {
+        // @ignoreException Don't change existing behavior for APIv3 requests
+      }
+    }
+  }
+
+  /**
+   * @phpstan-assert-if-true api3RemoteRequestT $request
+   *   Requires the entity name to start with "Remote" AND the parameter
+   *   "remote_contact_id" to exist. Just the entity name prefix might not be
+   *   sufficient in any case.
+   */
+  private function isApi3RemoteRequest(mixed $request): bool {
+    return is_array($request) && is_string($request['entity']) && str_starts_with($request['entity'], 'Remote')
+      && is_array($request['params']) && array_key_exists('remote_contact_id', $request['params'])
+      && is_string($request['params']['remote_contact_id'] ?? '')
+      && is_string($request['action']) && is_int($request['id']);
   }
 
   /**
@@ -72,6 +104,21 @@ class RemoteRequestInitSubscriber implements EventSubscriberInterface {
 
     return $this->remoteContactIdResolverProvider->get($request)
       ->getContactId($request->getRemoteContactId());
+  }
+
+  /**
+   * @phpstan-param api3RemoteRequestT $request
+   *
+   * @throws \Civi\RemoteTools\Exception\ResolveContactIdFailedException
+   */
+  private function resolveContactIdForApi3(array $request): ?int {
+    $remoteContactId = $request['params']['remote_contact_id'];
+    if (NULL === $remoteContactId || '' === $remoteContactId) {
+      return NULL;
+    }
+
+    return $this->remoteContactIdResolverProvider->getByApi3Request($request)
+      ->getContactId($remoteContactId);
   }
 
 }

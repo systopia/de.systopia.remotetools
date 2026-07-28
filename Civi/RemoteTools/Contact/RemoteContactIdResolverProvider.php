@@ -34,4 +34,9 @@ final class RemoteContactIdResolverProvider implements RemoteContactIdResolverPr
     return $this->remoteContactIdResolver;
   }
 
+  public function getByApi3Request(array $request): RemoteContactIdResolverInterface {
+    // @todo: Remote contact ID resolver depending on APIv3 request.
+    return $this->remoteContactIdResolver;
+  }
+
 }

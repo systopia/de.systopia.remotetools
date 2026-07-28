@@ -25,4 +25,14 @@ interface RemoteContactIdResolverProviderInterface {
 
   public function get(RemoteActionInterface $action): RemoteContactIdResolverInterface;
 
+  /**
+   * @phpstan-param array{
+   *   id: int,
+   *   entity: string,
+   *   action: string,
+   *   params: array<string, mixed>,
+   * } $request
+   */
+  public function getByApi3Request(array $request): RemoteContactIdResolverInterface;
+
 }
