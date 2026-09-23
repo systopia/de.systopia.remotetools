@@ -354,12 +354,6 @@ parameters:
 			path: CRM/Remotetools/RemoteContactQueryTools.php
 
 		-
-			message: '#^Parameter \#1 \$field_id of static method CRM_Remotetools_CustomData\:\:getFieldSpecs\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: CRM/Remotetools/RemoteContactQueryTools.php
-
-		-
 			message: '#^Parameter \#1 \$name of method Civi\\RemoteToolsRequest\:\:getRequestParameter\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -411,12 +405,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: CRM/Remotetools/SecureToken.php
-
-		-
-			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
-			identifier: empty.notAllowed
-			count: 1
-			path: CRM/Remotetools/Upgrader.php
 
 		-
 			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'

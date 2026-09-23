@@ -156,6 +156,7 @@ abstract class CRM_Remotetools_RemoteContactTestBase extends CRM_Remotetools_Tes
                 // resolve custom fields
                 $mapping = array_flip($ex2int_mapping);
                 CRM_Remotetools_CustomData::resolveCustomFields($mapping);
+                /** @var array<string, string> $mapping */
                 $ex2int_mapping = array_flip($mapping);
                 return $ex2int_mapping;
           }
