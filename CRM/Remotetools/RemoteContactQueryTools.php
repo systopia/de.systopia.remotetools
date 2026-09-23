@@ -135,6 +135,7 @@ class CRM_Remotetools_RemoteContactQueryTools {
             'original_query_parameter' => $external_field,
             'values'                   => $value,
             'custom_field'             => $custom_field,
+            // @phpstan-ignore argument.type
             'custom_group'             => CRM_Remotetools_CustomData::getGroupSpecs($custom_field['custom_group_id']),
           ];
 

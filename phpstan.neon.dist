@@ -20,7 +20,6 @@ parameters:
 		- remotetools.php
 	excludePaths:
 		analyse:
-			- CRM/Remotetools/CustomData.php
 			- CRM/Remotetools/DAO/*
 			- tests/phpunit/bootstrap.php
 	scanFiles:
@@ -28,7 +27,6 @@ parameters:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
-		- mixin
 	bootstrapFiles:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
 		- phpstanBootstrap.php

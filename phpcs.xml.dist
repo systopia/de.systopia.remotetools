@@ -11,7 +11,6 @@
     <file>remotetools.php</file>
 
     <exclude-pattern>/CRM/Remotetools/DAO/.*\.php$</exclude-pattern>
-    <exclude-pattern>CRM/Remotetools/CustomData.php</exclude-pattern>
 
     <arg name="extensions" value="php"/>
     <arg name="cache" value=".phpcs.cache"/>
