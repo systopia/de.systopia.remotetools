@@ -24,9 +24,9 @@ class CRM_Remotetools_CustomData {
   /** caches custom field data, indexed by group name */
   protected static $custom_group2name       = NULL;
   protected static $custom_group2table_name = NULL;
-  protected static $custom_group_cache      = array();
-  protected static $custom_group_spec_cache = array();
-  protected static $custom_field_cache      = array();
+  protected static $custom_group_cache      = [];
+  protected static $custom_group_spec_cache = [];
+  protected static $custom_field_cache      = [];
 
   protected $ts_domain = NULL;
   protected $version   = self::CUSTOM_DATA_HELPER_VERSION;
@@ -94,7 +94,7 @@ class CRM_Remotetools_CustomData {
       return;
     } else {
       // update OptionGroup
-      $this->updateEntity('OptionGroup', $data, $optionGroup, array('is_active'));
+      $this->updateEntity('OptionGroup', $data, $optionGroup, ['is_active']);
     }
 
     // now run the update for the OptionValues
@@ -112,7 +112,7 @@ class CRM_Remotetools_CustomData {
         $this->log(self::CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update OptionValue: " . json_encode($optionValueSpec));
       } else {
         // update OptionValue
-        $this->updateEntity('OptionValue', $optionValueSpec, $optionValue, array('is_active'));
+        $this->updateEntity('OptionValue', $optionValueSpec, $optionValue, ['is_active']);
       }
     }
   }
@@ -134,7 +134,7 @@ class CRM_Remotetools_CustomData {
     if (isset($data['extends_entity_column_value'])) {
       $force_update = TRUE; // this doesn't get returned by the API, so differences couldn't be detected
       if ($data['extends'] == 'Activity') {
-        $extends_list = array();
+        $extends_list = [];
         foreach ($data['extends_entity_column_value'] as $activity_type) {
           if (!is_numeric($activity_type)) {
             $activity_type = self::getOptionValue('activity_type', $activity_type, 'name');
@@ -164,7 +164,7 @@ class CRM_Remotetools_CustomData {
       return;
     } else {
       // update CustomGroup
-      $this->updateEntity('CustomGroup', $data, $customGroup, array('extends', 'style', 'is_active', 'title', 'extends_entity_column_value'), $force_update);
+      $this->updateEntity('CustomGroup', $data, $customGroup, ['extends', 'style', 'is_active', 'title', 'extends_entity_column_value'], $force_update);
     }
 
     // now run the update for the CustomFields
@@ -174,7 +174,7 @@ class CRM_Remotetools_CustomData {
       $customFieldSpec['_lookup'][] = 'custom_group_id';
       if (!empty($customFieldSpec['option_group_id']) && !is_numeric($customFieldSpec['option_group_id'])) {
         // look up custom group id
-        $optionGroup = $this->getEntityID('OptionGroup', array('name' => $customFieldSpec['option_group_id']));
+        $optionGroup = $this->getEntityID('OptionGroup', ['name' => $customFieldSpec['option_group_id']]);
         if ($optionGroup == 'FAILED' || $optionGroup==NULL) {
           $this->log(self::CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField, bad option_group: {$customFieldSpec['option_group_id']}");
           return;
@@ -190,7 +190,7 @@ class CRM_Remotetools_CustomData {
         $this->log(self::CUSTOM_DATA_HELPER_LOG_ERROR, "Couldn't create/update CustomField: " . json_encode($customFieldSpec));
       } else {
         // update CustomField
-        $this->updateEntity('CustomField', $customFieldSpec, $customField, array('in_selector', 'is_view', 'is_searchable', 'html_type', 'data_type', 'custom_group_id'));
+        $this->updateEntity('CustomField', $customFieldSpec, $customField, ['in_selector', 'is_view', 'is_searchable', 'html_type', 'data_type', 'custom_group_id']);
       }
     }
   }
@@ -201,7 +201,7 @@ class CRM_Remotetools_CustomData {
   protected function getEntityID($entity_type, $selector) {
     if (empty($selector)) return NULL;
     $selector['sequential'] = 1;
-    $selector['options'] = array('limit' => 2);
+    $selector['options'] = ['limit' => 2];
 
     $lookup_result = civicrm_api3($entity_type, 'get', $selector);
     switch ($lookup_result['count']) {
@@ -224,9 +224,9 @@ class CRM_Remotetools_CustomData {
    * lookup attributes
    */
   protected function identifyEntity($entity_type, $data) {
-    $lookup_query = array(
+    $lookup_query = [
         'sequential' => 1,
-        'options'    => array('limit' => 2));
+        'options'    => ['limit' => 2]];
 
     foreach ($data['_lookup'] as $lookup_key) {
       $lookup_query[$lookup_key] = $data[$lookup_key] ?? '';
@@ -269,8 +269,8 @@ class CRM_Remotetools_CustomData {
   /**
    * create a new entity
    */
-  protected function updateEntity($entity_type, $requested_data, $current_data, $required_fields = array(), $force = FALSE) {
-    $update_query = array();
+  protected function updateEntity($entity_type, $requested_data, $current_data, $required_fields = [], $force = FALSE) {
+    $update_query = [];
 
     // first: identify fields that need to be updated
     foreach ($requested_data as $field => $value) {
@@ -323,7 +323,7 @@ class CRM_Remotetools_CustomData {
     foreach ($data['_translate'] as $translate_key) {
       $value = $data[$translate_key];
       if (is_string($value)) {
-        $data[$translate_key] = ts($value, array('domain' => $this->ts_domain));
+        $data[$translate_key] = ts($value, ['domain' => $this->ts_domain]);
       }
     }
   }
@@ -340,7 +340,7 @@ class CRM_Remotetools_CustomData {
   public static function labelCustomFields(&$data, $depth=1, $separator = '.') {
     if ($depth <= 0) return;
 
-    $custom_fields_used = array();
+    $custom_fields_used = [];
     foreach ($data as $key => $value) {
       if (preg_match('#^custom_(?P<field_id>\d+)$#', $key, $match)) {
         $custom_fields_used[] = $match['field_id'];
@@ -379,7 +379,7 @@ class CRM_Remotetools_CustomData {
    */
   public static function getFieldIdentifier($field_id, $separator = '.') {
     // just to be on the safe side
-    self::cacheCustomFields(array($field_id));
+    self::cacheCustomFields([$field_id]);
 
     // get custom field
     $custom_field = self::$custom_field_cache[$field_id];
@@ -398,7 +398,7 @@ class CRM_Remotetools_CustomData {
    */
   public static function getFieldSpecs($field_id) {
     // just to be on the safe side
-    self::cacheCustomFields(array($field_id));
+    self::cacheCustomFields([$field_id]);
 
     // get custom field
     $custom_field = self::$custom_field_cache[$field_id];
@@ -439,7 +439,7 @@ class CRM_Remotetools_CustomData {
    */
   public static function resolveCustomFields(&$data, $customgroups = NULL) {
     // first: find out which ones to cache
-    $customgroups_used = array();
+    $customgroups_used = [];
     foreach ($data as $key => $value) {
       if (preg_match('/^(?P<group_name>\w+)[.](?P<field_name>\w+)$/', $key, $match)) {
         if ($match['group_name'] == 'option' || $match['group_name'] == 'options') {
@@ -490,7 +490,7 @@ class CRM_Remotetools_CustomData {
    * Get CustomField entity (cached)
    */
   public static function getCustomField($custom_group_name, $custom_field_name) {
-    self::cacheCustomGroups(array($custom_group_name));
+    self::cacheCustomGroups([$custom_group_name]);
 
     if (isset(self::$custom_group_cache[$custom_group_name][$custom_field_name])) {
       return self::$custom_group_cache[$custom_group_name][$custom_field_name];
@@ -506,10 +506,10 @@ class CRM_Remotetools_CustomData {
     foreach ($custom_group_names as $custom_group_name) {
       if (!isset(self::$custom_group_cache[$custom_group_name])) {
         // set to empty array to indicate our intentions
-        self::$custom_group_cache[$custom_group_name] = array();
-        $fields = civicrm_api3('CustomField', 'get', array(
+        self::$custom_group_cache[$custom_group_name] = [];
+        $fields = civicrm_api3('CustomField', 'get', [
             'custom_group_id' => $custom_group_name,
-            'option.limit'    => 0));
+            'option.limit'    => 0]);
         foreach ($fields['values'] as $field) {
           self::$custom_group_cache[$custom_group_name][$field['name']] = $field;
           self::$custom_group_cache[$custom_group_name][$field['id']]   = $field;
@@ -523,7 +523,7 @@ class CRM_Remotetools_CustomData {
    */
   public static function cacheCustomFields($custom_field_ids) {
     // first: check if they are already cached
-    $fields_to_load = array();
+    $fields_to_load = [];
     foreach ($custom_field_ids as $field_id) {
       if (!array_key_exists($field_id, self::$custom_field_cache)) {
         $fields_to_load[] = $field_id;
@@ -532,10 +532,10 @@ class CRM_Remotetools_CustomData {
 
     // load missing fields
     if (!empty($fields_to_load)) {
-      $loaded_fields = civicrm_api3('CustomField', 'get', array(
-          'id'           => array('IN' => $fields_to_load),
+      $loaded_fields = civicrm_api3('CustomField', 'get', [
+          'id'           => ['IN' => $fields_to_load],
           'option.limit' => 0,
-      ));
+      ]);
       foreach ($loaded_fields['values'] as $field) {
         self::$custom_field_cache[$field['id']] = $field;
       }
@@ -549,7 +549,7 @@ class CRM_Remotetools_CustomData {
    */
   public static function cacheCustomGroupSpecs($custom_group_ids) {
     // first: check if they are already cached
-    $fields_to_load = array();
+    $fields_to_load = [];
     foreach ($custom_group_ids as $group_id) {
       if (!array_key_exists($group_id, self::$custom_group_spec_cache)) {
         $groups_to_load[] = $group_id;
@@ -558,10 +558,10 @@ class CRM_Remotetools_CustomData {
 
     // load missing fields
     if (!empty($groups_to_load)) {
-      $loaded_groups = civicrm_api3('CustomGroup', 'get', array(
-          'id'           => array('IN' => $groups_to_load),
+      $loaded_groups = civicrm_api3('CustomGroup', 'get', [
+          'id'           => ['IN' => $groups_to_load],
           'option.limit' => 0,
-      ));
+      ]);
       foreach ($loaded_groups['values'] as $group) {
         self::$custom_group_spec_cache[$group['id']] = $group;
         self::$custom_group_spec_cache[$group['name']] = $group;
@@ -598,12 +598,12 @@ class CRM_Remotetools_CustomData {
    * Load group data (all groups)
    */
   protected static function loadGroups() {
-    self::$custom_group2name = array();
-    self::$custom_group2table_name = array();
-    $group_search = civicrm_api3('CustomGroup', 'get', array(
+    self::$custom_group2name = [];
+    self::$custom_group2table_name = [];
+    $group_search = civicrm_api3('CustomGroup', 'get', [
         'return'       => 'name,table_name',
         'option.limit' => 0,
-    ));
+    ]);
     foreach ($group_search['values'] as $customGroup) {
       self::$custom_group2name[$customGroup['id']]       = $customGroup['name'];
       self::$custom_group2table_name[$customGroup['id']] = $customGroup['table_name'];
