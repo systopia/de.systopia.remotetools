@@ -1,6 +1,15 @@
 includes:
 	- phpstan-baseline.neon
 parameters:
+	civicrm:
+		# The class \CRM_Core_Smarty provides various methods. Methods that are
+		# not explicitly defined are delegated to the actual Smarty object via
+		# __call(). In many cases explicit methods like fetchWith() (or
+		# \CRM_Utils_String::parseOneOffStringThroughSmarty()) should be enough.
+		# Though if one of the implicit methods is used, this option has to be
+		# enabled. Obsolete with CiviCRM 6.20.
+		# https://github.com/civicrm/civicrm-core/pull/36493
+		implicitSmartyMethodsUsed: false
 	paths:
 		- api
 		- Civi
@@ -20,8 +29,6 @@ parameters:
 	scanDirectories:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
 		- mixin
-		- ../de.systopia.identitytracker/CRM
-		- ../de.systopia.xcm/CRM
 	bootstrapFiles:
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/vendor/autoload.php
 		- phpstanBootstrap.php
@@ -30,9 +37,13 @@ parameters:
 		- Civi\Core\Event\GenericHookEvent
 		- CRM_Core_Config
 		- CRM_Core_DAO
+		- civicrm_api3
 	earlyTerminatingMethodCalls:
+		CRM_Core_Error:
+			- statusBounce
 		CRM_Utils_System:
 			- civiExit
+			- redirect
 		CRM_Queue_Runner:
 			- runAllViaWeb
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
@@ -68,3 +79,10 @@ parameters:
 			message: '#^Call to static method Civi\\RemoteTools\\Util\\ArrayUtil::isJsonArray\(\) with .+ will always evaluate to (true|false).$#'
 			path: */tests/phpunit/Civi/RemoteTools/Util/ArrayUtilTest.php
 	tmpDir: .phpstan
+
+parametersSchema:
+	civicrm: structure([
+		implicitSmartyMethodsUsed: bool()
+		# Optional extensions (i.e. not required in info.xml) that should be added to class loader.
+		?optionalExtensions: listOf(string())
+	])
