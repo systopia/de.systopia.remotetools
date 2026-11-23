@@ -144,7 +144,7 @@ class CRM_Remotetools_RemoteContactQueryTools {
 
         }
         else {
-          $request->addStatus("Custom field [{$external_field}] is not a multi-value custom field.");
+          $request->addInfo("Custom field [{$external_field}] is not a multi-value custom field.");
         }
       }
     }

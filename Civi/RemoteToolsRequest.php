@@ -52,16 +52,28 @@ class RemoteToolsRequest extends Event {
   protected $reply = [];
 
   /**
-   * @var array holds the list of error messages */
-  protected $error_list = [];
+   * Holds the list of error messages.
+   *
+   * @var list<array{string, string}>
+   *   List of message-reference-tuples (reference might be empty)
+   */
+  protected array $error_list = [];
 
   /**
-   * @var array holds the list of warning messages */
-  protected $warning_list = [];
+   * Holds the list of warning messages.
+   *
+   * @var list<array{string, string}>
+   *   List of message-reference-tuples (reference might be empty)
+   */
+  protected array $warning_list = [];
 
   /**
-   * @var array holds the list of info/status messages */
-  protected $info_list = [];
+   * Holds the list of info/status messages.
+   *
+   * @var list<array{string, string}>
+   *   List of message-reference-tuples (reference might be empty)
+   */
+  protected array $info_list = [];
 
   /**
    * @var integer the contact ID of the caller */
@@ -287,10 +299,10 @@ class RemoteToolsRequest extends Event {
    *   fail  if couldn't be parsed
    *   array with a list of entity IDs, if everything's fine
    *
-   * @return array|null|string
+   * @return array<int>|null|'fail'
    *   list of requested IDs
    */
-  public function getRequestedEntityIDs() {
+  public function getRequestedEntityIDs(): array|null|string {
     return \CRM_Remotetools_DataTools::getIDs($this->request, 'id');
   }
 
@@ -367,8 +379,8 @@ class RemoteToolsRequest extends Event {
    * @return bool
    *   true if there is errors
    */
-  public function hasErrors() {
-    return !empty($this->error_list);
+  public function hasErrors(): bool {
+    return [] !== $this->error_list;
   }
 
   /**
@@ -378,19 +390,19 @@ class RemoteToolsRequest extends Event {
    *   the error message, localised
    *
    * @param string $reference
-   *   a reference, e.g. e a field name
+   *   a reference, e.g. a field name
    */
-  public function addError($message, $reference = '') {
+  public function addError(string $message, string $reference = ''): void {
     $this->error_list[] = [$message, $reference];
   }
 
   /**
    * Get a list of all errors
    *
-   * @return array
+   * @return list<array{string, string}>
    *   complete error list
    */
-  public function getErrors() {
+  public function getErrors(): array {
     return $this->error_list;
   }
 
@@ -399,8 +411,8 @@ class RemoteToolsRequest extends Event {
    * @return bool
    *   true if there is errors
    */
-  public function hasWarnings() {
-    return !empty($this->warning_list);
+  public function hasWarnings(): bool {
+    return [] !== $this->warning_list;
   }
 
   /**
@@ -410,33 +422,53 @@ class RemoteToolsRequest extends Event {
    *   the warning, localised
    *
    * @param string $reference
-   *   a reference, e.g. e a field name
+   *   a reference, e.g. a field name
    */
-  public function addWarning($message, $reference = '') {
+  public function addWarning(string $message, string $reference = ''): void {
     $this->warning_list[] = [$message, $reference];
   }
 
   /**
-   * Add a warning to the remote context
+   * Add an information to the remote context
    *
    * @param string $message
    *   status message, localised
    *
    * @param string $reference
-   *   a reference, e.g. e a field name
+   *   a reference, e.g. a field name
+   *
+   * @deprecated Use addInfo() instead.
    */
-  public function addStatus($message, $reference = '') {
+  public function addStatus(string $message, string $reference = ''): void {
+    $this->addInfo($message, $reference);
+  }
+
+  /**
+   * Add an information to the remote context
+   *
+   * @param string $reference
+   *   a reference, e.g. a field name
+   */
+  public function addInfo(string $message, string $reference = ''): void {
     $this->info_list[] = [$message, $reference];
   }
 
   /**
-   * Get a list of status messages in the following form
-   * [
-   *   message: the status message,
-   *   severity: status|warning|error
-   *   reference: (optional) message reference, e.g. field name
+   * Clears information messages.
+   *
+   * @see addInfo()
    */
-  public function getStatusMessageList() {
+  public function clearInfos(): void {
+    $this->info_list = [];
+  }
+
+  /**
+   * Get a list of status messages.
+   *
+   * @return list<array{severity: 'status'|'warning'|'error', message: string, reference: string}>
+   *   The reference (a field name) might be emtpy.
+   */
+  public function getStatusMessageList(): array {
     $messages = [];
     foreach ($this->error_list as $error) {
       $messages[] = [
@@ -466,16 +498,16 @@ class RemoteToolsRequest extends Event {
    * Get in indexed array of all status messages (of the given classes)
    *   indexed by reference
    *
-   * @param string[] $classes
+   * @param list<string> $classes
    *   list of classes to consider
    *
-   * @return array
+   * @return array<string, string>
    *   [reference => message/error] list
    */
-  public function getReferencedStatusList($classes = ['error']) {
+  public function getReferencedStatusList(array $classes = ['error']): array {
     $result = [];
     foreach ($this->getStatusMessageList() as $message) {
-      if (in_array($message['severity'], $classes) && !empty($message['reference'])) {
+      if (in_array($message['severity'], $classes, TRUE) && '' !== $message['reference']) {
         $result[$message['reference']] = $message['message'];
       }
     }
@@ -484,16 +516,22 @@ class RemoteToolsRequest extends Event {
 
   /**
    * Generate an API3 error
+   *
+   * @return array<string, mixed>
    */
-  public function createAPI3Error() {
+  public function createAPI3Error(): array {
     $first_error = reset($this->error_list);
-    return civicrm_api3_create_error($first_error[0], ['status_messages' => $this->getStatusMessageList()]);
+    return civicrm_api3_create_error($first_error[0] ?? '', ['status_messages' => $this->getStatusMessageList()]);
   }
 
   /**
-   * Generate an API3 error
+   * Generate an API3 success result.
+   *
+   * @param array<string, mixed> $extraReturnValues
+   *
+   * @return array<string, mixed>
    */
-  public function createAPI3Success($entity, $action, $extraReturnValues = []) {
+  public function createAPI3Success(string $entity, string $action, array $extraReturnValues = []): array {
     // add status messages
     $extraReturnValues['status_messages'] = $this->getStatusMessageList();
 
