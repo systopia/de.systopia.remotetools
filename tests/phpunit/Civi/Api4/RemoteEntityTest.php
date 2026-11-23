@@ -314,6 +314,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
     TestRemoteGroup::validateCreateForm()
+      ->setData(['foo' => 'bar'])
       ->execute();
   }
 
@@ -359,6 +360,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     $this->expectException(\CRM_Core_Exception::class);
     $this->expectExceptionMessage('Parameter "profile" is required.');
     TestRemoteGroup::submitCreateForm()
+      ->setData(['foo' => 'bar'])
       ->execute();
   }
 
@@ -496,6 +498,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     $this->expectExceptionMessage('Parameter "profile" is required.');
     TestRemoteGroup::validateUpdateForm()
       ->setId($group['id'])
+      ->setData(['foo' => 'bar'])
       ->execute();
   }
 
@@ -561,6 +564,7 @@ final class RemoteEntityTest extends AbstractRemoteToolsHeadlessTestCase {
     $this->expectExceptionMessage('Parameter "profile" is required.');
     TestRemoteGroup::submitUpdateForm()
       ->setId($group['id'])
+      ->setData(['foo' => 'bar'])
       ->execute();
   }
 
