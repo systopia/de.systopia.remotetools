@@ -147,7 +147,7 @@ class CRM_Remotetools_DataTools {
    * @param $field_name string
    *   name of the field, default is 'id'
    *
-   * @return array|null|string
+   * @return array<int>|null|'fail'
    *   list of requested IDs
    */
   public static function getIDs(array $request, string $field_name = 'id'): array|string|null {
